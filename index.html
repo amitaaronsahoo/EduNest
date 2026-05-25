@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jefferson County Home &amp; School Locator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Jefferson County Home &amp; School Locator</h1>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>Find by School</h2>
+        <label for="schoolSearch">School name</label>
+        <input id="schoolSearch" type="text" placeholder="e.g., DuPont Manual High School" />
+        <button id="schoolSearchBtn" type="button">Search Nearby Homes</button>
+
+        <h2>Filter Homes</h2>
+        <label for="minBedrooms">Minimum bedrooms</label>
+        <select id="minBedrooms">
+          <option value="0">Any</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+        </select>
+
+        <label for="minBathrooms">Minimum bathrooms</label>
+        <select id="minBathrooms">
+          <option value="0">Any</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+        </select>
+
+        <label for="maxPrice">Maximum price: <span id="maxPriceValue">$1,000,000</span></label>
+        <input id="maxPrice" type="range" min="100000" max="1000000" step="10000" value="1000000" />
+
+        <button id="applyFiltersBtn" type="button">Apply Filters</button>
+      </aside>
+
+      <main>
+        <section>
+          <h2 id="resultsTitle">Available Homes</h2>
+          <div id="results" class="cards"></div>
+          <p id="emptyState" class="empty" hidden>No homes match the current criteria.</p>
+        </section>
+
+        <section>
+          <h2>Closest Schools to Selected Home</h2>
+          <ul id="closestSchools"></ul>
+          <p id="schoolFallback" class="empty" hidden>Data unavailable</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

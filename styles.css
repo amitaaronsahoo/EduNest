@@ -1,0 +1,92 @@
+:root {
+  font-family: Arial, sans-serif;
+  color: #1f2937;
+  background: #f3f4f6;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  padding: 1rem 1.5rem;
+  background: #1f4f99;
+  color: #fff;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.sidebar {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: fit-content;
+}
+
+.sidebar h2 {
+  margin: 0.75rem 0 0.25rem;
+}
+
+button,
+select,
+input {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+}
+
+button {
+  background: #1f4f99;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+main section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+}
+
+.card {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.zillow-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #0f766e;
+}
+
+.empty {
+  color: #b91c1c;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
