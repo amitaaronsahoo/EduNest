@@ -1,0 +1,52 @@
+[
+  {
+    "formattedAddress": "2200 Bardstown Rd, Louisville, KY",
+    "propertyType": "Single Family",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1760,
+    "price": 315000,
+    "longitude": -85.704,
+    "latitude": 38.218
+  },
+  {
+    "formattedAddress": "901 S 3rd St., Louisville, KY",
+    "propertyType": "Townhome",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "squareFeet": 1320,
+    "price": 284000,
+    "longitude": -85.758,
+    "latitude": 38.243
+  },
+  {
+    "formattedAddress": "4305 Brownsboro Rd, Louisville, KY",
+    "propertyType": "Condo",
+    "bedrooms": 2,
+    "bathrooms": 1,
+    "squareFeet": 980,
+    "price": 199900,
+    "longitude": -85.639,
+    "latitude": 38.283
+  },
+  {
+    "formattedAddress": "1007 Meadow Ln, Louisville, KY",
+    "propertyType": "Single Family",
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "squareFeet": 2210,
+    "price": 425000,
+    "longitude": -85.688,
+    "latitude": 38.264
+  },
+  {
+    "formattedAddress": "11 Data Gap Ct, Louisville, KY",
+    "propertyType": "Single Family",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "squareFeet": 1640,
+    "price": 275000,
+    "longitude": null,
+    "latitude": null
+  }
+]
