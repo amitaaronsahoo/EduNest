@@ -47,10 +47,10 @@ If it worked, you should see:
 
 ### 2) Navigate to the repository root
 
-Replace the path if your local folder is different:
+Replace the path with your local clone location:
 
 ```bash
-cd /tmp/workspace/amitaaronsahoo/EduNest
+cd path/to/EduNest
 ```
 
 ### 3) Start the local static server
@@ -155,11 +155,11 @@ Fix:
 
 ## Project structure (quick orientation)
 
-- `/tmp/workspace/amitaaronsahoo/EduNest/index.html` - page layout and UI labels
-- `/tmp/workspace/amitaaronsahoo/EduNest/styles.css` - visual styles
-- `/tmp/workspace/amitaaronsahoo/EduNest/app.js` - app logic (load data, search, filter, distance)
-- `/tmp/workspace/amitaaronsahoo/EduNest/data/houses.json` - homes dataset
-- `/tmp/workspace/amitaaronsahoo/EduNest/data/Jefferson_County_KY_Schools.geojson` - schools dataset
+- `index.html` - page layout and UI labels
+- `styles.css` - visual styles
+- `app.js` - app logic (load data, search, filter, distance)
+- `data/houses.json` - homes dataset
+- `data/Jefferson_County_KY_Schools.geojson` - schools dataset
 
 ## How to report an issue
 
