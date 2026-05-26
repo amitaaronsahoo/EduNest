@@ -1,6 +1,7 @@
-# EduNest (Jefferson County Home & School Locator)
+# EduNest
 
 EduNest is a beginner-friendly web app that helps you explore homes and nearby schools in Jefferson County, KY using local data files.
+In the app interface, the page title appears as "Jefferson County Home & School Locator."
 
 ## Quickstart (first-time users)
 
