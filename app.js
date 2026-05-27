@@ -93,7 +93,7 @@ function normalizeSearchText(value) {
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/&/g, " and ")
-    .replace(/['’.]/g, "")
+    .replace(/['\u2019.]/g, "")
     .replace(/[^a-zA-Z0-9]+/g, " ")
     .toLowerCase()
     .trim()
@@ -356,7 +356,8 @@ function searchHomesNearSchool() {
         return a.school.searchName.length - b.school.searchName.length;
       }
 
-      return a.school.name.localeCompare(b.school.name) || a.school.id - b.school.id;
+      const nameComparison = a.school.name.localeCompare(b.school.name);
+      return nameComparison !== 0 ? nameComparison : a.school.id - b.school.id;
     })[0]?.school;
 
   if (!selectedSchool || !hasCoordinates(selectedSchool)) {
