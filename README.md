@@ -22,7 +22,7 @@ If it worked, you should see:
 
 - Lets you search for homes near a school name
 - Lets you filter homes by bedrooms, bathrooms, and max price
-- Shows the 10 closest schools for a selected home
+- Shows the 10 closest schools for a selected home, including normalized level, school type, and address
 - Provides a **View on Zillow** link for each home card
 
 ## Who this is for
@@ -75,6 +75,7 @@ Go to:
 Expected result:
 - The homes list title changes to `Homes Near <School Name>`.
 - Homes within about 5 miles are shown, sorted by nearest.
+- Search is case-insensitive and tolerant of punctuation and spacing differences.
 
 ### 2) Filter homes
 
@@ -94,6 +95,7 @@ Expected result:
 
 Expected result:
 - The **Closest Schools to Selected Home** panel fills with 10 schools and distance in miles.
+- Each nearby school entry shows a normalized level label, school type, and address when available.
 
 ### 4) Open the Zillow page
 
@@ -128,7 +130,7 @@ Fix:
 - Confirm you started the server from the repository root.
 - Confirm these files exist:
   - `data/houses.json`
-  - `data/Jefferson_County_KY_Schools.geojson`
+  - `data/Jefferson_County_KY_Schools (1).geojson`
 - Refresh the browser after restarting the server.
 
 ### Problem: No homes are shown
@@ -148,10 +150,13 @@ Fix:
 ## Data source and limitations
 
 - Home data comes from `data/houses.json`.
-- School data comes from `data/Jefferson_County_KY_Schools.geojson`.
+- School data comes from `data/Jefferson_County_KY_Schools (1).geojson`.
+- The active school dataset includes all schools in the file, including JCPS, private, parochial, and Anchorage records.
+- Key school fields used by the app are `SCH_NAME`, `LEVEL_`, `LOC_TYPE`, `ADDRESS`, `CITY`, `ST`, `ZIP`, `PHONE`, and `SCH_WEB`.
+- `LEVEL_` codes are displayed as: `E` = Elementary, `M` = Middle, `S` = Secondary, `H` = Special, `C` = Combined.
 - This app is scoped to Jefferson County data included in this repository.
 - Results depend on the quality/completeness of the bundled dataset.
-- School search uses partial name matching and returns the first matching school.
+- School search uses deterministic best-match ranking on normalized partial school-name text.
 
 ## Project structure (quick orientation)
 
@@ -159,7 +164,7 @@ Fix:
 - `styles.css` - visual styles
 - `app.js` - app logic (load data, search, filter, distance)
 - `data/houses.json` - homes dataset
-- `data/Jefferson_County_KY_Schools.geojson` - schools dataset
+- `data/Jefferson_County_KY_Schools (1).geojson` - production schools dataset
 
 ## How to report an issue
 

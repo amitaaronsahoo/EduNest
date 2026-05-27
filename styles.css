@@ -85,6 +85,25 @@ main section {
   color: #b91c1c;
 }
 
+#closestSchools {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.school-item + .school-item {
+  margin-top: 0.75rem;
+}
+
+.school-meta,
+.school-distance {
+  margin-top: 0.2rem;
+  color: #4b5563;
+}
+
+.school-distance {
+  font-weight: 600;
+}
+
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;

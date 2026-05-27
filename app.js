@@ -1,6 +1,14 @@
 const DATA_PATHS = {
   houses: "data/houses.json",
-  schools: "data/Jefferson_County_KY_Schools.geojson",
+  schools: "data/Jefferson_County_KY_Schools (1).geojson",
+};
+
+const SCHOOL_LEVEL_LABELS = {
+  E: "Elementary",
+  M: "Middle",
+  S: "Secondary",
+  H: "Special",
+  C: "Combined",
 };
 
 const state = {
@@ -67,13 +75,140 @@ function parseCoordinate(value) {
   return Number(value);
 }
 
-function normalizeSchool(feature) {
-  const coordinates = feature?.geometry?.coordinates || [];
+function normalizeText(value) {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value).trim().replace(/\s+/g, " ");
+}
+
+function normalizeOptionalText(value) {
+  const normalized = normalizeText(value);
+  return normalized || null;
+}
+
+function normalizeSearchText(value) {
+  return normalizeText(value)
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/&/g, " and ")
+    .replace(/[^a-zA-Z0-9]+/g, " ")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function normalizeSchoolLevel(value) {
+  const code = normalizeText(value).toUpperCase();
   return {
-    name: feature?.properties?.SCH_NAME || "Unknown School",
-    level: feature?.properties?.LEVEL_ || "N/A",
-    longitude: Number(coordinates[0]),
-    latitude: Number(coordinates[1]),
+    code: code || null,
+    label: SCHOOL_LEVEL_LABELS[code] || "Unknown",
+  };
+}
+
+function normalizeSchoolType(value) {
+  const type = normalizeOptionalText(value);
+
+  if (!type) {
+    return null;
+  }
+
+  if (type === "JCPS") {
+    return type;
+  }
+
+  return type
+    .toLowerCase()
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function normalizeWebsite(value) {
+  const website = normalizeOptionalText(value);
+  return website || null;
+}
+
+function formatSchoolAddress({ address, city, stateCode, zip }) {
+  const locality = [city, stateCode].filter(Boolean).join(", ");
+  return [address, locality, zip].filter(Boolean).join(" ");
+}
+
+function getSchoolMatchScore(school, query) {
+  if (!query) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  if (school.searchName === query) {
+    return 0;
+  }
+
+  if (school.searchName.startsWith(query)) {
+    return 1;
+  }
+
+  if (` ${school.searchName} `.includes(` ${query} `)) {
+    return 2;
+  }
+
+  if (school.searchName.includes(query)) {
+    return 3;
+  }
+
+  if (school.searchText.startsWith(query)) {
+    return 4;
+  }
+
+  if (` ${school.searchText} `.includes(` ${query} `)) {
+    return 5;
+  }
+
+  if (school.searchText.includes(query)) {
+    return 6;
+  }
+
+  return Number.POSITIVE_INFINITY;
+}
+
+function normalizeSchool(feature, index) {
+  const coordinates = feature?.geometry?.coordinates || [];
+  const longitude = Number(coordinates[0]);
+  const latitude = Number(coordinates[1]);
+
+  if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) {
+    return null;
+  }
+
+  const name = normalizeOptionalText(feature?.properties?.SCH_NAME) || "Unknown School";
+  const shortName = normalizeOptionalText(feature?.properties?.SCH_AB);
+  const { code: levelCode, label: level } = normalizeSchoolLevel(feature?.properties?.LEVEL_);
+  const type = normalizeSchoolType(feature?.properties?.LOC_TYPE);
+  const address = normalizeOptionalText(feature?.properties?.ADDRESS);
+  const city = normalizeOptionalText(feature?.properties?.CITY);
+  const stateCode = normalizeOptionalText(feature?.properties?.ST);
+  const zip = normalizeOptionalText(feature?.properties?.ZIP);
+  const searchFields = [name, shortName, level, type, address, city].filter(Boolean).join(" ");
+
+  return {
+    id: Number(feature?.properties?.OBJECTID) || index + 1,
+    name,
+    shortName,
+    levelCode,
+    level,
+    type,
+    address,
+    city,
+    stateCode,
+    zip,
+    phone: normalizeOptionalText(feature?.properties?.PHONE),
+    website: normalizeWebsite(feature?.properties?.SCH_WEB),
+    longitude,
+    latitude,
+    formattedAddress: formatSchoolAddress({ address, city, stateCode, zip }),
+    searchName: normalizeSearchText(name),
+    searchText: normalizeSearchText(searchFields),
   };
 }
 
@@ -147,7 +282,32 @@ function showClosestSchools(home) {
 
   schoolsWithDistance.forEach((school) => {
     const item = document.createElement("li");
-    item.textContent = `${school.name} (${school.level}) - ${school.distance.toFixed(2)} miles`;
+    item.className = "school-item";
+
+    const title = document.createElement("strong");
+    title.textContent = school.name;
+    item.appendChild(title);
+
+    const meta = [school.level, school.type].filter(Boolean).join(" • ");
+    if (meta) {
+      const metaLine = document.createElement("div");
+      metaLine.className = "school-meta";
+      metaLine.textContent = meta;
+      item.appendChild(metaLine);
+    }
+
+    if (school.formattedAddress) {
+      const addressLine = document.createElement("div");
+      addressLine.className = "school-meta";
+      addressLine.textContent = school.formattedAddress;
+      item.appendChild(addressLine);
+    }
+
+    const distanceLine = document.createElement("div");
+    distanceLine.className = "school-distance";
+    distanceLine.textContent = `${school.distance.toFixed(2)} miles away`;
+    item.appendChild(distanceLine);
+
     elements.closestSchools.appendChild(item);
   });
 }
@@ -170,7 +330,7 @@ function applyPropertyFilters() {
 }
 
 function searchHomesNearSchool() {
-  const query = elements.schoolSearch.value.trim().toLowerCase();
+  const query = normalizeSearchText(elements.schoolSearch.value);
 
   if (!query) {
     elements.resultsTitle.textContent = "Available Homes";
@@ -180,9 +340,23 @@ function searchHomesNearSchool() {
     return;
   }
 
-  const selectedSchool = state.schools.find((school) =>
-    school.name.toLowerCase().includes(query)
-  );
+  const selectedSchool = state.schools
+    .map((school) => ({
+      school,
+      score: getSchoolMatchScore(school, query),
+    }))
+    .filter(({ score }) => Number.isFinite(score))
+    .sort((a, b) => {
+      if (a.score !== b.score) {
+        return a.score - b.score;
+      }
+
+      if (a.school.searchName.length !== b.school.searchName.length) {
+        return a.school.searchName.length - b.school.searchName.length;
+      }
+
+      return a.school.name.localeCompare(b.school.name) || a.school.id - b.school.id;
+    })[0]?.school;
 
   if (!selectedSchool || !hasCoordinates(selectedSchool)) {
     elements.resultsTitle.textContent = "Homes Near Selected School";
@@ -217,6 +391,10 @@ async function loadData() {
     fetch(DATA_PATHS.schools),
   ]);
 
+  if (!housesResponse.ok || !schoolsResponse.ok) {
+    throw new Error("Failed to load data");
+  }
+
   const houses = await housesResponse.json();
   const schoolsGeoJson = await schoolsResponse.json();
 
@@ -230,7 +408,9 @@ async function loadData() {
     latitude: parseCoordinate(house.latitude),
   }));
 
-  state.schools = (schoolsGeoJson.features || []).map(normalizeSchool);
+  state.schools = (schoolsGeoJson.features || [])
+    .map((feature, index) => normalizeSchool(feature, index))
+    .filter(Boolean);
   state.filteredHomes = [...state.houses];
 
   renderHomes(state.filteredHomes);
