@@ -1,7 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# EduNest CI Pipeline
+# This pipeline copies the static web files into a staging directory 
+# and publishes them as a build artifact ready for deployment.
 
 trigger:
 - main
@@ -10,10 +9,22 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# 1. Copy the necessary files to the Artifact Staging Directory
+- task: CopyFiles@2
+  displayName: 'Copy EduNest files to staging directory'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: |
+      index.html
+      styles.css
+      app.js
+      data/**
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+# 2. Publish the artifact so it can be downloaded or deployed
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish EduNest Artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'EduNest-Drop'
+    publishLocation: 'Container'
