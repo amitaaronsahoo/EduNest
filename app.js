@@ -506,18 +506,35 @@ function normalizeSchool(feature, index) {
   };
 }
 
-function renderSchoolsList(schools = null) {
-  const schoolsToRender = schools || state.schoolsFiltered;
-  if(document.querySelectorAll('.school').length > 0){
-  document.querySelectorAll('.school').forEach(item => {
-    const checkbox = item.querySelector('input[type="checkbox"]');
+function getCheckedSchoolIds() {
+  return new Set(Array.from(document.querySelectorAll('.school input[type="checkbox"]:checked'))
+    .map((checkbox) => Number(checkbox.dataset.schoolId))
+    .filter((schoolId) => !isNaN(schoolId)));
+}
 
-    if (!checkbox?.checked) {
-        item.remove();
+function renderSchoolsList(schools = null, searchQuery = "") {
+  const baseSchools = schools || state.schoolsFiltered || [];
+  const normalizedQuery = normalizeSearchText(searchQuery);
+  const checkedSchoolIds = getCheckedSchoolIds();
+
+  let schoolsToRender = normalizedQuery
+    ? baseSchools.filter((s) => s.searchName.includes(normalizedQuery))
+    : [...baseSchools];
+
+  const checkedSchools = state.schools.filter((school) => checkedSchoolIds.has(school.id));
+  checkedSchools.forEach((school) => {
+    if (!schoolsToRender.some((s) => s.id === school.id)) {
+      schoolsToRender.push(school);
     }
-});}
-  //elements.schoolsList.innerHTML = "";
-  
+  });
+
+  schoolsToRender.sort((a, b) => {
+    const aChecked = checkedSchoolIds.has(a.id) ? 0 : 1;
+    const bChecked = checkedSchoolIds.has(b.id) ? 0 : 1;
+    if (aChecked !== bChecked) return aChecked - bChecked;
+    return a.name.localeCompare(b.name);
+  });
+
   if (schoolsToRender.length === 0) {
     elements.schoolsList.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #475569; padding: 20px;">No schools found</div>';
     elements.schoolResults.textContent = "0 schools found";
@@ -525,6 +542,7 @@ function renderSchoolsList(schools = null) {
   }
 
   elements.schoolResults.textContent = `${schoolsToRender.length} school${schoolsToRender.length !== 1 ? "s" : ""} found`;
+  elements.schoolsList.innerHTML = "";
 
   schoolsToRender.forEach((school) => {
     const row = document.createElement("div");
@@ -536,7 +554,7 @@ function renderSchoolsList(schools = null) {
       <div class="address">${school.formattedAddress}</div>
       <div><span class="tag"><span class="label-2">${school.level || "N/A"}</span></span></div>
       <div><span class="tag"><span class="label-2">${school.type || "N/A"}</span></span></div>
-      <div><input type="checkbox" id="school-${school.id}" data-school-id="${school.id}"><label for="school-${school.id}">Select</label></div>
+      <div><input type="checkbox" id="school-${school.id}" data-school-id="${school.id}" ${checkedSchoolIds.has(school.id) ? "checked" : ""}><label for="school-${school.id}">Select</label></div>
     `;
     elements.schoolsList.appendChild(row);
   });
@@ -1282,15 +1300,15 @@ elements.schoolSearchHome.addEventListener("input", (e) => {
   // Initialize sidebar visibility
   if (elements.schoolSearch) {
     elements.schoolSearch.addEventListener("input", () => {
-      const query = normalizeSearchText(elements.schoolSearch.value);
-      if (query) {
-        const filtered = state.schools.filter(s => 
-          s.searchName.includes(query)
-        );
-        renderSchoolsList(filtered);
-      } else {
-        renderSchoolsList(state.schoolsFiltered);
+      const rawQuery = elements.schoolSearch.value;
+      const normalizedQuery = normalizeSearchText(rawQuery);
+      let filtered = state.schoolsFiltered;
+
+      if (normalizedQuery) {
+        filtered = state.schoolsFiltered.filter((s) => s.searchName.includes(normalizedQuery));
       }
+
+      renderSchoolsList(filtered, rawQuery);
     });
   }
 }
