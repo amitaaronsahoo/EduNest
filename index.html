@@ -87,6 +87,16 @@
           <label for="maxPriceHome" style="margin-top: 12px;">Max Price: <span id="maxPriceValue">300000</span></label>
           <input id="maxPriceHome" type="range" min="50000" max="1000000" step="10000" value="300000" style="width: 100%;" />
 
+          <label for="home-sort">Sort homes by</label>
+          <select id="home-sort">
+            <option value="distance-asc">Distance: Closest First</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="bedrooms-desc">Bedrooms: High to Low</option>
+            <option value="bathrooms-desc">Bathrooms: High to Low</option>
+            <option value="squarefeet-desc">Square Feet: High to Low</option>
+          </select>
+
           <button id="applyFiltersHomeBtn" type="button" style="width: 100%; margin-top: 12px;">Apply Filters</button>
           <div id="homeResults" style="margin-top: 12px; font-size: 0.9rem; color: #475569;"></div>
         </div>

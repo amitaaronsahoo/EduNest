@@ -62,6 +62,7 @@ const elements = {
   minBathrooms: document.getElementById("minBathrooms"),
   maxPriceHome: document.getElementById("maxPriceHome"),
   maxPriceValue: document.getElementById("maxPriceValue"),
+  homeSort: document.getElementById("home-sort"),
   applyFiltersHomeBtn: document.getElementById("applyFiltersHomeBtn"),
   homeResults: document.getElementById("homeResults"),
   houseDetailTitle: document.getElementById("houseDetailTitle"),
@@ -278,6 +279,47 @@ function currency(value) {
     currency: "USD",
     maximumFractionDigits: 0,
   }).format(value);
+}
+
+function sortHomes(homes) {
+  const sortMode = elements.homeSort?.value || "distance-asc";
+
+  const sortedHomes = [...homes];
+
+  sortedHomes.sort((a, b) => {
+    const aDistance = typeof a.distanceToSchool === "number" ? a.distanceToSchool : Infinity;
+    const bDistance = typeof b.distanceToSchool === "number" ? b.distanceToSchool : Infinity;
+
+    const aPrice = Number(a.price) || 0;
+    const bPrice = Number(b.price) || 0;
+
+    const aBedrooms = Number(a.bedrooms) || 0;
+    const bBedrooms = Number(b.bedrooms) || 0;
+
+    const aBathrooms = Number(a.bathrooms) || 0;
+    const bBathrooms = Number(b.bathrooms) || 0;
+
+    const aSquareFeet = Number(a.squareFeet) || Number(a.squareFootage) || 0;
+    const bSquareFeet = Number(b.squareFeet) || Number(b.squareFootage) || 0;
+
+    switch (sortMode) {
+      case "price-asc":
+        return aPrice - bPrice;
+      case "price-desc":
+        return bPrice - aPrice;
+      case "bedrooms-desc":
+        return bBedrooms - aBedrooms;
+      case "bathrooms-desc":
+        return bBathrooms - aBathrooms;
+      case "squarefeet-desc":
+        return bSquareFeet - aSquareFeet;
+      case "distance-asc":
+      default:
+        return aDistance - bDistance;
+    }
+  });
+
+  return sortedHomes;
 }
 
 function calculateDistanceInMiles(lat1, lon1, lat2, lon2) {
@@ -579,9 +621,11 @@ function applySchoolFilters() {
 // ============================================
 
 function renderHomes(homes) {
+  const sortedHomes = sortHomes(homes);
+
   elements.results.innerHTML = "";
   
-  if (homes.length === 0) {
+  if (sortedHomes.length === 0) {
     elements.emptyState.textContent = "No homes found. Try adjusting your filters.";
     elements.emptyState.hidden = false;
     return;
@@ -589,20 +633,8 @@ function renderHomes(homes) {
 
   elements.emptyState.hidden = true;
 
-  homes.forEach((home) => {
-    const isSaved = isHouseSaved(home);
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <h3>${home.formattedAddress}</h3>
-      <p><strong>Type:</strong> ${home.propertyType || "N/A"}</p>
-      <p><strong>Bedrooms:</strong> ${home.bedrooms} • <strong>Bathrooms:</strong> ${home.bathrooms}</p>
-      <p><strong>Square Feet:</strong> ${home.squareFeet ?? "N/A"}</p>
-      <p><strong>Price:</strong> ${currency(home.price)}</p>
-      
-    `;
-    card.onclick = () => { renderHouseDetailView(home); };
-    elements.results.appendChild(card);
+  sortedHomes.forEach((home, index) => {
+    elements.results.appendChild(createHomeCard(home, index));
   });
 
   updateSaveButtons();
@@ -613,16 +645,36 @@ function renderHomes(homes) {
     markersLayer.clearLayers();
     const bounds = [];
 
-    homes.forEach((home) => {
+    sortedHomes.forEach((home, index) => {
       if (!hasCoordinates(home)) return;
 
       const latLng = [home.latitude, home.longitude];
       bounds.push(latLng);
 
-      const marker = L.marker(latLng);
+      const marker = L.marker(latLng, {
+        icon: L.divIcon({
+          className: "numbered-home-marker",
+          html: `<span>${index + 1}</span>`,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15],
+          popupAnchor: [0, -15],
+        }),
+      });
+
+      marker.bindTooltip(`
+        <strong>#${index + 1} ${home.formattedAddress}</strong><br>
+        ${currency(home.price)}<br>
+        ${home.bedrooms} beds • ${home.bathrooms} baths
+      `, {
+        direction: "top",
+        sticky: true,
+        opacity: 0.95,
+      });
+
       marker.on("click", () => {
         renderHouseDetailView(home);
       });
+
       marker.addTo(markersLayer);
     });
 
@@ -946,8 +998,9 @@ function renderMapForSchool(nearbyHomes,...school) {
 
   schoolMarker.addTo(markersLayer);
 
+  const sortedNearbyHomes = sortHomes(nearbyHomes);
   // Add nearby homes markers
-  nearbyHomes.forEach((home, index) => {
+  sortedNearbyHomes.forEach((home, index) => {
     if (!hasCoordinates(home)) return;
     const latLng = [home.latitude, home.longitude];
     bounds.push(latLng);
@@ -1000,7 +1053,7 @@ function renderMapForSchool(nearbyHomes,...school) {
   }
 
   // Populate side results with nearby homes
-  populateHomeResults(nearbyHomes);
+  populateHomeResults(sortedNearbyHomes);
   setTimeout(() => {
       if (map) {
         map.invalidateSize();
