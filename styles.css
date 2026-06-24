@@ -801,3 +801,29 @@ label {
     grid-template-columns: 1fr;
   }
 }
+
+.numbered-home-marker {
+  background: #1f5aa6;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 30px !important;
+  height: 30px !important;
+  box-sizing: border-box;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.numbered-home-marker span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  line-height: 1;
+  transform: translateY(0);
+}

@@ -893,8 +893,8 @@ function populateHomeResults(homes, centerSchoolId = null) {
   elements.results.innerHTML = "";
   elements.emptyState.hidden = homes.length !== 0;
 
-  homes.forEach((home) => {
-    elements.results.appendChild(createHomeCard(home));
+  homes.forEach((home, index) => {
+    elements.results.appendChild(createHomeCard(home, index));
   });
 
   updateSaveButtons();
@@ -947,16 +947,24 @@ function renderMapForSchool(nearbyHomes,...school) {
   schoolMarker.addTo(markersLayer);
 
   // Add nearby homes markers
-  nearbyHomes.forEach((home) => {
+  nearbyHomes.forEach((home, index) => {
     if (!hasCoordinates(home)) return;
     const latLng = [home.latitude, home.longitude];
     bounds.push(latLng);
 
-    const marker = L.marker(latLng);
+    const marker = L.marker(latLng, {
+      icon: L.divIcon({
+        className: "numbered-home-marker",
+        html: `<span>${index + 1}</span>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        popupAnchor: [0, -15],
+      }),
+    });
 
     let message = `
       <div style="min-width:220px">
-        <h3>${home.formattedAddress}</h3>
+        <h3>#${index + 1} ${home.formattedAddress}</h3>
         <p><strong>Price:</strong> ${currency(home.price)}</p>
         <p><strong>Bedrooms:</strong> ${home.bedrooms} • <strong>Bathrooms:</strong> ${home.bathrooms}</p>
         ${typeof home.distanceToSchool === 'number' ? `<div class="school-distance">${home.distanceToSchool.toFixed(2)} miles from ${school.name}</div>` : ''}
@@ -967,11 +975,22 @@ function renderMapForSchool(nearbyHomes,...school) {
       message.includes(school.name) || (message += `<div class="school-distance">${calculateDistanceInMiles(home.latitude, home.longitude, school.latitude, school.longitude).toFixed(2)} miles from ${school.name}</div>`);
     });
     marker.bindPopup(message);
-marker.on("click", () => {
-        renderHouseDetailView(home);
-      });
+
+    marker.bindTooltip(`
+      <strong>#${index + 1} ${home.formattedAddress}</strong><br>
+      ${currency(home.price)}<br>
+      ${home.bedrooms} beds • ${home.bathrooms} baths
+    `, {
+      direction: "top",
+      sticky: true,
+      opacity: 0.95,
+    });
+
+    marker.on("click", () => {
+            renderHouseDetailView(home);
+          });
     marker.addTo(markersLayer);
-  });
+      });
 
   // Fit bounds to include school and homes
   if (bounds.length === 1) {
@@ -994,7 +1013,7 @@ marker.on("click", () => {
 
 
 
-function createHomeCard(home) {
+function createHomeCard(home, index = null) {
   const isSaved = isHouseSaved(home);
   const distanceText =
     typeof home.distanceToSchool === "number"
@@ -1004,11 +1023,12 @@ function createHomeCard(home) {
   const card = document.createElement("article");
   card.className = "card";
   card.innerHTML = `
-      <h3>${home.formattedAddress}</h3>
+      <h3>${index !== null ? `#${index + 1} ` : ""}${home.formattedAddress}</h3>
       <p><strong>Type:</strong> ${home.propertyType || "N/A"}</p>
       <p><strong>Bedrooms:</strong> ${home.bedrooms} • <strong>Bathrooms:</strong> ${home.bathrooms}</p>
       <p><strong>Square Feet:</strong> ${home.squareFeet ?? "N/A"}</p>
       <p><strong>Price:</strong> ${currency(home.price)}</p>
+      ${distanceText}
       
     `;
      card.onclick = () => { renderHouseDetailView(home); };
