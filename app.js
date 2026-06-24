@@ -66,7 +66,7 @@ const elements = {
   homeResults: document.getElementById("homeResults"),
   houseDetailTitle: document.getElementById("houseDetailTitle"),
   houseDetailSubtitle: document.getElementById("houseDetailSubtitle"),
-  houseDetailBackBtn: document.getElementById("houseDetailBackBtn"),
+  detailBackBtn: document.getElementById("detailBackBtn"),
   houseDetailNotes: document.getElementById("houseDetailNotes"),
   houseMaxTuition: document.getElementById("houseMaxTuition"),
   houseMaxTuitionValue: document.getElementById("houseMaxTuitionValue"),
@@ -556,6 +556,17 @@ function renderSchoolsList(schools = null, searchQuery = "") {
       <div><span class="tag"><span class="label-2">${school.type || "N/A"}</span></span></div>
       <div><input type="checkbox" id="school-${school.id}" data-school-id="${school.id}" ${checkedSchoolIds.has(school.id) ? "checked" : ""}><label for="school-${school.id}">Select</label></div>
     `;
+    row.onclick = (event) => {
+        const checkbox = row.querySelector(`input[data-school-id="${school.id}"]`);
+        checkbox.checked = !checkbox.checked;
+    };
+    row.onmouseover = () => {
+      row.style.backgroundColor = "#C9C9C9";
+    };
+    row.onmouseout = () => {
+      row.style.backgroundColor = "#ffffff";
+    }
+    
     elements.schoolsList.appendChild(row);
   });
 }
@@ -660,13 +671,14 @@ function filterHouseSchools(schools) {
   });
 }
 
-function initializeDetailMap() {
+function initializeDetailMap(bounds) {
   if (detailMap) return;
 
   const detailMapDiv = document.getElementById("detailMap");
   if (!detailMapDiv) return;
 
-  detailMap = L.map(detailMapDiv).setView([38.2, -85.8], 11);
+  detailMap = L.map(detailMapDiv).setView(bounds, 10);
+  console.log("load");
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
   }).addTo(detailMap);
@@ -714,14 +726,15 @@ function renderHouseDetailView(home) {
 }
 
 function renderHouseDetailMap(home, schools) {
-  initializeDetailMap();
+  const houseLatLng = [home.latitude, home.longitude];
+  const bounds = [houseLatLng];
+
+  initializeDetailMap(houseLatLng);
   if (!detailMap || !detailMarkersLayer) return;
 
   detailMarkersLayer.clearLayers();
 
-  const houseLatLng = [home.latitude, home.longitude];
-  const bounds = [houseLatLng];
-
+  
   const houseMarker = L.marker(houseLatLng, { title: home.formattedAddress });
   houseMarker.bindPopup(`
     <div style="min-width:220px;">
@@ -763,6 +776,7 @@ function renderHouseDetailMap(home, schools) {
     detailMap.setView(houseLatLng, 14);
   } else {
     detailMap.fitBounds(bounds, { padding: [50, 50] });
+    detailMap.setView(detailMap.getCenter(), 12);
   }
 
   setTimeout(() => {
@@ -802,7 +816,16 @@ function applyHouseDetailFilters() {
   renderHouseDetailView(currentHouseDetail);
 }
 
-function returnToHomesFromDetail() {
+function returnFromDetail() {
+  if(currentTab == "saved"){
+  document.getElementById("house-details-content").style.display = "none";
+  document.getElementById("homes-content").style.display = "none";
+  document.getElementById("homes-sidebar").style.display = "none";
+  document.getElementById("schools-sidebar").style.display = "none";
+  document.getElementById("saved-content").style.display= "block";
+  document.querySelectorAll(".tab-btn").forEach((btn) => (btn.style.opacity = "0.6"));
+  document.getElementById("tab-saved").style.opacity = "1";
+  }else{
   document.getElementById("house-details-content").style.display = "none";
   document.getElementById("homes-content").style.display = "block";
   document.getElementById("homes-sidebar").style.display = "block";
@@ -814,7 +837,7 @@ function returnToHomesFromDetail() {
     if (map) {
       map.invalidateSize();
     }
-  }, 120);
+  }, 120);}
 }
 
 function showClosestSchoolsById(homeId) {
@@ -905,7 +928,7 @@ function renderMapForSchool(nearbyHomes,...school) {
   lastNearbyHomes = nearbyHomes || [];
   // Ensure map exists
   if (!map) {
-    map = L.map("map").setView([37.8, -96], 4);
+    map = L.map("map").setView([37.8, -85],4);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -978,6 +1001,7 @@ marker.on("click", () => {
     map.setView(schoolLatLng, 14);
   } else if (bounds.length > 1) {
     map.fitBounds(bounds, { padding: [50, 50] });
+    map.setView([38.19, -85.68],11);
   }
 
   // Populate side results with nearby homes
@@ -1081,6 +1105,7 @@ function applyHomeFilters() {
   const minBathrooms = Number(elements.minBathrooms.value);
   const maxPrice = Number(elements.maxPriceHome.value);
 
+  
   state.filteredHomes = state.houses.filter(
     (home) =>
       home.bedrooms >= minBedrooms &&
@@ -1188,7 +1213,6 @@ const nearbyHomesMap = new Map();
         }
       });
   });
-
   const allNearbyHomes = Array.from(nearbyHomesMap.values());
   
 
@@ -1231,7 +1255,6 @@ elements.schoolSearchHome.addEventListener("input", (e) => {
 //under development
 
     elements.AllSchoolBtn.addEventListener("click", searchHomesForAllSelectedSchools);
-
 
   elements.schoolSearchHome.addEventListener("keydown", (e) => {
     // Arrow down
@@ -1293,8 +1316,8 @@ elements.schoolSearchHome.addEventListener("input", (e) => {
     checkbox.addEventListener("change", applyHouseDetailFilters);
   });
 
-  if (elements.houseDetailBackBtn) {
-    elements.houseDetailBackBtn.addEventListener("click", returnToHomesFromDetail);
+  if (elements.detailBackBtn) {
+    elements.detailBackBtn.addEventListener("click", returnFromDetail);
   }
 
   // Initialize sidebar visibility

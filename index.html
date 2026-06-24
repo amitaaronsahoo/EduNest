@@ -108,7 +108,7 @@
           <br><br>
           <div class="school-list">
             <div class="school-list list-2" id="schoolsList">
-              <div class="navbar">
+              <div class="navbar" style="display: grid; grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr; gap: 8px; padding: 8px;">
                 <div style="font-weight: 600;">School Name</div>
                 <div style="font-weight: 600;">Address</div>
                 <div style="font-weight: 600;">Type</div>
@@ -147,17 +147,17 @@
               <h2 id="houseDetailTitle">House Detail</h2>
               <p id="houseDetailSubtitle" style="color:#475569; margin:0;">Click a home marker to view nearby schools.</p>
             </div>
-            <button id="houseDetailBackBtn" type="button" style="padding: 10px 16px; border:none; background:#1f4f99; color:#fff; border-radius:8px; cursor:pointer;">Back to Homes</button>
+            <button id="detailBackBtn" type="button" style="padding: 10px 16px; border:none; background:#1f4f99; color:#fff; border-radius:8px; cursor:pointer;">Back</button>
           </div>
 
 
-          <div style="display:grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items:start;">
-            <div>
+          <div style="display:block; align-items:start;">
               <div id="detailMap" style="height: 520px; border:1px solid #d1d5db; border-radius: 12px; overflow:hidden;"></div>
+              
+            <div style =  "display:grid;grid-template-columns: 1.4fr 1fr;gap: 20px">
               <div id="houseDetailInfo" style="margin-top: 12px; color:#475569;"></div>
-            </div>
             <div style="display:flex; flex-direction:column; gap: 20px;">
-              <div style="background:#fff; border:1px solid #d1d5db; border-radius:12px; padding:16px;">
+              <div style="background:#fff; border:1px solid #d1d5db; border-radius:12px; padding:16px;margin-top:10px;">
                 <h3 style="margin-top:0;">Filter Nearby Schools</h3>
                 <div style="margin-bottom:12px;">
                   <strong>School Type</strong>

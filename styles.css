@@ -396,7 +396,7 @@ label {
 }
 
 .school-list .list-2 {
-  margin-left: 53px;
+  margin-left: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -714,38 +714,6 @@ label {
 .row input, .row select {
   flex: 1;
 }
-
-/* ============================================
-   ADMIN PANEL STYLES
-   ============================================ */
-.admin-panel {
-  background: var(--bg-white);
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 900px;
-  margin: 24px auto;
-}
-
-.user-item {
-  display: flex;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid var(--border-lighter);
-  border-radius: 4px;
-  margin-bottom: 8px;
-  align-items: center;
-  background: var(--bg-light-blue);
-}
-
-.user-info {
-  flex: 1;
-}
-
-.user-item button {
-  padding: 0.35rem 0.75rem;
-  font-size: 0.85rem;
-}
-
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */
