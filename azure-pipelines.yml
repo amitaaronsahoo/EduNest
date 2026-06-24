@@ -17,10 +17,8 @@ steps:
     Contents: |
       index.html
       styles.css
-      app.js
+      js/**
       data/**
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
 # 2. Publish the artifact so it can be downloaded or deployed
 - task: PublishBuildArtifacts@1
   displayName: 'Publish EduNest Artifact'

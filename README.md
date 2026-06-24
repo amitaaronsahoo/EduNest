@@ -162,7 +162,13 @@ Fix:
 
 - `index.html` - page layout and UI labels
 - `styles.css` - visual styles
-- `app.js` - app logic (load data, search, filter, distance)
+- `js/config.js` - shared app state and constants
+- `js/utils.js` - common helpers and text normalization
+- `js/ui.js` - DOM wiring, tabs, and search suggestion UI
+- `js/saved.js` - saved homes storage and render logic
+- `js/schools.js` - school normalization, filtering, and search handling
+- `js/homes.js` - home render, map interactions, and detail view logic
+- `js/data.js` - data loading and app initialization
 - `data/houses.json` - homes dataset
 - `data/Jefferson_County_KY_Schools (1).geojson` - production schools dataset
 
