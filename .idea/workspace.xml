@@ -7,62 +7,7 @@
     <option name="selectedModelId" value="auto" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Add CSS files for AppShell, HomeCard, HomeFilter, HomesList, HouseDetail, Navigation, SavedHomes, SchoolDirectory, SchoolFilter, SchoolFilterDetail, SchoolRow, SchoolSearch, SchoolSearchHome, and SchoolSuggestions components">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/applyHomeFilters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/applyHouseDetailFilters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/applySchoolFilters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/bindEvents.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/calculateDistanceInMiles.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/clearSchoolSuggestions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/createHomeCard.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/currency.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/ensureSchoolSuggestionsContainer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/filterHouseSchools.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/formatSchoolAddress.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/generateZillowUrl.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/getCheckedSchoolIds.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/getCheckedSchools.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/getHouseDetailSchoolFilters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/getSchoolMatchScore.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/hasCoordinates.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/initializeDetailMap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/initializeMap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/isHouseSaved.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/loadData.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/loadSavedHouses.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/moveSuggestionSelection.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/normalizeOptionalText.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/normalizeSchool.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/normalizeSchoolLevel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/normalizeSchoolType.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/normalizeSearchText.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/normalizeText.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/parseCoordinate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/persistSavedHouses.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/populateHomeResults.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/renderHomes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/renderHouseDetailMap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/renderHouseDetailView.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/renderHouseNearbySchoolsList.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/renderMapForSchool.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/renderSavedHouses.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/renderSchoolsList.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/returnFromDetail.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/searchHomesForAllSelectedSchools.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/searchHomesNearSchool.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/selectActiveSuggestion.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/showClosestSchools.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/showClosestSchoolsById.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/showSchoolSuggestions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/switchTab.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/toggleSavedHouse.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/updateSaveButtons.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SchoolDirectory/SchoolDirectory.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SchoolDirectory/SchoolDirectory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/styles/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/styles/main.css" afterDir="false" />
-    </list>
+    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Refactor SchoolDirectory component header and update index.html for improved layout" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,61 +55,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.512102844413735" />
-      <entry key="MS500" value="4.618721701999249" />
-      <entry key="S2" value="10.935477346271352" />
-      <entry key="S5" value="14.876031317672169" />
-      <entry key="S10" value="16.844735025133595" />
-      <entry key="S30" value="18.851745677965738" />
-      <entry key="S60" value="20.82623603241775" />
-      <entry key="M2" value="24.260676103799927" />
-      <entry key="M5" value="29.185665003219363" />
-      <entry key="M10" value="32.70917188690009" />
-      <entry key="M15" value="34.60928561927071" />
-      <entry key="M30" value="37.230392378418024" />
-      <entry key="H1" value="38.93589089130307" />
-      <entry key="H2" value="39.9176271423469" />
-      <entry key="H4" value="40.44547093946466" />
-      <entry key="D1" value="40.90565666578243" />
-      <entry key="W1" value="40.98647439250464" />
+      <entry key="MS100" value="0.03354374234296225" />
+      <entry key="MS500" value="0.7413900604797418" />
+      <entry key="S2" value="1.5403107524277662" />
+      <entry key="S5" value="1.799675417373981" />
+      <entry key="S10" value="1.8968547755776688" />
+      <entry key="S30" value="1.9649312079984842" />
+      <entry key="S60" value="1.9823781638858677" />
+      <entry key="M2" value="1.9911671031649902" />
+      <entry key="M5" value="1.99646155108122" />
+      <entry key="M10" value="1.9982298925786226" />
+      <entry key="M15" value="1.9988199086173095" />
+      <entry key="M30" value="2.0020688753305502" />
+      <entry key="H1" value="2.328760435817114" />
+      <entry key="H2" value="5.669499399689793" />
+      <entry key="H4" value="14.263009595473491" />
+      <entry key="D1" value="35.52778325980801" />
+      <entry key="W1" value="41.838298030854254" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="0.0" />
-      <entry key="S10" value="0.0" />
-      <entry key="S30" value="0.0" />
-      <entry key="S60" value="0.0" />
-      <entry key="M2" value="0.0" />
-      <entry key="M5" value="0.0" />
-      <entry key="M10" value="0.0" />
-      <entry key="M15" value="0.0" />
-      <entry key="M30" value="0.0" />
-      <entry key="H1" value="0.0" />
-      <entry key="H2" value="0.0" />
-      <entry key="H4" value="0.0" />
-      <entry key="D1" value="0.0" />
-      <entry key="W1" value="0.0" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0" />
+      <entry key="M2" value="1.0" />
+      <entry key="M5" value="1.0" />
+      <entry key="M10" value="1.0" />
+      <entry key="M15" value="1.0" />
+      <entry key="M30" value="1.0" />
+      <entry key="H1" value="1.0" />
+      <entry key="H2" value="1.0" />
+      <entry key="H4" value="1.0" />
+      <entry key="D1" value="1.0" />
+      <entry key="W1" value="1.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.4320485552356" />
-      <entry key="MS500" value="4.573667956501646" />
-      <entry key="S2" value="10.90042444005402" />
-      <entry key="S5" value="14.852669028366874" />
-      <entry key="S10" value="16.83004730381315" />
-      <entry key="S30" value="18.84547991255661" />
-      <entry key="S60" value="20.822564541576845" />
-      <entry key="M2" value="24.25845249943571" />
-      <entry key="M5" value="29.184544884344962" />
-      <entry key="M10" value="32.7085003432395" />
-      <entry key="M15" value="34.60879041608244" />
-      <entry key="M30" value="37.23010916694341" />
-      <entry key="H1" value="38.93573707911711" />
-      <entry key="H2" value="39.917546640029336" />
-      <entry key="H4" value="40.44542971086898" />
-      <entry key="D1" value="40.90564965140201" />
-      <entry key="W1" value="40.986473386851884" />
+      <entry key="MS100" value="0.2099501068974311" />
+      <entry key="MS500" value="1.371336019503337" />
+      <entry key="S2" value="2.412379777655357" />
+      <entry key="S5" value="2.744185251038704" />
+      <entry key="S10" value="2.868309863005576" />
+      <entry key="S30" value="2.9552302813582076" />
+      <entry key="S60" value="2.9775039214930366" />
+      <entry key="M2" value="2.9887239962867045" />
+      <entry key="M5" value="2.995482866494415" />
+      <entry key="M10" value="2.997740309538522" />
+      <entry key="M15" value="2.9984934663894145" />
+      <entry key="M30" value="3.001905607215879" />
+      <entry key="H1" value="3.3286775052787942" />
+      <entry key="H2" value="6.669451182079178" />
+      <entry key="H4" value="15.262976686031243" />
+      <entry key="D1" value="36.527774109017294" />
+      <entry key="W1" value="42.83829656743708" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -251,7 +196,7 @@
       <workItem from="1782332675262" duration="980000" />
       <workItem from="1782441399868" duration="1183000" />
       <workItem from="1782445655458" duration="5388000" />
-      <workItem from="1782451207746" duration="3128000" />
+      <workItem from="1782451207746" duration="3539000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial files for core functionality and styles">
       <option name="closed" value="true" />
@@ -269,7 +214,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782476123271</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Refactor SchoolDirectory component header and update index.html for improved layout">
+      <option name="closed" value="true" />
+      <created>1782477239689</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1782477239689</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,7 +231,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add initial files for core functionality and styles" />
     <MESSAGE value="Add CSS files for AppShell, HomeCard, HomeFilter, HomesList, HouseDetail, Navigation, SavedHomes, SchoolDirectory, SchoolFilter, SchoolFilterDetail, SchoolRow, SchoolSearch, SchoolSearchHome, and SchoolSuggestions components" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add CSS files for AppShell, HomeCard, HomeFilter, HomesList, HouseDetail, Navigation, SavedHomes, SchoolDirectory, SchoolFilter, SchoolFilterDetail, SchoolRow, SchoolSearch, SchoolSearchHome, and SchoolSuggestions components" />
+    <MESSAGE value="Refactor SchoolDirectory component header and update index.html for improved layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor SchoolDirectory component header and update index.html for improved layout" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
