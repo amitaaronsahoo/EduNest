@@ -1,3 +1,4 @@
+import './SchoolSearchHome.css';
 import { UIComponent } from "../../core/UIComponent.js";
 
 export class SchoolSearchHome extends UIComponent {

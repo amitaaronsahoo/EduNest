@@ -1,3 +1,4 @@
+import './SchoolRow.css';
 import { UIComponent } from "../../core/UIComponent.js";
 
 export class SchoolRow extends UIComponent {

@@ -1,3 +1,4 @@
+import './SavedHomes.css';
 import { UIComponent } from "../../core/UIComponent.js";
 
 export class SavedHomes extends UIComponent {

@@ -1,3 +1,4 @@
+import './SchoolSuggestions.css';
 import { UIComponent } from "../../core/UIComponent.js";
 
 export class SchoolSuggestions extends UIComponent {

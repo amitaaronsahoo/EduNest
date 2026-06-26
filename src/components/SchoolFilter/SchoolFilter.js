@@ -1,3 +1,4 @@
+import './SchoolFilter.css';
 import { UIComponent } from "../../core/UIComponent.js";
 import { currency } from "../../utils/formatters.js";
 

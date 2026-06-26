@@ -1,3 +1,4 @@
+import './AppShell.css';
 import { UIComponent } from "../../core/UIComponent.js";
 import { currency, generateZillowUrl } from "../../utils/formatters.js";
 import { hasCoordinates } from "../../utils/validators.js";

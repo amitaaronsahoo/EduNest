@@ -1,3 +1,4 @@
+import './Navigation.css';
 import { UIComponent } from "../../core/UIComponent.js";
 
 export class Navigation extends UIComponent {
