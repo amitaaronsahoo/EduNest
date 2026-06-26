@@ -11,7 +11,7 @@ export class SchoolDirectory extends UIComponent {
         </div>
         <div id="schoolResults"></div>
         <div class="school-list">
-          <div class="school-list__header">
+          <div class="school-table-header">
             <div>School Name</div>
             <div>Address</div>
             <div>Type</div>
