@@ -7,7 +7,7 @@
     <option name="selectedModelId" value="auto" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Refactor SchoolDirectory component header and update index.html for improved layout" />
+    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Refactor workspace.xml to update task summaries and improve layout configuration" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -196,7 +196,7 @@
       <workItem from="1782332675262" duration="980000" />
       <workItem from="1782441399868" duration="1183000" />
       <workItem from="1782445655458" duration="5388000" />
-      <workItem from="1782451207746" duration="3539000" />
+      <workItem from="1782451207746" duration="3923000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial files for core functionality and styles">
       <option name="closed" value="true" />
@@ -222,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782477239689</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Refactor workspace.xml to update task summaries and improve layout configuration">
+      <option name="closed" value="true" />
+      <created>1782477564783</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1782477564783</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -232,7 +240,8 @@
     <MESSAGE value="Add initial files for core functionality and styles" />
     <MESSAGE value="Add CSS files for AppShell, HomeCard, HomeFilter, HomesList, HouseDetail, Navigation, SavedHomes, SchoolDirectory, SchoolFilter, SchoolFilterDetail, SchoolRow, SchoolSearch, SchoolSearchHome, and SchoolSuggestions components" />
     <MESSAGE value="Refactor SchoolDirectory component header and update index.html for improved layout" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor SchoolDirectory component header and update index.html for improved layout" />
+    <MESSAGE value="Refactor workspace.xml to update task summaries and improve layout configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor workspace.xml to update task summaries and improve layout configuration" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

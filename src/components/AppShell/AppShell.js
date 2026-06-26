@@ -3,7 +3,9 @@ import { UIComponent } from "../../core/UIComponent.js";
 import { currency, generateZillowUrl } from "../../utils/formatters.js";
 import { hasCoordinates } from "../../utils/validators.js";
 import { normalizeSearchText } from "../../utils/normalizers.js";
+import HouseDetailInfo from "../HouseDetailInfo/HouseDetailInfo.js";
 import HomeCard from "../HomeCard/HomeCard.js";
+import SchoolSearch from "../SchoolSearch/SchoolSearch.js";
 import SchoolRow from "../SchoolRow/SchoolRow.js";
 
 export class AppShell extends UIComponent {
@@ -31,9 +33,7 @@ export class AppShell extends UIComponent {
 
             <div id="schools-sidebar">
               <h2>Find Schools</h2>
-              <label for="schoolSearch">School name</label>
-              <input id="schoolSearch" type="text" placeholder="e.g., DuPont Manual" />
-              <button id="schoolSearchBtn" type="button">Search Schools</button>
+              ${new SchoolSearch().render()}
               <button id="allSchoolBtn" type="button">Search Homes for all selected schools</button>
               <h2>Filter Schools</h2>
               <div class="filter-group">
@@ -186,6 +186,8 @@ export class AppShell extends UIComponent {
       savedContent: this.querySelector("#saved-content"),
       schoolSearch: this.querySelector("#schoolSearch"),
       schoolSearchBtn: this.querySelector("#schoolSearchBtn"),
+      schoolSearchSuggestionsContainer: this.querySelector("#schoolSearchSuggestionsContainer"),
+      schoolSearchSuggestionsList: this.querySelector("#schoolSearchSuggestionsList"),
       maxTuition: this.querySelector("#maxTuition"),
       maxTuitionValue: this.querySelector("#maxTuitionValue"),
       applyFiltersBtn: this.querySelector("#applyFiltersBtn"),
@@ -222,9 +224,15 @@ export class AppShell extends UIComponent {
 
   bindEvents() {
     this.elements.schoolSearch?.addEventListener("input", event => {
+      this.showSchoolSearchSuggestions(event.target.value);
       this.renderSchoolsList(null, event.target.value);
     });
-    this.elements.schoolSearchBtn?.addEventListener("click", () => this.renderSchoolsList());
+    this.elements.schoolSearch?.addEventListener("keydown", event => this.handleSchoolSearchKeyboard(event));
+    this.elements.schoolSearchBtn?.addEventListener("click", () => {
+      const query = this.elements.schoolSearch?.value || "";
+      this.clearSchoolSearchSuggestions();
+      this.renderSchoolsList(null, query);
+    });
     this.elements.maxTuition?.addEventListener("input", () => {
       this.elements.maxTuitionValue.textContent = currency(Number(this.elements.maxTuition.value));
       this.applySchoolFilters();
@@ -244,6 +252,14 @@ export class AppShell extends UIComponent {
       this.applyHouseDetailFilters();
     });
     this.elements.houseApplySchoolFiltersBtn?.addEventListener("click", () => this.applyHouseDetailFilters());
+
+    document.addEventListener("click", event => {
+      const container = this.elements.schoolSearchSuggestionsContainer;
+      const input = this.elements.schoolSearch;
+      if (!container || !input) return;
+      if (container.contains(event.target) || input.contains(event.target)) return;
+      this.clearSchoolSearchSuggestions();
+    });
 
     document.addEventListener("click", event => {
       const container = this.elements.schoolSuggestionsList;
@@ -450,6 +466,92 @@ export class AppShell extends UIComponent {
       : '<div class="empty-state">No schools found</div>';
   }
 
+  showSchoolSearchSuggestions(query) {
+    const list = this.elements.schoolSearchSuggestionsList;
+    const normalized = normalizeSearchText(query);
+    if (!list || !normalized) {
+      this.clearSchoolSearchSuggestions();
+      return;
+    }
+
+    const matches = this.schoolService.searchSchools(normalized, this.stateManager.get("schools"), 8);
+    if (matches.length === 0) {
+      this.clearSchoolSearchSuggestions();
+      return;
+    }
+
+    list.innerHTML = matches
+      .map(
+        school => `
+          <div class="school-suggestion-item" data-school-id="${school.id}" tabindex="0">
+            <strong>${school.name}</strong>
+            ${school.level ? `<div class="school-meta">${school.level}</div>` : ""}
+            ${school.formattedAddress ? `<div class="school-meta">${school.formattedAddress}</div>` : ""}
+          </div>
+        `
+      )
+      .join("");
+    list.hidden = false;
+    list.dataset.activeIndex = "-1";
+
+    Array.from(list.children).forEach(item => {
+      item.addEventListener("click", () => {
+        const schoolId = Number(item.dataset.schoolId);
+        const school = this.stateManager.get("schools").find(entry => entry.id === schoolId);
+        if (school) {
+          this.elements.schoolSearch.value = school.name;
+          this.clearSchoolSearchSuggestions();
+          this.renderSchoolsList(null, school.name);
+        }
+      });
+    });
+  }
+
+  handleSchoolSearchKeyboard(event) {
+    const list = this.elements.schoolSearchSuggestionsList;
+    if (!list || list.hidden) return;
+
+    const items = Array.from(list.children);
+    if (!items.length) return;
+
+    let index = Number(list.dataset.activeIndex || -1);
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      index = Math.min(items.length - 1, index + 1);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      index = Math.max(-1, index - 1);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      const active = items[index];
+      if (active) {
+        const schoolId = Number(active.dataset.schoolId);
+        const school = this.stateManager.get("schools").find(entry => entry.id === schoolId);
+        if (school) {
+          this.elements.schoolSearch.value = school.name;
+          this.clearSchoolSearchSuggestions();
+          this.renderSchoolsList(null, school.name);
+        }
+      } else {
+        this.clearSchoolSearchSuggestions();
+        this.renderSchoolsList(null, this.elements.schoolSearch?.value || "");
+      }
+      return;
+    }
+
+    items.forEach((item, itemIndex) => item.classList.toggle("active", itemIndex === index));
+    list.dataset.activeIndex = String(index);
+  }
+
+  clearSchoolSearchSuggestions() {
+    const list = this.elements.schoolSearchSuggestionsList;
+    if (!list) return;
+    list.innerHTML = "";
+    list.hidden = true;
+    list.dataset.activeIndex = "-1";
+  }
+
   toggleSchoolSelection(school) {
     const checkbox = this.querySelector(`#school-${school.id}`);
     if (checkbox) {
@@ -525,16 +627,14 @@ export class AppShell extends UIComponent {
     this.elements.schoolsSidebar.hidden = true;
     this.elements.homesSidebar.hidden = true;
     this.elements.houseDetailSubtitle.textContent = `Showing schools near ${home.formattedAddress}`;
-    this.elements.houseDetailInfo.innerHTML = `
-      <h3>${home.formattedAddress}</h3>
-      <p><strong>Type:</strong> ${home.propertyType || "N/A"}</p>
-      <p><strong>Bedrooms:</strong> ${home.bedrooms} • <strong>Bathrooms:</strong> ${home.bathrooms}</p>
-      <p><strong>Price:</strong> ${currency(home.price)}</p>
-      <div class="detail-actions">
-        <button type="button" onclick="window.open('${generateZillowUrl(home.formattedAddress)}', '_blank')">View on Zillow</button>
-        <button type="button" data-action="toggle-save">${this.savedHousesService.isHouseSaved(home) ? "Remove" : "Save"}</button>
-      </div>
-    `;
+    const detailInfo = new HouseDetailInfo({
+      home: {
+        ...home,
+        zip: home.zip || ""
+      },
+      isSaved: this.savedHousesService.isHouseSaved(home)
+    });
+    this.elements.houseDetailInfo.innerHTML = detailInfo.render();
     const nearbySchools = this.homeService.getNearbySchoolsForHome(home, this.stateManager.get("schools"));
     const visibleSchools = this.homeService.filterNearbySchools(nearbySchools, this.getHouseDetailFilters());
     this.renderHouseNearbySchoolsList(visibleSchools);

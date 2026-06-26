@@ -11,8 +11,8 @@ export function formatSchoolAddress({ address, city, stateCode, zip }) {
   return [address, locality, zip].filter(Boolean).join(" ");
 }
 
-export function generateZillowUrl(formattedAddress = "") {
-  const address = String(formattedAddress).trim();
+export function generateZillowUrl(formattedAddress = "", zip = "") {
+  const address = [formattedAddress, zip].filter(Boolean).join(" ").trim();
   const withoutPunctuation = address.replace(/[.,]/g, "");
   const withHyphens = withoutPunctuation.replace(/\s+/g, "-");
   return `https://www.zillow.com/homes/${withHyphens}_rb/`;

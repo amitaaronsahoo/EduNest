@@ -1,4 +1,31 @@
 .school-search {
+  position: relative;
   display: grid;
   gap: 12px;
+}
+
+.school-search__suggestions {
+  position: relative;
+}
+
+.school-suggestions-list {
+  display: grid;
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  padding: 8px;
+}
+
+.school-suggestion-item {
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.school-suggestion-item.active,
+.school-suggestion-item:hover {
+  background: #f3f4f6;
 }

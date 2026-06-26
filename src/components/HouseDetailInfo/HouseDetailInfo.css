@@ -1,0 +1,21 @@
+.house-detail-info {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detail-actions__zillow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: #0f766e;
+  color: #fff;
+  text-decoration: none;
+}
