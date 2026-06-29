@@ -1,28 +1,35 @@
-# EduNest CI Pipeline
-# This pipeline copies the static web files into a staging directory 
-# and publishes them as a build artifact ready for deployment.
-
+# EduNest CI Pipeline for Vite
 trigger:
-- main
+  - main
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-# 1. Copy the necessary files to the Artifact Staging Directory
-- task: CopyFiles@2
-  displayName: 'Copy EduNest files to staging directory'
-  inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)'
-    Contents: |
-      index.html
-      styles.css
-      js/**
-      data/**
-# 2. Publish the artifact so it can be downloaded or deployed
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish EduNest Artifact'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'EduNest-Drop'
-    publishLocation: 'Container'
+  # 1. Install Node.js
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  # 2. Install dependencies and build the Vite project
+  - script: |
+      npm install
+      npm run build
+    displayName: 'npm install and build'
+
+  # 3. Copy the compiled files from the 'dist' folder to the staging directory
+  - task: CopyFiles@2
+    displayName: 'Copy Vite build to staging'
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)/dist'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  # 4. Publish the artifact
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish EduNest Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'EduNest-Drop'
+      publishLocation: 'Container'
