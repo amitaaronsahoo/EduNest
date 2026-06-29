@@ -1,6 +1,6 @@
 export const DATA_PATHS = {
-  houses: "/data/houses.json",
-  schools: "/data/Jefferson_County_KY_Schools (1).geojson"
+  houses: `${import.meta.env.BASE_URL}data/houses.json`,
+  schools: `${import.meta.env.BASE_URL}data/Jefferson_County_KY_Schools (1).geojson`
 };
 
 export const SCHOOL_ICON_URL =
