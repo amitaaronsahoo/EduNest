@@ -1,13 +1,32 @@
 import { calculateDistanceInMiles } from "../utils/calculations.js";
 
+
 export class HomeService {
   constructor(stateManager) {
     this.stateManager = stateManager;
+    
+    // Default, check ../DistanceFilter/DistanceFilter.js
+    this.maxRadiusMiles = 5; 
+
+    
+    if (this.stateManager) {
+      this.stateManager.subscribe('searchRadiusUpdate', (newRadius) => {
+        this.maxRadiusMiles = newRadius;
+        
+        
+        const currentSelectedSchool = this.stateManager.get("selectedSchool");
+        if (currentSelectedSchool) {
+          this.getNearbyHomesForSchool(currentSelectedSchool);
+        }
+      });
+    }
   }
 
   getHomes() {
     return this.stateManager?.get("houses") || [];
   }
+
+ 
 
   applyFilters({ homes = this.getHomes(), minBedrooms = 0, minBathrooms = 0, maxPrice = Number.POSITIVE_INFINITY } = {}) {
     const filtered = homes.filter(home => {
@@ -26,7 +45,7 @@ export class HomeService {
     return filtered;
   }
 
-  getNearbyHomesForSchool(school, homes = this.getHomes(), radiusMiles = 5) {
+  getNearbyHomesForSchool(school, homes = this.getHomes(), radiusMiles = this.maxRadiusMiles) {
     if (!school || !Number.isFinite(school.latitude) || !Number.isFinite(school.longitude)) {
       return [];
     }
@@ -44,9 +63,12 @@ export class HomeService {
       }))
       .filter(home => home.distanceToSchool <= radiusMiles)
       .sort((a, b) => a.distanceToSchool - b.distanceToSchool);
+
+      
   }
 
-  getNearbyHomesForSchools(schools = [], homes = this.getHomes(), radiusMiles = 5) {
+
+  getNearbyHomesForSchools(schools = [], homes = this.getHomes(), radiusMiles = this.maxRadiusMiles) {
     const nearbyHomesMap = new Map();
 
     schools.forEach(school => {
@@ -87,7 +109,8 @@ export class HomeService {
     return Array.from(nearbyHomesMap.values());
   }
 
-  getNearbySchoolsForHome(home, schools = [], radiusMiles = 5) {
+  // 
+  getNearbySchoolsForHome(home, schools = [], radiusMiles = this.maxRadiusMiles) {
     if (!home || !Number.isFinite(home.latitude) || !Number.isFinite(home.longitude)) {
       return [];
     }
@@ -119,3 +142,4 @@ export class HomeService {
 }
 
 export default HomeService;
+

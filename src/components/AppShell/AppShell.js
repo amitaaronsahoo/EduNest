@@ -7,6 +7,7 @@ import HouseDetailInfo from "../HouseDetailInfo/HouseDetailInfo.js";
 import HomeCard from "../HomeCard/HomeCard.js";
 import SchoolSearch from "../SchoolSearch/SchoolSearch.js";
 import SchoolRow from "../SchoolRow/SchoolRow.js";
+import DistanceFilter from "../DistanceFilter/DistanceFilter.js";
 
 export class AppShell extends UIComponent {
   constructor(props = {}, stateManager) {
@@ -60,6 +61,7 @@ export class AppShell extends UIComponent {
               </div>
               <button id="schoolSearchHomeBtn" type="button">Search Nearby Homes</button>
               <h2>Filter Homes</h2>
+              <div id="distanceFilterContainer"></div>
               <label for="minBedrooms">Minimum bedrooms</label>
               <select id="minBedrooms">
                 <option value="0">Any</option>
@@ -172,6 +174,8 @@ export class AppShell extends UIComponent {
       ["houses", "schools", "filteredHomes", "schoolsFiltered", "savedHouses", "currentTab", "currentHouseDetail", "dataLoadError", "isLoadingData"],
       () => this.syncView()
     );
+
+    this.distanceFilter = new DistanceFilter("#distanceFilterContainer");
     this.bootstrap();
   }
 
