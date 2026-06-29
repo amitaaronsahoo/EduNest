@@ -7,11 +7,8 @@
     <option name="selectedModelId" value="auto" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration">
+    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Update project name and adjust asset paths in HTML for deployment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/assets/index-BIXcQNnU.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/assets/index-BIXcQNnU.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/assets/index-BJhz65L2.css" beforeDir="false" afterPath="$PROJECT_DIR$/dist/assets/index-BJhz65L2.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,57 +62,57 @@
       <entry key="MS500" value="1.0" />
       <entry key="S2" value="1.0" />
       <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.000000000000397" />
-      <entry key="S30" value="1.0003410117731821" />
-      <entry key="S60" value="1.058393102585559" />
-      <entry key="M2" value="1.7641436043224639" />
-      <entry key="M5" value="4.574938718413053" />
-      <entry key="M10" value="6.979075930932409" />
-      <entry key="M15" value="8.097237445814608" />
-      <entry key="M30" value="9.426749401788953" />
-      <entry key="H1" value="10.480500987973928" />
-      <entry key="H2" value="14.095936130284372" />
-      <entry key="H4" value="22.790706224103097" />
-      <entry key="D1" value="44.372441325840086" />
-      <entry key="W1" value="50.81284882062424" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0" />
+      <entry key="M2" value="1.0" />
+      <entry key="M5" value="1.0000010083251882" />
+      <entry key="M10" value="1.0032764654364585" />
+      <entry key="M15" value="1.0489112377465557" />
+      <entry key="M30" value="1.7326521885355095" />
+      <entry key="H1" value="3.9217966569886937" />
+      <entry key="H2" value="8.442655129567646" />
+      <entry key="H4" value="17.560550493440857" />
+      <entry key="D1" value="43.07261325402" />
+      <entry key="W1" value="51.42797951922302" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="3.8923933880791706E-269" />
-      <entry key="S2" value="7.898673852170935E-68" />
-      <entry key="S5" value="1.4421873192639941E-27" />
-      <entry key="S10" value="3.7976141447808985E-14" />
-      <entry key="S30" value="3.36127164663449E-5" />
-      <entry key="S60" value="0.005797647494143197" />
-      <entry key="M2" value="0.07614228453456856" />
-      <entry key="M5" value="0.3569853231638294" />
-      <entry key="M10" value="0.5974824877465694" />
-      <entry key="M15" value="0.7093873728619811" />
-      <entry key="M30" value="0.8422513715405758" />
-      <entry key="H1" value="0.9177425409887983" />
-      <entry key="H2" value="0.9579888000330683" />
-      <entry key="H4" value="0.9787690228205366" />
-      <entry key="D1" value="0.9964297890738769" />
-      <entry key="W1" value="0.9994891877463101" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="7.515725137066864E-214" />
+      <entry key="S30" value="9.091948413730811E-72" />
+      <entry key="S60" value="3.015285793043639E-36" />
+      <entry key="M2" value="1.736457829330629E-18" />
+      <entry key="M5" value="7.868024367902241E-8" />
+      <entry key="M10" value="2.8049998873266006E-4" />
+      <entry key="M15" value="0.004285043470769339" />
+      <entry key="M30" value="0.06546024343652672" />
+      <entry key="H1" value="0.25585199517792845" />
+      <entry key="H2" value="0.5058181443739721" />
+      <entry key="H4" value="0.7112089315904097" />
+      <entry key="D1" value="0.9447847334484305" />
+      <entry key="W1" value="0.991918805168393" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.7900413118633771" />
-      <entry key="MS500" value="0.9539595505475581" />
-      <entry key="S2" value="0.9882856515007326" />
-      <entry key="S5" value="0.9952976898141518" />
-      <entry key="S10" value="0.9976460744246999" />
-      <entry key="S30" value="0.9995884626127924" />
-      <entry key="S60" value="1.0637207452016475" />
-      <entry key="M2" value="1.83958393816345" />
-      <entry key="M5" value="4.930899591900458" />
-      <entry key="M10" value="7.575728196132735" />
-      <entry key="M15" value="8.805972741424156" />
-      <entry key="M30" value="10.268616202017174" />
-      <entry key="H1" value="11.398033438241473" />
-      <entry key="H2" value="15.053808961731182" />
-      <entry key="H4" value="23.76940742874703" />
-      <entry key="D1" value="45.368855960367725" />
-      <entry key="W1" value="51.81233568083384" />
+      <entry key="MS100" value="0.8526348917679567" />
+      <entry key="MS500" value="0.9686181892266277" />
+      <entry key="S2" value="0.9920604931322485" />
+      <entry key="S5" value="0.9968166007640673" />
+      <entry key="S10" value="0.9984070316078845" />
+      <entry key="S30" value="0.9994687283363647" />
+      <entry key="S60" value="0.9997343288776097" />
+      <entry key="M2" value="0.9998671556149895" />
+      <entry key="M5" value="0.9999479469077713" />
+      <entry key="M10" value="1.003530005371847" />
+      <entry key="M15" value="1.0531746287503585" />
+      <entry key="M30" value="1.7980736860350626" />
+      <entry key="H1" value="4.177585653791051" />
+      <entry key="H2" value="8.94840982830335" />
+      <entry key="H4" value="18.27170903878464" />
+      <entry key="D1" value="44.01738343386551" />
+      <entry key="W1" value="52.419895988124296" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -206,7 +203,7 @@
       <workItem from="1782451207746" duration="4228000" />
       <workItem from="1782485220146" duration="881000" />
       <workItem from="1782751060160" duration="104000" />
-      <workItem from="1782751199971" duration="2818000" />
+      <workItem from="1782751199971" duration="4436000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial files for core functionality and styles">
       <option name="closed" value="true" />
@@ -280,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782754238297</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Update project name and adjust asset paths in HTML for deployment">
+      <option name="closed" value="true" />
+      <created>1782758843210</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1782758843210</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -294,7 +299,8 @@
     <MESSAGE value="Add school search functionality with suggestions and refactor house detail display" />
     <MESSAGE value="Add CSS styles for layout and components, and update workspace.xml for task management" />
     <MESSAGE value="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration" />
+    <MESSAGE value="Update project name and adjust asset paths in HTML for deployment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update project name and adjust asset paths in HTML for deployment" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
