@@ -7,7 +7,12 @@
     <option name="selectedModelId" value="auto" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration" />
+    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/assets/index-BIXcQNnU.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/assets/index-BIXcQNnU.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/assets/index-BJhz65L2.css" beforeDir="false" afterPath="$PROJECT_DIR$/dist/assets/index-BJhz65L2.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,61 +61,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.2869456274035767" />
-      <entry key="MS500" value="3.0613286273070637" />
-      <entry key="S2" value="6.656916236475386" />
-      <entry key="S5" value="8.405427711862504" />
-      <entry key="S10" value="9.15084946157946" />
-      <entry key="S30" value="9.704423439430665" />
-      <entry key="S60" value="9.85057844160604" />
-      <entry key="M2" value="9.92487564287459" />
-      <entry key="M5" value="9.969850316815627" />
-      <entry key="M10" value="9.984908444534167" />
-      <entry key="M15" value="9.989935420860137" />
-      <entry key="M30" value="9.997622901104023" />
-      <entry key="H1" value="10.326416179880368" />
-      <entry key="H2" value="13.667708775917134" />
-      <entry key="H4" value="22.261318834023676" />
-      <entry key="D1" value="43.527173399731645" />
-      <entry key="W1" value="49.838196999664476" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.000000000000397" />
+      <entry key="S30" value="1.0003410117731821" />
+      <entry key="S60" value="1.058393102585559" />
+      <entry key="M2" value="1.7641436043224639" />
+      <entry key="M5" value="4.574938718413053" />
+      <entry key="M10" value="6.979075930932409" />
+      <entry key="M15" value="8.097237445814608" />
+      <entry key="M30" value="9.426749401788953" />
+      <entry key="H1" value="10.480500987973928" />
+      <entry key="H2" value="14.095936130284372" />
+      <entry key="H4" value="22.790706224103097" />
+      <entry key="D1" value="44.372441325840086" />
+      <entry key="W1" value="50.81284882062424" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.6262719951018453E-6" />
-      <entry key="MS500" value="0.06954063253655211" />
-      <entry key="S2" value="0.5135227154342983" />
-      <entry key="S5" value="0.765991347005088" />
-      <entry key="S10" value="0.8752093161096313" />
-      <entry key="S30" value="0.9565418533650792" />
-      <entry key="S60" value="0.9780295769377729" />
-      <entry key="M2" value="0.9889537789693577" />
-      <entry key="M5" value="0.9955667824211952" />
-      <entry key="M10" value="0.9977809290727074" />
-      <entry key="M15" value="0.9985200716997313" />
-      <entry key="M30" value="0.999259761873624" />
-      <entry key="H1" value="0.9996298124173889" />
-      <entry key="H2" value="0.9998148890756672" />
-      <entry key="H4" value="0.9999074402541802" />
-      <entry key="D1" value="0.9999845727807114" />
-      <entry key="W1" value="0.9999977960969589" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="3.8923933880791706E-269" />
+      <entry key="S2" value="7.898673852170935E-68" />
+      <entry key="S5" value="1.4421873192639941E-27" />
+      <entry key="S10" value="3.7976141447808985E-14" />
+      <entry key="S30" value="3.36127164663449E-5" />
+      <entry key="S60" value="0.005797647494143197" />
+      <entry key="M2" value="0.07614228453456856" />
+      <entry key="M5" value="0.3569853231638294" />
+      <entry key="M10" value="0.5974824877465694" />
+      <entry key="M15" value="0.7093873728619811" />
+      <entry key="M30" value="0.8422513715405758" />
+      <entry key="H1" value="0.9177425409887983" />
+      <entry key="H2" value="0.9579888000330683" />
+      <entry key="H4" value="0.9787690228205366" />
+      <entry key="D1" value="0.9964297890738769" />
+      <entry key="W1" value="0.9994891877463101" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.3121525852778125" />
-      <entry key="MS500" value="2.545517253167645" />
-      <entry key="S2" value="6.897179442859539" />
-      <entry key="S5" value="9.036537065445962" />
-      <entry key="S10" value="9.95307077390071" />
-      <entry key="S30" value="10.635252331567736" />
-      <entry key="S60" value="10.815568191258537" />
-      <entry key="M2" value="10.907262853088064" />
-      <entry key="M5" value="10.962779168046895" />
-      <entry key="M10" value="10.981368515120513" />
-      <entry key="M15" value="10.987574498925516" />
-      <entry key="M30" value="10.996441935128578" />
-      <entry key="H1" value="11.325824286324716" />
-      <entry key="H2" value="14.66740604928013" />
-      <entry key="H4" value="23.261158663377696" />
-      <entry key="D1" value="44.527143037641274" />
-      <entry key="W1" value="50.83819250602675" />
+      <entry key="MS100" value="0.7900413118633771" />
+      <entry key="MS500" value="0.9539595505475581" />
+      <entry key="S2" value="0.9882856515007326" />
+      <entry key="S5" value="0.9952976898141518" />
+      <entry key="S10" value="0.9976460744246999" />
+      <entry key="S30" value="0.9995884626127924" />
+      <entry key="S60" value="1.0637207452016475" />
+      <entry key="M2" value="1.83958393816345" />
+      <entry key="M5" value="4.930899591900458" />
+      <entry key="M10" value="7.575728196132735" />
+      <entry key="M15" value="8.805972741424156" />
+      <entry key="M30" value="10.268616202017174" />
+      <entry key="H1" value="11.398033438241473" />
+      <entry key="H2" value="15.053808961731182" />
+      <entry key="H4" value="23.76940742874703" />
+      <entry key="D1" value="45.368855960367725" />
+      <entry key="W1" value="51.81233568083384" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -201,7 +206,7 @@
       <workItem from="1782451207746" duration="4228000" />
       <workItem from="1782485220146" duration="881000" />
       <workItem from="1782751060160" duration="104000" />
-      <workItem from="1782751199971" duration="1915000" />
+      <workItem from="1782751199971" duration="2818000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial files for core functionality and styles">
       <option name="closed" value="true" />
@@ -259,7 +264,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782753827911</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration">
+      <option name="closed" value="true" />
+      <created>1782754193198</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1782754193198</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration">
+      <option name="closed" value="true" />
+      <created>1782754238297</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1782754238297</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
