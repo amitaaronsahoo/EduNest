@@ -7,11 +7,7 @@
     <option name="selectedModelId" value="auto" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Add CSS styles for layout and components, and update workspace.xml for task management">
-      <change afterPath="$PROJECT_DIR$/vite.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/azure-pipelines.yml" beforeDir="false" afterPath="$PROJECT_DIR$/azure-pipelines.yml" afterDir="false" />
-    </list>
+    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,61 +56,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0344395177665135" />
-      <entry key="MS500" value="2.66396388637438" />
-      <entry key="S2" value="6.031495701787723" />
-      <entry key="S5" value="7.597806989244956" />
-      <entry key="S10" value="8.256042636877831" />
-      <entry key="S30" value="8.741709324015876" />
-      <entry key="S60" value="8.869514159079277" />
-      <entry key="M2" value="8.93441787949192" />
-      <entry key="M5" value="8.973685216001925" />
-      <entry key="M10" value="8.986828907801002" />
-      <entry key="M15" value="8.991216400395361" />
-      <entry key="M30" value="8.998263915733926" />
-      <entry key="H1" value="9.32674839333311" />
-      <entry key="H2" value="12.667934390221381" />
-      <entry key="H4" value="21.261508167248135" />
-      <entry key="D1" value="42.5272365173041" />
-      <entry key="W1" value="48.83820735454459" />
+      <entry key="MS100" value="1.2869456274035767" />
+      <entry key="MS500" value="3.0613286273070637" />
+      <entry key="S2" value="6.656916236475386" />
+      <entry key="S5" value="8.405427711862504" />
+      <entry key="S10" value="9.15084946157946" />
+      <entry key="S30" value="9.704423439430665" />
+      <entry key="S60" value="9.85057844160604" />
+      <entry key="M2" value="9.92487564287459" />
+      <entry key="M5" value="9.969850316815627" />
+      <entry key="M10" value="9.984908444534167" />
+      <entry key="M15" value="9.989935420860137" />
+      <entry key="M30" value="9.997622901104023" />
+      <entry key="H1" value="10.326416179880368" />
+      <entry key="H2" value="13.667708775917134" />
+      <entry key="H4" value="22.261318834023676" />
+      <entry key="D1" value="43.527173399731645" />
+      <entry key="W1" value="49.838196999664476" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="5.8627135516663036E-6" />
-      <entry key="MS500" value="0.08987103330293482" />
-      <entry key="S2" value="0.5475262353967872" />
-      <entry key="S5" value="0.7858903815445782" />
-      <entry key="S10" value="0.8865045863076957" />
-      <entry key="S30" value="0.9606392538872012" />
-      <entry key="S60" value="0.9801220607083595" />
-      <entry key="M2" value="0.990011141709203" />
-      <entry key="M5" value="0.9959924192054185" />
-      <entry key="M10" value="0.9979941979818413" />
-      <entry key="M15" value="0.9986623512287244" />
-      <entry key="M30" value="0.9993309518016165" />
-      <entry key="H1" value="0.9996654199288963" />
-      <entry key="H2" value="0.9998326959691287" />
-      <entry key="H4" value="0.9999163444854418" />
-      <entry key="D1" value="0.9999860569282264" />
-      <entry key="W1" value="0.9999980081207013" />
+      <entry key="MS100" value="1.6262719951018453E-6" />
+      <entry key="MS500" value="0.06954063253655211" />
+      <entry key="S2" value="0.5135227154342983" />
+      <entry key="S5" value="0.765991347005088" />
+      <entry key="S10" value="0.8752093161096313" />
+      <entry key="S30" value="0.9565418533650792" />
+      <entry key="S60" value="0.9780295769377729" />
+      <entry key="M2" value="0.9889537789693577" />
+      <entry key="M5" value="0.9955667824211952" />
+      <entry key="M10" value="0.9977809290727074" />
+      <entry key="M15" value="0.9985200716997313" />
+      <entry key="M30" value="0.999259761873624" />
+      <entry key="H1" value="0.9996298124173889" />
+      <entry key="H2" value="0.9998148890756672" />
+      <entry key="H4" value="0.9999074402541802" />
+      <entry key="D1" value="0.9999845727807114" />
+      <entry key="W1" value="0.9999977960969589" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.12531064754718063" />
-      <entry key="MS500" value="2.28970642756778" />
-      <entry key="S2" value="6.353884417773447" />
-      <entry key="S5" value="8.271289538676575" />
-      <entry key="S10" value="9.081523044257466" />
-      <entry key="S30" value="9.680809029691256" />
-      <entry key="S60" value="9.83870798318665" />
-      <entry key="M2" value="9.918924604708623" />
-      <entry key="M5" value="9.967466108344249" />
-      <entry key="M10" value="9.983715708192436" />
-      <entry key="M15" value="9.98914012286117" />
-      <entry key="M30" value="9.997225350952375" />
-      <entry key="H1" value="10.326227720089491" />
-      <entry key="H2" value="13.667667278573402" />
-      <entry key="H4" value="22.261365805286847" />
-      <entry key="D1" value="43.527209123509486" />
-      <entry key="W1" value="49.83820328495433" />
+      <entry key="MS100" value="0.3121525852778125" />
+      <entry key="MS500" value="2.545517253167645" />
+      <entry key="S2" value="6.897179442859539" />
+      <entry key="S5" value="9.036537065445962" />
+      <entry key="S10" value="9.95307077390071" />
+      <entry key="S30" value="10.635252331567736" />
+      <entry key="S60" value="10.815568191258537" />
+      <entry key="M2" value="10.907262853088064" />
+      <entry key="M5" value="10.962779168046895" />
+      <entry key="M10" value="10.981368515120513" />
+      <entry key="M15" value="10.987574498925516" />
+      <entry key="M30" value="10.996441935128578" />
+      <entry key="H1" value="11.325824286324716" />
+      <entry key="H2" value="14.66740604928013" />
+      <entry key="H4" value="23.261158663377696" />
+      <entry key="D1" value="44.527143037641274" />
+      <entry key="W1" value="50.83819250602675" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -205,7 +201,7 @@
       <workItem from="1782451207746" duration="4228000" />
       <workItem from="1782485220146" duration="881000" />
       <workItem from="1782751060160" duration="104000" />
-      <workItem from="1782751199971" duration="1556000" />
+      <workItem from="1782751199971" duration="1915000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial files for core functionality and styles">
       <option name="closed" value="true" />
@@ -255,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782751432637</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration">
+      <option name="closed" value="true" />
+      <created>1782753827911</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1782753827911</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,7 +272,8 @@
     <MESSAGE value="Refactor workspace.xml to update task summaries and improve layout configuration" />
     <MESSAGE value="Add school search functionality with suggestions and refactor house detail display" />
     <MESSAGE value="Add CSS styles for layout and components, and update workspace.xml for task management" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add CSS styles for layout and components, and update workspace.xml for task management" />
+    <MESSAGE value="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update CI/CD pipeline for Vite build and add GitHub Pages deployment configuration" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
