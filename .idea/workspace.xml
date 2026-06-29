@@ -7,7 +7,9 @@
     <option name="selectedModelId" value="auto" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Refactor workspace.xml to update task summaries and improve layout configuration" />
+    <list default="true" id="e2c36935-fbf4-433f-829b-49242d9a79ab" name="Changes" comment="Add school search functionality with suggestions and refactor house detail display">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,7 +21,7 @@
     </persistenceIdMap>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="98" />
+    <option name="cachedIndexableFilesCount" value="63" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -55,61 +57,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="0.03354374234296225" />
-      <entry key="MS500" value="0.7413900604797418" />
-      <entry key="S2" value="1.5403107524277662" />
-      <entry key="S5" value="1.799675417373981" />
-      <entry key="S10" value="1.8968547755776688" />
-      <entry key="S30" value="1.9649312079984842" />
-      <entry key="S60" value="1.9823781638858677" />
-      <entry key="M2" value="1.9911671031649902" />
-      <entry key="M5" value="1.99646155108122" />
-      <entry key="M10" value="1.9982298925786226" />
-      <entry key="M15" value="1.9988199086173095" />
-      <entry key="M30" value="2.0020688753305502" />
-      <entry key="H1" value="2.328760435817114" />
-      <entry key="H2" value="5.669499399689793" />
-      <entry key="H4" value="14.263009595473491" />
-      <entry key="D1" value="35.52778325980801" />
-      <entry key="W1" value="41.838298030854254" />
+      <entry key="MS100" value="1.0344395177665135" />
+      <entry key="MS500" value="2.66396388637438" />
+      <entry key="S2" value="6.031495701787723" />
+      <entry key="S5" value="7.597806989244956" />
+      <entry key="S10" value="8.256042636877831" />
+      <entry key="S30" value="8.741709324015876" />
+      <entry key="S60" value="8.869514159079277" />
+      <entry key="M2" value="8.93441787949192" />
+      <entry key="M5" value="8.973685216001925" />
+      <entry key="M10" value="8.986828907801002" />
+      <entry key="M15" value="8.991216400395361" />
+      <entry key="M30" value="8.998263915733926" />
+      <entry key="H1" value="9.32674839333311" />
+      <entry key="H2" value="12.667934390221381" />
+      <entry key="H4" value="21.261508167248135" />
+      <entry key="D1" value="42.5272365173041" />
+      <entry key="W1" value="48.83820735454459" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0" />
-      <entry key="S60" value="1.0" />
-      <entry key="M2" value="1.0" />
-      <entry key="M5" value="1.0" />
-      <entry key="M10" value="1.0" />
-      <entry key="M15" value="1.0" />
-      <entry key="M30" value="1.0" />
-      <entry key="H1" value="1.0" />
-      <entry key="H2" value="1.0" />
-      <entry key="H4" value="1.0" />
-      <entry key="D1" value="1.0" />
-      <entry key="W1" value="1.0" />
+      <entry key="MS100" value="5.8627135516663036E-6" />
+      <entry key="MS500" value="0.08987103330293482" />
+      <entry key="S2" value="0.5475262353967872" />
+      <entry key="S5" value="0.7858903815445782" />
+      <entry key="S10" value="0.8865045863076957" />
+      <entry key="S30" value="0.9606392538872012" />
+      <entry key="S60" value="0.9801220607083595" />
+      <entry key="M2" value="0.990011141709203" />
+      <entry key="M5" value="0.9959924192054185" />
+      <entry key="M10" value="0.9979941979818413" />
+      <entry key="M15" value="0.9986623512287244" />
+      <entry key="M30" value="0.9993309518016165" />
+      <entry key="H1" value="0.9996654199288963" />
+      <entry key="H2" value="0.9998326959691287" />
+      <entry key="H4" value="0.9999163444854418" />
+      <entry key="D1" value="0.9999860569282264" />
+      <entry key="W1" value="0.9999980081207013" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.2099501068974311" />
-      <entry key="MS500" value="1.371336019503337" />
-      <entry key="S2" value="2.412379777655357" />
-      <entry key="S5" value="2.744185251038704" />
-      <entry key="S10" value="2.868309863005576" />
-      <entry key="S30" value="2.9552302813582076" />
-      <entry key="S60" value="2.9775039214930366" />
-      <entry key="M2" value="2.9887239962867045" />
-      <entry key="M5" value="2.995482866494415" />
-      <entry key="M10" value="2.997740309538522" />
-      <entry key="M15" value="2.9984934663894145" />
-      <entry key="M30" value="3.001905607215879" />
-      <entry key="H1" value="3.3286775052787942" />
-      <entry key="H2" value="6.669451182079178" />
-      <entry key="H4" value="15.262976686031243" />
-      <entry key="D1" value="36.527774109017294" />
-      <entry key="W1" value="42.83829656743708" />
+      <entry key="MS100" value="0.12531064754718063" />
+      <entry key="MS500" value="2.28970642756778" />
+      <entry key="S2" value="6.353884417773447" />
+      <entry key="S5" value="8.271289538676575" />
+      <entry key="S10" value="9.081523044257466" />
+      <entry key="S30" value="9.680809029691256" />
+      <entry key="S60" value="9.83870798318665" />
+      <entry key="M2" value="9.918924604708623" />
+      <entry key="M5" value="9.967466108344249" />
+      <entry key="M10" value="9.983715708192436" />
+      <entry key="M15" value="9.98914012286117" />
+      <entry key="M30" value="9.997225350952375" />
+      <entry key="H1" value="10.326227720089491" />
+      <entry key="H2" value="13.667667278573402" />
+      <entry key="H4" value="22.261365805286847" />
+      <entry key="D1" value="43.527209123509486" />
+      <entry key="W1" value="49.83820328495433" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -139,33 +141,33 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "amit-revisedskeleton",
-    "git.auto.fetch.suggestion.counter": "3",
-    "javascript.preferred.runtime.type.id": "node",
-    "junie.onboarding.icon.badge.shown": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;amit-revisedskeleton&quot;,
+    &quot;git.auto.fetch.suggestion.counter&quot;: &quot;3&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Amit Sahoo\ProgrammingProjects\UofLCES350\EduNest" />
@@ -196,7 +198,9 @@
       <workItem from="1782332675262" duration="980000" />
       <workItem from="1782441399868" duration="1183000" />
       <workItem from="1782445655458" duration="5388000" />
-      <workItem from="1782451207746" duration="3923000" />
+      <workItem from="1782451207746" duration="4228000" />
+      <workItem from="1782485220146" duration="881000" />
+      <workItem from="1782751060160" duration="104000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial files for core functionality and styles">
       <option name="closed" value="true" />
@@ -230,7 +234,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782477564783</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add school search functionality with suggestions and refactor house detail display">
+      <option name="closed" value="true" />
+      <created>1782478115292</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1782478115292</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,7 +253,8 @@
     <MESSAGE value="Add CSS files for AppShell, HomeCard, HomeFilter, HomesList, HouseDetail, Navigation, SavedHomes, SchoolDirectory, SchoolFilter, SchoolFilterDetail, SchoolRow, SchoolSearch, SchoolSearchHome, and SchoolSuggestions components" />
     <MESSAGE value="Refactor SchoolDirectory component header and update index.html for improved layout" />
     <MESSAGE value="Refactor workspace.xml to update task summaries and improve layout configuration" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor workspace.xml to update task summaries and improve layout configuration" />
+    <MESSAGE value="Add school search functionality with suggestions and refactor house detail display" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add school search functionality with suggestions and refactor house detail display" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
