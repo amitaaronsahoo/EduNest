@@ -2,3 +2,33 @@
   display: grid;
   gap: 12px;
 }
+
+.school-search input,
+.school-search button,
+#schoolSearch,
+#schoolSearchHome,
+#maxTuition,
+#maxPriceHome,
+#minBedrooms,
+#minBathrooms,
+#houseMaxTuition {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.school-search button,
+#schoolSearchBtn,
+#allSchoolBtn,
+#schoolSearchHomeBtn,
+#applyFiltersBtn,
+#applyFiltersHomeBtn,
+#houseApplySchoolFiltersBtn,
+#detailBackBtn {
+  background: linear-gradient(90deg, #0f4c81 0%, #2563eb 100%);
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  font-weight: 700;
+}

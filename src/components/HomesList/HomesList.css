@@ -2,3 +2,8 @@
   display: grid;
   gap: 16px;
 }
+
+.cards {
+  display: grid;
+  gap: 12px;
+}

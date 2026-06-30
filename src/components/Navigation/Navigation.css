@@ -1,5 +1,28 @@
 .app-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+}
+
+.app-nav button {
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 12px;
+  background: #e8f1f9;
+  color: #0f4c81;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.app-nav button:hover {
+  background: #d7e8f7;
+  transform: translateX(2px);
+}
+
+.app-nav button.is-active {
+  background: linear-gradient(90deg, #0f4c81 0%, #2563eb 100%);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(15, 76, 129, 0.2);
 }

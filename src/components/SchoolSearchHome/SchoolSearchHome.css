@@ -2,3 +2,9 @@
   display: grid;
   gap: 12px;
 }
+
+.school-search-home .school-suggestions {
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 6px;
+}

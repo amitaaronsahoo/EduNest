@@ -31,7 +31,6 @@ export class MapService {
    * @throws {Error} If container not found or map creation fails
    */
   initializeMap(containerId = 'map') {
-    // Clean up existing map if present
     if (this.map) {
       this.destroyMap();
     }
@@ -44,14 +43,13 @@ export class MapService {
     this.mapContainer = container;
 
     try {
-      // Initialize Leaflet map
-      this.map = L.map(container).setView(this.defaultCenter, this.defaultZoom);
-
-      // Add tile layer
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-        maxZoom: 19
-      }).addTo(this.map);
+      this.map = L.map(container, { zoomControl: true, scrollWheelZoom: true }).setView(this.defaultCenter, this.defaultZoom);
+      L.tileLayer(
+"https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+{
+    attribution:"©OpenStreetMap ©CARTO",
+    maxZoom:20
+}).addTo(this.map);
 
       // Create markers layer group
       this.markersLayer = L.layerGroup().addTo(this.map);
@@ -86,12 +84,14 @@ export class MapService {
     this.detailMapContainer = container;
 
     try {
-      this.detailMap = L.map(container).setView(this.defaultCenter, this.defaultZoom);
+      this.detailMap = L.map(container, { zoomControl: true, scrollWheelZoom: true }).setView(this.defaultCenter, this.defaultZoom);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-        maxZoom: 19
-      }).addTo(this.detailMap);
+      L.tileLayer(
+"https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+{
+    attribution:"©OpenStreetMap ©CARTO",
+    maxZoom:20
+}).addTo(this.detailMap);
 
       this.detailMarkersLayer = L.layerGroup().addTo(this.detailMap);
 
@@ -107,130 +107,153 @@ export class MapService {
   }
 
   /**
-   * Add markers to main map
-   * @param {Array<Object>} items - Array of { id, latitude, longitude, ...props }
+   * Add school markers to the selected map view.
+   * @param {Array<Object>} items - Array of school objects
    * @param {Function} onMarkerClick - Callback when marker is clicked
-   * @param {Object} options - { icon, popupText }
+   * @param {Object} options - { mapType, clearExisting, popupText, popupOptions, title, icon, onPopupOpen }
    * @returns {L.LatLngBounds|null} Bounds of all markers
    */
-  addMarkers(items, onMarkerClick = null, options = {}) {
-    if (!this.map || !this.markersLayer) {
-      console.warn('Map not initialized. Cannot add markers.');
-      return null;
-    }
-
-    this.markersLayer.clearLayers();
-    const bounds = [];
-
-    items.forEach(item => {
-      if (!this.isValidCoordinate(item.latitude, item.longitude)) {
-        return; // Skip invalid items
-      }
-
-      const latLng = [item.latitude, item.longitude];
-      bounds.push(latLng);
-
-      const marker = L.marker(latLng, {
-        icon: options.icon || L.icon({
-          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41]
-        })
-      });
-
-      if (options.popupText) {
-        marker.bindPopup(options.popupText(item));
-      }
-
-      if (onMarkerClick) {
-        marker.on('click', () => onMarkerClick(item));
-      }
-
-      marker.addTo(this.markersLayer);
-    });
-
-    // Fit map to bounds
-    if (bounds.length > 0) {
-      const latLngBounds = L.latLngBounds(bounds);
-      this.map.fitBounds(latLngBounds, { padding: [50, 50] });
-    }
-
-    // Invalidate size after bounds change
-    this.invalidateMapSize();
-
-    return bounds.length > 0 ? L.latLngBounds(bounds) : null;
+  addSchoolMarkers(items, onMarkerClick = null, options = {}) {
+    return this.addMarkersToMap(items, {
+      ...options,
+      mapType: options.mapType || 'main',
+      icon: options.icon || this.createSchoolMarkerIcon(),
+      popupText: options.popupText || (item => {
+        const details = [];
+        if (item.name) details.push(`<strong>${item.name}</strong>`);
+        if (item.level) details.push(item.level);
+        if (item.type) details.push(item.type);
+        if (item.formattedAddress) details.push(item.formattedAddress);
+        return details.length ? `<div style="min-width:220px">${details.map(line => `<div>${line}</div>`).join('')}</div>` : null;
+      })
+    }, onMarkerClick);
   }
 
   /**
-   * Add markers to detail map
-   * @param {Object} centerItem - Central item (house) with lat/lon
-   * @param {Array<Object>} nearbyItems - Array of nearby items (schools) with lat/lon
+   * Add home markers to the selected map view.
+   * @param {Array<Object>} items - Array of home objects
    * @param {Function} onMarkerClick - Callback when marker is clicked
+   * @param {Object} options - { mapType, clearExisting, popupText, popupOptions, title, icon, onPopupOpen }
    * @returns {L.LatLngBounds|null} Bounds of all markers
    */
-  addDetailMarkers(centerItem, nearbyItems = [], onMarkerClick = null) {
-    if (!this.detailMap || !this.detailMarkersLayer) {
-      console.warn('Detail map not initialized. Cannot add markers.');
+  addHomeMarkers(items, onMarkerClick = null, options = {}) {
+    return this.addMarkersToMap(items, {
+      ...options,
+      mapType: options.mapType || 'main',
+      icon: options.icon || this.createHomeMarkerIcon(),
+      popupText: options.popupText || (item => {
+        const address = item.formattedAddress || item.address || 'Property';
+        return `<div style="min-width:220px"><strong>${address}</strong></div>`;
+      })
+    }, onMarkerClick);
+  }
+
+  addMarkersToMap(items, options = {}, onMarkerClick = null) {
+    const markerItems = Array.isArray(items) ? items : [items];
+    const mapType = options.mapType || 'main';
+    const targetMap = mapType === 'detail' ? this.detailMap : this.map;
+    const targetLayer = mapType === 'detail' ? this.detailMarkersLayer : this.markersLayer;
+
+    if (!targetMap || !targetLayer) {
+      console.warn(`Map not initialized for ${mapType} view. Cannot add markers.`);
       return null;
     }
 
-    this.detailMarkersLayer.clearLayers();
-    const bounds = [];
-
-    // Add center marker (house)
-    if (this.isValidCoordinate(centerItem.latitude, centerItem.longitude)) {
-      const centerLatLng = [centerItem.latitude, centerItem.longitude];
-      bounds.push(centerLatLng);
-
-      const centerMarker = L.marker(centerLatLng, {
-        icon: L.icon({
-          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41]
-        })
-      });
-
-      centerMarker.bindPopup(`<strong>${centerItem.formattedAddress}</strong>`);
-      centerMarker.addTo(this.detailMarkersLayer);
+    if (options.clearExisting !== false) {
+      targetLayer.clearLayers();
     }
 
-    // Add nearby markers (schools)
-    nearbyItems.forEach(item => {
-      if (!this.isValidCoordinate(item.latitude, item.longitude)) {
+    const bounds = [];
+
+    markerItems.forEach(item => {
+      if (!item || !this.isValidCoordinate(item.latitude, item.longitude)) {
         return;
       }
 
       const latLng = [item.latitude, item.longitude];
       bounds.push(latLng);
 
-      const schoolMarker = L.marker(latLng, {
-        icon: L.icon({
-          iconUrl: 'https://cdn2.iconfinder.com/data/icons/school-pack-2/512/1-1024.png',
-          iconSize: [32, 32],
-          iconAnchor: [16, 32]
-        })
+      const marker = L.marker(latLng, {
+        title: options.title ? options.title(item) : (item.formattedAddress || item.name || 'Marker'),
+        icon: options.icon || this.createHomeMarkerIcon()
       });
 
-      if (item.name) {
-        schoolMarker.bindPopup(`<strong>${item.name}</strong><br>${item.formattedAddress || ''}`);
+      const popupContent = typeof options.popupText === 'function' ? options.popupText(item) : options.popupText;
+      if (popupContent) {
+        marker.bindPopup(popupContent, options.popupOptions || {});
       }
 
       if (onMarkerClick) {
-        schoolMarker.on('click', () => onMarkerClick(item));
+        marker.on('click', () => onMarkerClick(item));
       }
 
-      schoolMarker.addTo(this.detailMarkersLayer);
+      if (options.onPopupOpen) {
+        marker.on('popupopen', event => options.onPopupOpen(marker, item, event));
+      }
+
+      marker.addTo(targetLayer);
     });
 
-    // Fit map to bounds
-    if (bounds.length > 0) {
-      const latLngBounds = L.latLngBounds(bounds);
-      this.detailMap.fitBounds(latLngBounds, { padding: [50, 50] });
+    const boundsInstance = bounds.length > 0 ? L.latLngBounds(bounds) : null;
+    if (boundsInstance) {
+      if (mapType === 'detail') {
+        this.detailMap.fitBounds(boundsInstance, { padding: [50, 50] });
+      } else {
+        this.map.fitBounds(boundsInstance, { padding: [50, 50] });
+      }
+    } else if (mapType === 'detail') {
+      this.detailMap.setView(this.defaultCenter, this.defaultZoom);
+    } else {
+      this.map.setView(this.defaultCenter, this.defaultZoom);
     }
 
-    this.invalidateDetailMapSize();
+    if (mapType === 'detail') {
+      this.invalidateDetailMapSize();
+    } else {
+      this.invalidateMapSize();
+    }
 
-    return bounds.length > 0 ? L.latLngBounds(bounds) : null;
+    return boundsInstance;
+  }
+
+  addMarkers(items, onMarkerClick = null, options = {}) {
+    return this.addHomeMarkers(items, onMarkerClick, options);
+  }
+
+  addDetailMarkers(centerItem, nearbyItems = [], onMarkerClick = null) {
+    if (!centerItem) {
+      return null;
+    }
+
+    this.addHomeMarkers([centerItem], onMarkerClick, {
+      mapType: 'detail',
+      clearExisting: true,
+      popupText: item => `<strong>${item.formattedAddress || item.name || 'Property'}</strong>`
+    });
+
+    return this.addSchoolMarkers(nearbyItems || [], onMarkerClick, {
+      mapType: 'detail',
+      clearExisting: false,
+      popupText: item => item.name ? `<strong>${item.name}</strong><br>${item.formattedAddress || ''}` : null
+    });
+  }
+
+  createSchoolMarkerIcon() {
+    return L.icon({
+      iconUrl: "https://cdn2.iconfinder.com/data/icons/school-pack-2/512/1-1024.png",
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
+    });
+  }
+
+  createHomeMarkerIcon() {
+    return L.icon({
+      iconUrl: "https://cdn.pixabay.com/photo/2015/12/28/02/58/home-1110868_1280.png",
+      iconSize: [20, 20],
+      iconAnchor: [10, 10],
+      popupAnchor: [0, -10]
+    });
   }
 
   /**

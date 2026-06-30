@@ -1,4 +1,9 @@
 .school-suggestions-list {
   display: grid;
   gap: 8px;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #f8fbff;
+  border: 1px solid #dbe4f0;
 }

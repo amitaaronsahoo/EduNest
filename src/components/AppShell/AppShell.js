@@ -5,6 +5,7 @@ import { hasCoordinates } from "../../utils/validators.js";
 import { normalizeSearchText } from "../../utils/normalizers.js";
 import HomeCard from "../HomeCard/HomeCard.js";
 import SchoolRow from "../SchoolRow/SchoolRow.js";
+import HouseDetail from "../HouseDetail/HouseDetail.js";
 
 export class AppShell extends UIComponent {
   constructor(props = {}, stateManager) {
@@ -16,6 +17,7 @@ export class AppShell extends UIComponent {
     this.mapService = props.mapService;
     this.currentHouseDetail = null;
     this.lastSelectedSchool = null;
+    this.houseDetail = new HouseDetail(props, stateManager);
   }
 
   render() {
@@ -124,7 +126,7 @@ export class AppShell extends UIComponent {
                 </div>
                 <button id="detailBackBtn" type="button">Back</button>
               </div>
-              <div id="detailMap" class="detail-map"></div>
+              <div id="detailMap" class="detail-map">map here</div>
               <div class="detail-grid">
                 <div id="houseDetailInfo"></div>
                 <div class="detail-panels">
@@ -229,6 +231,9 @@ export class AppShell extends UIComponent {
       this.elements.maxTuitionValue.textContent = currency(Number(this.elements.maxTuition.value));
       this.applySchoolFilters();
     });
+    this.querySelectorAll('input[name="schoolType"], input[name="gradeLevel"]').forEach(input => {
+      input.addEventListener("change", () => this.applySchoolFilters());
+    });
     this.elements.applyFiltersBtn?.addEventListener("click", () => this.applySchoolFilters());
     this.elements.allSchoolBtn?.addEventListener("click", () => this.searchHomesForAllSelectedSchools());
     this.elements.schoolSearchHome?.addEventListener("input", event => this.showSchoolSuggestions(event.target.value));
@@ -318,12 +323,26 @@ export class AppShell extends UIComponent {
   }
 
   syncView() {
+    
     this.renderNavigation();
     this.syncTabVisibility();
-    this.renderSchoolsList();
-    this.renderHomes(this.stateManager.get("filteredHomes"));
-    this.renderSavedHouses();
-    this.renderHouseDetailView(this.currentHouseDetail, true);
+this.renderHouseDetailView(this.currentHouseDetail, true);
+    const activeTab = this.stateManager.get("currentTab") || "schools";
+
+
+    switch (activeTab) {
+        case "schools":
+            this.renderSchoolsList();
+            break;
+
+        case "homes":
+            this.renderHomes(this.stateManager.get("filteredHomes"));
+            break;
+
+        case "saved":
+            this.renderSavedHouses();
+            break;
+    }
     this.renderLoadingState();
   }
 
@@ -351,27 +370,40 @@ export class AppShell extends UIComponent {
 
   syncTabVisibility() {
     const tab = this.stateManager.get("currentTab") || "schools";
-    this.elements.schoolsContent.hidden = tab !== "schools";
-    this.elements.homesContent.hidden = tab !== "homes";
-    this.elements.savedContent.hidden = tab !== "saved";
-    this.elements.houseDetailsContent.hidden = !this.currentHouseDetail;
+    const showingDetail = this.currentHouseDetail !== null;
+
+    // Sidebar
     this.elements.schoolsSidebar.hidden = tab !== "schools";
     this.elements.homesSidebar.hidden = tab !== "homes";
-  }
 
-  switchTab(tab) {
+    // Main sections
+    this.elements.schoolsContent.hidden = showingDetail || tab !== "schools";
+    this.elements.homesContent.hidden = showingDetail || tab !== "homes";
+    this.elements.savedContent.hidden = showingDetail || tab !== "saved";
+
+    // Detail page
+    this.elements.houseDetailsContent.hidden = !showingDetail;
+}
+
+ switchTab(tab) {
     this.stateManager.set("currentTab", tab);
-    if (tab !== "homes") {
-      this.mapService.destroyMap();
-    }
-    if (!this.currentHouseDetail) {
-      this.mapService.destroyDetailMap();
-    }
     this.syncTabVisibility();
-    if (tab === "homes") {
-      this.mapService.invalidateMapSize();
+
+    if (tab === "schools" && !this.schoolsLoaded) {
+        this.renderSchoolsList();
+        this.schoolsLoaded = true;
     }
-  }
+
+    if (tab === "homes" && !this.homesLoaded) {
+        this.renderHomes(this.stateManager.get("filteredHomes"));
+        this.homesLoaded = true;
+    }
+
+    if (tab === "saved" && !this.savedLoaded) {
+        this.renderSavedHouses();
+        this.savedLoaded = true;
+    }
+}
 
   applySchoolFilters() {
     const types = Array.from(this.querySelectorAll('input[name="schoolType"]:checked')).map(input => input.value);
@@ -457,28 +489,119 @@ export class AppShell extends UIComponent {
     }
   }
 
-  renderHomes(homes) {
-    const list = homes || [];
-    this.elements.results.innerHTML = "";
-    if (list.length === 0) {
-      this.elements.results.innerHTML = '<div class="empty-state">No homes found. Try adjusting your filters.</div>';
-      this.mapService.destroyMap();
+  renderHomes(homes, school = []) {
+    const homeList = Array.isArray(homes) ? homes : [];
+    const selectedSchools = Array.isArray(school)
+      ? school.filter(Boolean)
+      : school
+        ? [school]
+        : [];
+
+    const fallbackSchool = this.stateManager.get("lastSelectedSchool");
+    const schoolsToRender = selectedSchools.length > 0
+      ? selectedSchools
+      : fallbackSchool
+        ? [fallbackSchool]
+        : [];
+
+    this.elements.results.innerHTML = homeList.length
+      ? homeList
+          .map(home => new HomeCard({
+            home,
+            isSaved: this.savedHousesService.isHouseSaved(home),
+            onSelect: selectedHome => this.renderHouseDetailView(selectedHome),
+            onToggleSave: selectedHome => this.toggleSavedHouse(selectedHome)
+          }).render())
+          .join("")
+      : '<div class="empty-state">No homes found. Try adjusting your filters.</div>';
+
+    this.elements.homeResults.textContent = `${homeList.length} home${homeList.length !== 1 ? "s" : ""} found`;
+
+    try {
+      if (!this.mapService.getMap()) {
+        this.mapService.initializeMap("map");
+      } else {
+        this.mapService.destroyMap();
+        this.mapService.initializeMap("map");
+      }
+    } catch (error) {
+      console.error("Failed to initialize homes map:", error);
       return;
     }
-    this.elements.results.innerHTML = list
-      .map(home => {
-        const card = new HomeCard({
-          home,
-          isSaved: this.savedHousesService.isHouseSaved(home),
-          onSelect: selectedHome => this.renderHouseDetailView(selectedHome),
-          onToggleSave: selectedHome => this.toggleSavedHouse(selectedHome)
+
+    const map = this.mapService.getMap();
+    if (!map) return;
+
+    this.mapService.addSchoolMarkers(schoolsToRender, null, {
+      mapType: "main",
+      clearExisting: true,
+      title: school => school.name,
+      popupText: school => `
+        <div style="min-width:220px">
+          <h3>${school.name}</h3>
+          <div>${school.level || ""} ${school.type ? `• ${school.type}` : ""}</div>
+          ${school.formattedAddress ? `<div>${school.formattedAddress}</div>` : ""}
+        </div>
+      `,
+      popupOptions: {
+        className: "modern-popup",
+        closeButton: false,
+        maxWidth: 330,
+        minWidth: 290
+      }
+    });
+
+    this.mapService.addHomeMarkers(homeList, null, {
+      mapType: "main",
+      clearExisting: false,
+      title: home => home.formattedAddress,
+      popupText: home => {
+        const zillowUrl = generateZillowUrl(home.formattedAddress);
+        const isSaved = this.savedHousesService.isHouseSaved(home);
+        const saveMarker = isSaved ? "★" : "☆";
+        return `
+          <div style="min-width:220px">
+            <h3>${home.formattedAddress}</h3>
+            <p><strong>Price:</strong> ${currency(home.price)}</p>
+            <p><strong>Bedrooms:</strong> ${home.bedrooms ?? "N/A"} • <strong>Bathrooms:</strong> ${home.bathrooms ?? "N/A"}</p>
+            ${typeof home.distanceToSchool === "number" ? `<div>${home.distanceToSchool.toFixed(2)} miles from selected school</div>` : ""}
+            <div style="margin-top:10px;display:flex;gap:8px;align-items:center;">
+              <button type="button" class="save-home-marker" style="cursor:pointer;">${saveMarker}</button>
+              <button type="button" class="details-home-marker" style="cursor:pointer;">More details</button>
+              <button type="button" class="zillow-home-marker" style="cursor:pointer;" onclick="window.open('${zillowUrl}', '_blank')">View Zillow</button>
+            </div>
+          </div>
+        `;
+      },
+      popupOptions: {
+        className: "modern-popup",
+        closeButton: false,
+        maxWidth: 330,
+        minWidth: 290
+      },
+      onPopupOpen: (marker, home) => {
+        const popup = marker.getPopup()?.getElement?.();
+        popup?.querySelector(".details-home-marker")?.addEventListener("click", () => this.renderHouseDetailView(home));
+        popup?.querySelector(".save-home-marker")?.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
+          this.toggleSavedHouse(home);
+          const button = event.currentTarget;
+          button.textContent = button.textContent === "★" ? "☆" : "★";
         });
-        return card.render();
-      })
-      .join("");
-    this.mapService.destroyMap();
-    this.mapService.initializeMap("map");
-    this.mapService.addMarkers(list, home => this.renderHouseDetailView(home));
+      }
+    });
+
+    setTimeout(() => this.mapService.invalidateMapSize(), 150);
+  }
+
+  populateHomeResults(homes, centerSchoolId = null) {
+    this.elements.results.innerHTML = "";
+    this.elements.homeEmptyState.hidden = homes.length !== 0;
+    homes.forEach(home => {
+      this.elements.results.appendChild(createHomeCard(home));
+    });
+    this.updateSaveButtons();
   }
 
   renderSavedHouses() {
@@ -518,7 +641,13 @@ export class AppShell extends UIComponent {
     } else {
       this.currentHouseDetail = this.stateManager.get("currentHouseDetail");
     }
+
     this.elements.houseDetailsContent.hidden = false;
+    this.mapService.destroyDetailMap();
+    this.mapService.initializeDetailMap("detailMap");
+    setTimeout(() => {
+      this.mapService.invalidateDetailMapSize();
+    }, 0);
     this.elements.schoolsContent.hidden = true;
     this.elements.homesContent.hidden = true;
     this.elements.savedContent.hidden = true;
@@ -540,7 +669,28 @@ export class AppShell extends UIComponent {
     this.renderHouseNearbySchoolsList(visibleSchools);
     this.mapService.destroyDetailMap();
     this.mapService.initializeDetailMap("detailMap");
-    this.mapService.addDetailMarkers(home, visibleSchools);
+    this.mapService.addHomeMarkers([home], null, {
+      mapType: "detail",
+      clearExisting: true,
+      popupText: property => `<strong>${property.formattedAddress || property.name || 'Property'}</strong>`,
+      popupOptions: {
+        className: "modern-popup",
+        closeButton: false,
+        maxWidth: 330,
+        minWidth: 290
+      }
+    });
+    this.mapService.addSchoolMarkers(visibleSchools, null, {
+      mapType: "detail",
+      clearExisting: false,
+      popupText: school => school.name ? `<strong>${school.name}</strong><br>${school.formattedAddress || ''}` : null,
+      popupOptions: {
+        className: "modern-popup",
+        closeButton: false,
+        maxWidth: 330,
+        minWidth: 290
+      }
+    });
     this.mapService.invalidateDetailMapSize();
   }
 
@@ -597,7 +747,7 @@ export class AppShell extends UIComponent {
     this.stateManager.set("lastSelectedSchool", selectedSchool);
     const nearbyHomes = this.homeService.getNearbyHomesForSchool(selectedSchool);
     this.elements.resultsTitle.textContent = `Homes Near ${selectedSchool.name}`;
-    this.renderHomes(nearbyHomes);
+    this.renderHomes(nearbyHomes,selectedSchool);
     this.showClosestSchools(selectedSchool);
     this.switchTab("homes");
   }
@@ -625,43 +775,82 @@ export class AppShell extends UIComponent {
   }
 
   showSchoolSuggestions(query) {
-    const list = this.elements.schoolSuggestionsList;
-    const normalized = normalizeSearchText(query);
-    if (!list || !normalized) {
-      this.clearSchoolSuggestions();
-      return;
-    }
-    const matches = this.schoolService.searchSchools(normalized).slice(0, 8);
-    if (matches.length === 0) {
-      this.clearSchoolSuggestions();
-      return;
-    }
-    list.innerHTML = matches
-      .map(
-        school => `
-          <div class="school-suggestion-item" data-school-id="${school.id}" tabindex="0">
-            <strong>${school.name}</strong>
-            ${school.level ? `<div class="school-meta">${school.level}</div>` : ""}
-            ${school.formattedAddress ? `<div class="school-meta">${school.formattedAddress}</div>` : ""}
-          </div>
-        `
-      )
-      .join("");
-    list.hidden = false;
-    list.dataset.activeIndex = "-1";
-    Array.from(list.children).forEach(item => {
-      item.addEventListener("click", () => {
-        const schoolId = Number(item.dataset.schoolId);
-        const school = this.stateManager.get("schools").find(entry => entry.id === schoolId);
-        if (school) {
-          this.elements.schoolSearchHome.value = school.name;
-          this.clearSchoolSuggestions();
-          this.searchHomesNearSchool();
-        }
-      });
-    });
+  const list = this.elements.schoolSuggestionsList;
+  const normalized = normalizeSearchText(query);
+
+  if (!list || !normalized) {
+    this.clearSchoolSuggestions();
+    return;
   }
 
+  const matches = this.schoolService
+    .searchSchools(normalized)
+    .slice(0, 8);
+
+  if (!matches.length) {
+    this.clearSchoolSuggestions();
+    return;
+  }
+
+  list.innerHTML = matches
+    .map(
+      school => `
+        <div
+          class="school-suggestion-item"
+          data-school-id="${school.id}"
+          tabindex="0"
+          role="button"
+          aria-label="Select ${school.name}"
+        >
+          <div class="school-title">${school.name}</div>
+
+          ${
+            school.level
+              ? `<div class="school-sub">${school.level}</div>`
+              : ""
+          }
+
+          ${
+            school.formattedAddress
+              ? `<div class="school-meta">${school.formattedAddress}</div>`
+              : ""
+          }
+        </div>
+      `
+    )
+    .join("");
+
+  list.hidden = false;
+  list.dataset.activeIndex = "-1";
+
+  const items = Array.from(list.children);
+
+  items.forEach(item => {
+    const selectSchool = () => {
+      const schoolId = Number(item.dataset.schoolId);
+
+      const school = this.stateManager
+        .get("schools")
+        .find(entry => entry.id === schoolId);
+
+      if (school) {
+        this.elements.schoolSearchHome.value = school.name;
+        this.clearSchoolSuggestions();
+        this.searchHomesNearSchool();
+      }
+    };
+
+    item.addEventListener("click", selectSchool);
+
+    // 🔥 keyboard support (Enter / Space)
+    item.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        selectSchool();
+      }
+    });
+  });
+}
   handleSuggestionKeyboard(event) {
     const list = this.elements.schoolSuggestionsList;
     if (!list || list.hidden) return;
