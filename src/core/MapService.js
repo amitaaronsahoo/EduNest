@@ -16,8 +16,12 @@ export class MapService {
     this.stateManager = stateManager;
     this.map = null;
     this.markersLayer = null;
+    this.schoolMarkersLayer = null;
+    this.homeMarkersLayer = null;
     this.detailMap = null;
     this.detailMarkersLayer = null;
+    this.detailSchoolMarkersLayer = null;
+    this.detailHomeMarkersLayer = null;
     this.mapContainer = null;
     this.detailMapContainer = null;
     this.defaultCenter = [38.2, -85.8]; // Louisville, KY
@@ -51,8 +55,10 @@ export class MapService {
     maxZoom:20
 }).addTo(this.map);
 
-      // Create markers layer group
+      // Create marker layer groups for each marker type
       this.markersLayer = L.layerGroup().addTo(this.map);
+      this.schoolMarkersLayer = L.layerGroup().addTo(this.map);
+      this.homeMarkersLayer = L.layerGroup().addTo(this.map);
 
       if (this.stateManager) {
         this.stateManager.set('mapReady', true);
@@ -94,6 +100,8 @@ export class MapService {
 }).addTo(this.detailMap);
 
       this.detailMarkersLayer = L.layerGroup().addTo(this.detailMap);
+      this.detailSchoolMarkersLayer = L.layerGroup().addTo(this.detailMap);
+      this.detailHomeMarkersLayer = L.layerGroup().addTo(this.detailMap);
 
       if (this.stateManager) {
         this.stateManager.set('detailMapReady', true);
@@ -116,6 +124,7 @@ export class MapService {
   addSchoolMarkers(items, onMarkerClick = null, options = {}) {
     return this.addMarkersToMap(items, {
       ...options,
+      markerType: 'school',
       mapType: options.mapType || 'main',
       icon: options.icon || this.createSchoolMarkerIcon(),
       popupText: options.popupText || (item => {
@@ -139,6 +148,7 @@ export class MapService {
   addHomeMarkers(items, onMarkerClick = null, options = {}) {
     return this.addMarkersToMap(items, {
       ...options,
+      markerType: 'home',
       mapType: options.mapType || 'main',
       icon: options.icon || this.createHomeMarkerIcon(),
       popupText: options.popupText || (item => {
@@ -151,8 +161,11 @@ export class MapService {
   addMarkersToMap(items, options = {}, onMarkerClick = null) {
     const markerItems = Array.isArray(items) ? items : [items];
     const mapType = options.mapType || 'main';
+    const markerType = options.markerType || 'home';
     const targetMap = mapType === 'detail' ? this.detailMap : this.map;
-    const targetLayer = mapType === 'detail' ? this.detailMarkersLayer : this.markersLayer;
+    const targetLayer = mapType === 'detail'
+      ? (markerType === 'school' ? this.detailSchoolMarkersLayer : this.detailHomeMarkersLayer)
+      : (markerType === 'school' ? this.schoolMarkersLayer : this.homeMarkersLayer);
 
     if (!targetMap || !targetLayer) {
       console.warn(`Map not initialized for ${mapType} view. Cannot add markers.`);
@@ -173,9 +186,13 @@ export class MapService {
       const latLng = [item.latitude, item.longitude];
       bounds.push(latLng);
 
+      const icon = markerType === 'school'
+        ? this.createSchoolMarkerIcon()
+        : (options.icon || this.createHomeMarkerIcon());
+
       const marker = L.marker(latLng, {
         title: options.title ? options.title(item) : (item.formattedAddress || item.name || 'Marker'),
-        icon: options.icon || this.createHomeMarkerIcon()
+        icon
       });
 
       const popupContent = typeof options.popupText === 'function' ? options.popupText(item) : options.popupText;
@@ -233,18 +250,19 @@ export class MapService {
 
     return this.addSchoolMarkers(nearbyItems || [], onMarkerClick, {
       mapType: 'detail',
-      clearExisting: false,
+      clearExisting: true,
       popupText: item => item.name ? `<strong>${item.name}</strong><br>${item.formattedAddress || ''}` : null
     });
   }
 
   createSchoolMarkerIcon() {
     return L.icon({
-      iconUrl: "https://cdn2.iconfinder.com/data/icons/school-pack-2/512/1-1024.png",
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32]
+      iconUrl: "https://i.pinimg.com/originals/29/b3/37/29b337ca5b36e00e37b5654874bb86fb.png",
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+      popupAnchor: [0, -8]
     });
+    
   }
 
   createHomeMarkerIcon() {
@@ -265,8 +283,11 @@ export class MapService {
 
     try {
       // Clear markers first
-      if (this.markersLayer) {
-        this.markersLayer.clearLayers();
+      if (this.schoolMarkersLayer) {
+        this.schoolMarkersLayer.clearLayers();
+      }
+      if (this.homeMarkersLayer) {
+        this.homeMarkersLayer.clearLayers();
       }
 
       // Remove all layers
@@ -280,6 +301,8 @@ export class MapService {
       this.map.remove();
       this.map = null;
       this.markersLayer = null;
+      this.schoolMarkersLayer = null;
+      this.homeMarkersLayer = null;
 
       if (this.stateManager) {
         this.stateManager.set('mapReady', false);
@@ -296,8 +319,11 @@ export class MapService {
     if (!this.detailMap) return;
 
     try {
-      if (this.detailMarkersLayer) {
-        this.detailMarkersLayer.clearLayers();
+      if (this.detailSchoolMarkersLayer) {
+        this.detailSchoolMarkersLayer.clearLayers();
+      }
+      if (this.detailHomeMarkersLayer) {
+        this.detailHomeMarkersLayer.clearLayers();
       }
 
       this.detailMap.eachLayer(layer => {
@@ -309,6 +335,8 @@ export class MapService {
       this.detailMap.remove();
       this.detailMap = null;
       this.detailMarkersLayer = null;
+      this.detailSchoolMarkersLayer = null;
+      this.detailHomeMarkersLayer = null;
 
       if (this.stateManager) {
         this.stateManager.set('detailMapReady', false);

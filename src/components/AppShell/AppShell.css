@@ -82,3 +82,18 @@
   font-size: 11px;
   color: #777;
 }
+
+.modern-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  background: transparent;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.modern-popup .leaflet-popup-content {
+  margin: 0;
+}
+
+.modern-popup .leaflet-popup-tip-container {
+  display: none;
+}
