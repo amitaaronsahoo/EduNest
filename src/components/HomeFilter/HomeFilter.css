@@ -2,3 +2,12 @@
   display: grid;
   gap: 12px;
 }
+
+.home-filter label,
+#homes-sidebar label,
+#schools-sidebar label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #334155;
+}

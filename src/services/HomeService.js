@@ -50,12 +50,12 @@ export class HomeService {
     const nearbyHomesMap = new Map();
 
     schools.forEach(school => {
-      if (!Number.isFinite(school.latitude) || !Number.isFinite(school.longitude)) {
+      if (!school || !Number.isFinite(school.latitude) || !Number.isFinite(school.longitude)) {
         return;
       }
 
       homes.forEach(home => {
-        if (!Number.isFinite(home.latitude) || !Number.isFinite(home.longitude)) {
+        if (!home || !Number.isFinite(home.latitude) || !Number.isFinite(home.longitude)) {
           return;
         }
 
@@ -84,7 +84,21 @@ export class HomeService {
       });
     });
 
-    return Array.from(nearbyHomesMap.values());
+    return Array.from(nearbyHomesMap.values())
+      .map(home => ({
+        ...home,
+        distanceToSchool: home.nearbySchools?.length
+          ? Math.min(...home.nearbySchools.map(entry => entry.distance))
+          : undefined
+      }))
+      .sort((a, b) => (a.distanceToSchool ?? Number.POSITIVE_INFINITY) - (b.distanceToSchool ?? Number.POSITIVE_INFINITY));
+  }
+
+  getNearbyHomesForSchoolsWithDistances(schools = [], homes = this.getHomes(), radiusMiles = 5) {
+    return this.getNearbyHomesForSchools(schools, homes, radiusMiles).map(home => ({
+      ...home,
+      nearbySchools: (home.nearbySchools || []).sort((a, b) => a.distance - b.distance)
+    }));
   }
 
   getNearbySchoolsForHome(home, schools = [], radiusMiles = 5) {

@@ -3,6 +3,8 @@ import { UIComponent } from "../../core/UIComponent.js";
 
 export class HouseDetail extends UIComponent {
   render() {
+    
+console.log("HouseDetail.js loaded");
     return `
       <section class="house-detail">
         <div class="detail-header">

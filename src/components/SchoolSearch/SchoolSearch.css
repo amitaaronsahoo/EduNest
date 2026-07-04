@@ -1,31 +1,34 @@
 .school-search {
-  position: relative;
   display: grid;
   gap: 12px;
 }
 
-.school-search__suggestions {
-  position: relative;
+.school-search input,
+.school-search button,
+#schoolSearch,
+#schoolSearchHome,
+#maxTuition,
+#maxPriceHome,
+#minBedrooms,
+#minBathrooms,
+#houseMaxTuition {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
 }
 
-.school-suggestions-list {
-  display: grid;
-  gap: 8px;
-  max-height: 240px;
-  overflow-y: auto;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #fff;
-  padding: 8px;
-}
-
-.school-suggestion-item {
-  padding: 8px 10px;
-  border-radius: 6px;
+.school-search button,
+#schoolSearchBtn,
+#allSchoolBtn,
+#schoolSearchHomeBtn,
+#applyFiltersBtn,
+#applyFiltersHomeBtn,
+#houseApplySchoolFiltersBtn,
+#detailBackBtn {
+  background: linear-gradient(90deg, #0f4c81 0%, #2563eb 100%);
+  color: #fff;
+  border: 0;
   cursor: pointer;
-}
-
-.school-suggestion-item.active,
-.school-suggestion-item:hover {
-  background: #f3f4f6;
+  font-weight: 700;
 }

@@ -19,24 +19,11 @@ export class HomeCard extends UIComponent {
         <p class="home-card__meta"><strong>Square Feet:</strong> ${home.squareFeet ?? "N/A"}</p>
         <p class="home-card__price"><strong>Price:</strong> ${currency(home.price ?? 0)}</p>
         ${distanceText}
-        <div class="home-card__actions">
-          <button type="button" class="home-card__button" data-action="details">View Details</button>
-          <button type="button" class="home-card__button ${isSaved ? "home-card__button--saved" : ""}" data-action="save">
-            ${isSaved ? "Remove Saved" : "Save House"}
-          </button>
-        </div>
       </article>
     `;
   }
 
   onMounted() {
-    this.addDelegatedListener("click", '[data-action="details"]', () => {
-      this.props.onSelect?.(this.props.home);
-    });
-
-    this.addDelegatedListener("click", '[data-action="save"]', () => {
-      this.props.onToggleSave?.(this.props.home);
-    });
   }
 }
 

@@ -2,3 +2,10 @@
   display: grid;
   gap: 12px;
 }
+
+.school-filter .filter-group {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f8fbff;
+  border: 1px solid #e2e8f0;
+}

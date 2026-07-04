@@ -1,6 +1,48 @@
 .home-card {
-  padding: 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  background: #fff;
+  padding: 18px;
+  border: 1px solid #dbe4f0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 8px 24px rgba(15, 76, 129, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 76, 129, 0.12);
+}
+
+.home-card__title {
+  margin: 0 0 8px;
+  color: #0f4c81;
+  font-size: 1rem;
+}
+
+.home-card__meta,
+.home-card__price,
+.home-card__distance {
+  margin: 4px 0;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.home-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.home-card__button {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #0f4c81;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.home-card__button--saved {
+  background: #d97706;
 }
