@@ -1,4 +1,9 @@
 export function calculateDistanceInMiles(lat1, lon1, lat2, lon2) {
+  // Guardrail fallback to prevent calculation errors on missing coordinate data (NFR10)
+  if (lat1 == null || lon1 == null || lat2 == null || lon2 == null) {
+    return Number.POSITIVE_INFINITY;
+  }
+
   const toRadians = degrees => (degrees * Math.PI) / 180;
   const earthRadiusMiles = 3958.8;
   const dLat = toRadians(lat2 - lat1);
@@ -11,6 +16,7 @@ export function calculateDistanceInMiles(lat1, lon1, lat2, lon2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return earthRadiusMiles * c;
 }
+
 
 export function getSchoolMatchScore(school, query) {
   if (!query) {
