@@ -20,6 +20,11 @@ export class AppShell extends UIComponent {
     this.currentHouseDetail = null;
     this.lastSelectedSchool = null;
     this.houseDetail = new HouseDetail(props, stateManager);
+    this.paginationState = {
+      schools: 1,
+      homes: 1,
+      saved: 1
+    };
   }
 
   render() {
@@ -30,65 +35,81 @@ export class AppShell extends UIComponent {
         </header>
         <div class="app-shell__layout">
           <aside class="sidebar">
-            <h2>Navigation</h2>
-            <div id="app-nav"></div>
-
-            <div id="schools-sidebar">
-              <h2>Find Schools</h2>
-              ${new SchoolSearch().render()}
-              <button id="allSchoolBtn" type="button">Search Homes for all selected schools</button>
-              <h2>Filter Schools</h2>
-              <div class="filter-group">
-                <label><input type="checkbox" name="schoolType" value="JCPS"> Public</label>
-                <label><input type="checkbox" name="schoolType" value="Private"> Private</label>
-                <label><input type="checkbox" name="schoolType" value="Parochial School"> Catholic</label>
-              </div>
-              <div class="filter-group">
-                <label><input type="checkbox" name="gradeLevel" value="Elementary"> Elementary</label>
-                <label><input type="checkbox" name="gradeLevel" value="Middle"> Middle</label>
-                <label><input type="checkbox" name="gradeLevel" value="High"> High</label>
-              </div>
-              <label for="maxTuition">Max Tuition: $<span id="maxTuitionValue">5000</span></label>
-              <input id="maxTuition" type="range" min="0" max="50000" step="1000" value="5000" />
-              <button id="applyFiltersBtn" type="button">Apply Filters</button>
+            <div class="sidebar__nav-panel">
+              <h2>Navigation</h2>
+              <div id="app-nav"></div>
             </div>
 
-            <div id="homes-sidebar" hidden>
-              <h2>Find Homes Near School</h2>
-              <label for="schoolSearchHome">School name</label>
-              <input id="schoolSearchHome" type="text" placeholder="e.g., DuPont Manual High School" />
-              <div id="schoolSuggestionsContainer" class="school-suggestions">
-                <div id="schoolSuggestionsList" class="school-suggestions-list" hidden></div>
+            <div class="sidebar__content-panel">
+              <div id="schools-sidebar">
+                <h2>Find Schools</h2>
+                ${new SchoolSearch().render()}
+                <button id="allSchoolBtn" type="button">Search Homes for all selected schools</button>
+                <h2>Filter Schools</h2>
+                <div class="filter-group">
+                  <label><input type="checkbox" name="schoolType" value="JCPS"> Public</label>
+                  <label><input type="checkbox" name="schoolType" value="Private"> Private</label>
+                  <label><input type="checkbox" name="schoolType" value="Parochial School"> Catholic</label>
+                </div>
+                <div class="filter-group">
+                  <label><input type="checkbox" name="gradeLevel" value="Elementary"> Elementary</label>
+                  <label><input type="checkbox" name="gradeLevel" value="Middle"> Middle</label>
+                  <label><input type="checkbox" name="gradeLevel" value="High"> High</label>
+                </div>
+                <label for="maxTuition">Max Tuition: $<span id="maxTuitionValue">5000</span></label>
+                <input id="maxTuition" type="range" min="0" max="50000" step="1000" value="5000" />
+                <button id="applyFiltersBtn" type="button">Apply Filters</button>
               </div>
-              <button id="schoolSearchHomeBtn" type="button">Search Nearby Homes</button>
-              <h2>Filter Homes</h2>
-              <label for="minBedrooms">Minimum bedrooms</label>
-              <select id="minBedrooms">
-                <option value="0">Any</option>
-                <option value="1">1+</option>
-                <option value="2">2+</option>
-                <option value="3">3+</option>
-                <option value="4">4+</option>
-              </select>
-              <label for="minBathrooms">Minimum bathrooms</label>
-              <select id="minBathrooms">
-                <option value="0">Any</option>
-                <option value="1">1+</option>
-                <option value="2">2+</option>
-                <option value="3">3+</option>
-              </select>
-              <label for="maxPriceHome">Max Price: <span id="maxPriceValue">300000</span></label>
-              <input id="maxPriceHome" type="range" min="50000" max="1000000" step="10000" value="300000" />
-              <button id="applyFiltersHomeBtn" type="button">Apply Filters</button>
-              <div id="homeResults" class="sidebar__status"></div>
-            </div>
 
-            <h2>Saved Homes</h2>
-            <div id="savedHousesCount">0 homes saved</div>
-            <div id="savedHousesList"></div>
+              <div id="homes-sidebar" hidden>
+                <h2>Find Homes Near School</h2>
+                <label for="schoolSearchHome">School name</label>
+                <input id="schoolSearchHome" type="text" placeholder="e.g., DuPont Manual High School" />
+                <div id="schoolSuggestionsContainer" class="school-suggestions">
+                  <div id="schoolSuggestionsList" class="school-suggestions-list" hidden></div>
+                </div>
+                <button id="schoolSearchHomeBtn" type="button">Search Nearby Homes</button>
+                <h2>Filter Homes</h2>
+                <label for="minBedrooms">Minimum bedrooms</label>
+                <select id="minBedrooms">
+                  <option value="0">Any</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                  <option value="4">4+</option>
+                </select>
+                <label for="minBathrooms">Minimum bathrooms</label>
+                <select id="minBathrooms">
+                  <option value="0">Any</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                </select>
+                <label for="maxPriceHome">Max Price: <span id="maxPriceValue">300000</span></label>
+                <input id="maxPriceHome" type="range" min="50000" max="1000000" step="10000" value="300000" />
+                <button id="applyFiltersHomeBtn" type="button">Apply Filters</button>
+                <div id="homeResults" class="sidebar__status"></div>
+              </div>
+
+              <h2>Saved Homes</h2>
+              <div id="savedHousesCount">0 homes saved</div>
+              <div id="savedHousesList"></div>
+            </div>
           </aside>
 
           <main class="app-shell__main">
+            <section id="landing-content" class="app-section landing-section">
+              <div class="landing-card">
+                <h2>Choose a view</h2>
+                <p>Pick a tab to browse schools, homes, or your saved properties.</p>
+                <div class="landing-actions">
+                  <button type="button" class="landing-action" data-tab="schools">📚 Schools</button>
+                  <button type="button" class="landing-action" data-tab="homes">🏠 Homes</button>
+                  <button type="button" class="landing-action" data-tab="saved">💾 Saved Homes</button>
+                </div>
+              </div>
+            </section>
+
             <section id="schools-content" class="app-section">
               <div class="app-section__header">
                 <h2>School Directory</h2>
@@ -96,7 +117,7 @@ export class AppShell extends UIComponent {
               </div>
               <div id="schoolResults"></div>
               <div class="school-list">
-                <div class="school-list__header">
+                <div class="school-row__header">
                   <div>School Name</div>
                   <div>Address</div>
                   <div>Type</div>
@@ -105,6 +126,7 @@ export class AppShell extends UIComponent {
                 </div>
                 <div id="schoolsTableBody"></div>
               </div>
+              <div id="schoolPagination" class="pagination"></div>
             </section>
 
             <section id="homes-content" class="app-section" hidden>
@@ -116,6 +138,7 @@ export class AppShell extends UIComponent {
               <div id="results" class="cards">
                 <div id="homeEmptyState" class="empty-state">Select filters and click "Apply Filters" to see results</div>
               </div>
+              <div id="homePagination" class="pagination"></div>
             </section>
 
             <section id="house-details-content" class="app-section" hidden>
@@ -160,6 +183,7 @@ export class AppShell extends UIComponent {
               <div id="savedHouses" class="cards">
                 <div id="emptyState" class="empty-state">No homes saved yet</div>
               </div>
+              <div id="savedPagination" class="pagination"></div>
             </section>
           </main>
         </div>
@@ -180,6 +204,8 @@ export class AppShell extends UIComponent {
   cacheElements() {
     this.elements = {
       appNav: this.querySelector("#app-nav"),
+      landingContent: this.querySelector("#landing-content"),
+      sidebar: this.querySelector(".sidebar"),
       schoolsSidebar: this.querySelector("#schools-sidebar"),
       homesSidebar: this.querySelector("#homes-sidebar"),
       schoolsContent: this.querySelector("#schools-content"),
@@ -195,6 +221,7 @@ export class AppShell extends UIComponent {
       applyFiltersBtn: this.querySelector("#applyFiltersBtn"),
       schoolResults: this.querySelector("#schoolResults"),
       schoolsTableBody: this.querySelector("#schoolsTableBody"),
+      schoolPagination: this.querySelector("#schoolPagination"),
       allSchoolBtn: this.querySelector("#allSchoolBtn"),
       schoolSearchHome: this.querySelector("#schoolSearchHome"),
       schoolSuggestionsList: this.querySelector("#schoolSuggestionsList"),
@@ -207,6 +234,7 @@ export class AppShell extends UIComponent {
       homeResults: this.querySelector("#homeResults"),
       resultsTitle: this.querySelector("#resultsTitle"),
       results: this.querySelector("#results"),
+      homePagination: this.querySelector("#homePagination"),
       homeEmptyState: this.querySelector("#homeEmptyState"),
       houseDetailTitle: this.querySelector("#houseDetailTitle"),
       houseDetailSubtitle: this.querySelector("#houseDetailSubtitle"),
@@ -220,6 +248,7 @@ export class AppShell extends UIComponent {
       savedHousesCount: this.querySelector("#savedHousesCount"),
       savedHousesList: this.querySelector("#savedHousesList"),
       savedHouses: this.querySelector("#savedHouses"),
+      savedPagination: this.querySelector("#savedPagination"),
       emptyState: this.querySelector("#emptyState")
     };
   }
@@ -306,9 +335,9 @@ export class AppShell extends UIComponent {
     });
 
     this.querySelector("#savedHouses")?.addEventListener("click", event => {
-      const btn = event.target.closest('[data-action="saved-details"]');
-      if (!btn) return;
-      const homeId = Number(btn.dataset.homeId);
+      const homeCard = event.target.closest("[data-home-id]");
+      if (!homeCard) return;
+      const homeId = Number(homeCard.dataset.homeId);
       const home = this.stateManager.get("savedHouses").find(item => item.id === homeId);
       if (home) this.renderHouseDetailView(home);
     });
@@ -323,12 +352,42 @@ export class AppShell extends UIComponent {
       const button = event.target.closest("[data-tab]");
       if (!button) return;
       this.switchTab(button.dataset.tab);
+      this.returnFromDetail();
+    });
+
+    this.querySelector("#landing-content")?.addEventListener("click", event => {
+      const button = event.target.closest("[data-tab]");
+      if (!button) return;
+      this.switchTab(button.dataset.tab);
+      this.renderSavedHouses();
+      this.returnFromDetail();
+    });
+
+    this.elements.schoolPagination?.addEventListener("click", event => {
+      const button = event.target.closest("button[data-page]");
+      if (!button) return;
+      this.setPaginationPage("schools", Number(button.dataset.page));
+      this.renderSchoolsList();
+    });
+
+    this.elements.homePagination?.addEventListener("click", event => {
+      const button = event.target.closest("button[data-page]");
+      if (!button) return;
+      this.setPaginationPage("homes", Number(button.dataset.page));
+      this.renderHomes(this.stateManager.get("filteredHomes"));
+    });
+
+    this.elements.savedPagination?.addEventListener("click", event => {
+      const button = event.target.closest("button[data-page]");
+      if (!button) return;
+      this.setPaginationPage("saved", Number(button.dataset.page));
+      this.renderSavedHouses();
     });
   }
 
   async bootstrap() {
     this.stateManager.initializeAppState();
-    this.switchTab("schools");
+    this.switchTab("landing");
     try {
       await this.dataService.loadAppData();
       this.savedHousesService.loadSavedHouses();
@@ -378,17 +437,20 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     if (!this.elements.appNav) return;
     const activeTab = this.stateManager.get("currentTab") || "schools";
     this.elements.appNav.innerHTML = `
-      <button type="button" data-tab="schools" class="${activeTab === "schools" ? "is-active" : ""}">📚 Schools</button>
-      <button type="button" data-tab="homes" class="${activeTab === "homes" ? "is-active" : ""}">🏠 Homes</button>
-      <button type="button" data-tab="saved" class="${activeTab === "saved" ? "is-active" : ""}">💾 Saved Homes</button>
+      <button type="button" style="width: 200px" data-tab="schools" class="${activeTab === "schools" ? "is-active" : ""}">📚 Schools</button>
+      <button type="button" style="width: 200px" data-tab="homes" class="${activeTab === "homes" ? "is-active" : ""}">🏠 Homes</button>
+      <button type="button" style="width: 200px" data-tab="saved" class="${activeTab === "saved" ? "is-active" : ""}">💾 Saved Homes</button>
     `;
   }
 
   syncTabVisibility() {
-    const tab = this.stateManager.get("currentTab") || "schools";
+    const tab = this.stateManager.get("currentTab") || "landing";
     const showingDetail = this.currentHouseDetail !== null;
 
+    this.elements.landingContent.hidden = tab !== "landing";
+
     // Sidebar
+    this.elements.sidebar.hidden = tab === "landing";
     this.elements.schoolsSidebar.hidden = tab !== "schools";
     this.elements.homesSidebar.hidden = tab !== "homes";
 
@@ -421,10 +483,44 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     }
 }
 
+  setPaginationPage(section, page) {
+    const safePage = Number.isFinite(page) && page > 0 ? page : 1;
+    this.paginationState[section] = safePage;
+  }
+
+  renderPaginationControls(container, totalItems, pageSize, section) {
+    if (!container) return;
+    const threshold = section === "schools" ? 50 : 100;
+    const totalPages = totalItems > threshold ? Math.ceil(totalItems / pageSize) : 1;
+    const currentPage = Math.min(Math.max(this.paginationState[section] || 1, 1), totalPages);
+    this.paginationState[section] = currentPage;
+
+    if (totalItems <= threshold) {
+      container.innerHTML = "";
+      container.hidden = true;
+      return;
+    }
+
+    const pages = [];
+    for (let index = 1; index <= totalPages; index += 1) {
+      pages.push(`<button type="button" class="pagination__button ${index === currentPage ? "is-active" : ""}" data-page="${index}">${index}</button>`);
+    }
+
+    container.innerHTML = `
+      <div class="pagination__bar">
+        <button type="button" class="pagination__button" data-page="${Math.max(1, currentPage - 1)}" ${currentPage === 1 ? "disabled" : ""}>Previous</button>
+        <div class="pagination__pages">${pages.join("")}</div>
+        <button type="button" class="pagination__button" data-page="${Math.min(totalPages, currentPage + 1)}" ${currentPage === totalPages ? "disabled" : ""}>Next</button>
+      </div>
+    `;
+    container.hidden = false;
+  }
+
   applySchoolFilters() {
     const types = Array.from(this.querySelectorAll('input[name="schoolType"]:checked')).map(input => input.value);
     const levels = Array.from(this.querySelectorAll('input[name="gradeLevel"]:checked')).map(input => input.value);
     const maxTuition = Number(this.elements.maxTuition?.value || 5000);
+    this.setPaginationPage("schools", 1);
     this.schoolService.applyFilters({ types, levels, maxTuition });
     this.renderSchoolsList();
   }
@@ -483,9 +579,15 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
       return a.name.localeCompare(b.name);
     });
 
+    const pageSize = 50;
+    const currentPage = this.paginationState.schools || 1;
+    const totalItems = schoolsToRender.length;
+    const startIndex = (currentPage - 1) * pageSize;
+    const visibleSchools = schoolsToRender.slice(startIndex, startIndex + pageSize);
+
     this.elements.schoolResults.textContent = `${schoolsToRender.length} school${schoolsToRender.length !== 1 ? "s" : ""} found`;
-    this.elements.schoolsTableBody.innerHTML = schoolsToRender.length
-      ? schoolsToRender
+    this.elements.schoolsTableBody.innerHTML = visibleSchools.length
+      ? visibleSchools
           .map(school => {
             const row = new SchoolRow({
               school,
@@ -496,6 +598,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
           })
           .join("")
       : '<div class="empty-state">No schools found</div>';
+    this.renderPaginationControls(this.elements.schoolPagination, totalItems, pageSize, "schools");
   }
 
   showSchoolSearchSuggestions(query) {
@@ -742,8 +845,13 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
         ? [fallbackSchool]
         : [];
 
-    this.elements.results.innerHTML = homeList.length
-      ? homeList
+    const pageSize = 100;
+    const currentPage = this.paginationState.homes || 1;
+    const startIndex = (currentPage - 1) * pageSize;
+    const visibleHomes = homeList.slice(startIndex, startIndex + pageSize);
+
+    this.elements.results.innerHTML = visibleHomes.length
+      ? visibleHomes
           .map(home => new HomeCard({
             home,
             isSaved: this.savedHousesService.isHouseSaved(home),
@@ -754,6 +862,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
       : '<div class="empty-state">No homes found. Try adjusting your filters.</div>';
 
     this.elements.homeResults.textContent = `${homeList.length} home${homeList.length !== 1 ? "s" : ""} found`;
+    this.renderPaginationControls(this.elements.homePagination, homeList.length, pageSize, "homes");
 
     if (selectedSchools.length > 1) {
       this.renderMultiSchoolHomeMap(homeList, schoolsToRender);
@@ -824,22 +933,26 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
         : savedHouses
             .map(home => `
               <div class="saved-home" data-home-id="${home.id}">
-                <div class="saved-home__title">${home.formattedAddress}</div>
-                <div class="saved-home__price">${currency(home.price)}</div>
               </div>
             `)
             .join("");
+    const pageSize = 100;
+    const currentPage = this.paginationState.saved || 1;
+    const startIndex = (currentPage - 1) * pageSize;
+    const visibleSavedHouses = savedHouses.slice(startIndex, startIndex + pageSize);
+
     this.elements.savedHouses.innerHTML =
-      savedHouses.length === 0
+      visibleSavedHouses.length === 0
         ? '<div class="empty-state">No homes saved yet</div>'
-        : savedHouses
+        : visibleSavedHouses
             .map(home => new HomeCard({
               home,
               isSaved: true,
               onSelect: selectedHome => this.renderHouseDetailView(selectedHome),
               onToggleSave: selectedHome => this.toggleSavedHouse(selectedHome)
-            }).render() + `<button type="button" data-action="saved-details" data-home-id="${home.id}">View Details</button>`)
+            }).render())
             .join("");
+    this.renderPaginationControls(this.elements.savedPagination, savedHouses.length, pageSize, "saved");
   }
 
   renderHouseDetailView(home, skipStateUpdate = false) {
