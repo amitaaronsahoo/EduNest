@@ -1,11 +1,13 @@
 .app-nav {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
 .app-nav button {
-  width: 100%;
+  width: auto;
+  flex: 0 0 auto;
   border: 0;
   border-radius: 999px;
   padding: 10px 12px;

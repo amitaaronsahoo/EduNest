@@ -1,6 +1,7 @@
 .home-card {
   padding: 18px;
   border: 1px solid #dbe4f0;
+  cursor: pointer;
   border-radius: 16px;
   background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
   box-shadow: 0 8px 24px rgba(15, 76, 129, 0.08);
