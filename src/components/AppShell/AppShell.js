@@ -25,6 +25,7 @@ export class AppShell extends UIComponent {
       homes: 1,
       saved: 1
     };
+    this.pendingViewRefresh = false;
   }
 
   render() {
@@ -195,8 +196,8 @@ export class AppShell extends UIComponent {
     this.cacheElements();
     this.bindEvents();
     this.subscribeToState(
-      ["houses", "schools", "filteredHomes", "schoolsFiltered", "savedHouses", "currentTab", "currentHouseDetail", "dataLoadError", "isLoadingData"],
-      () => this.syncView()
+      ["houses", "schools", "filteredHomes", "schoolsFiltered", "currentTab", "currentHouseDetail", "dataLoadError", "isLoadingData"],
+      () => this.handleStateChange()
     );
     this.bootstrap();
   }
@@ -286,6 +287,17 @@ export class AppShell extends UIComponent {
       this.applyHouseDetailFilters();
     });
     this.elements.houseApplySchoolFiltersBtn?.addEventListener("click", () => this.applyHouseDetailFilters());
+
+    this.querySelector("#houseNearbySchools")?.addEventListener("click", event => {
+      const btn = event.target.closest('.view-school-btn');
+      if (!btn) return;
+      const schoolId = Number(btn.dataset.schoolId);
+      const school = this.stateManager.get("schools").find(s => s.id === schoolId);
+      if (!school) return;
+      event.preventDefault();
+      event.stopPropagation();
+      this.viewSchoolOnDetailMap(school);
+    });
 
     document.addEventListener("click", event => {
       const container = this.elements.schoolSearchSuggestionsContainer;
@@ -397,8 +409,35 @@ export class AppShell extends UIComponent {
     }
   }
 
+  handleStateChange() {
+    if (this.stateManager?.locked) {
+      this.queueViewRefresh();
+      return;
+    }
+
+    this.syncView();
+  }
+
+  queueViewRefresh() {
+    if (this.pendingViewRefresh) return;
+
+    this.pendingViewRefresh = true;
+    setTimeout(() => {
+      this.pendingViewRefresh = false;
+      if (this.stateManager?.locked) {
+        this.queueViewRefresh();
+        return;
+      }
+      this.syncView();
+    }, 0);
+  }
+
   syncView() {
-    
+    if (this.stateManager?.locked) {
+      this.queueViewRefresh();
+      return;
+    }
+
     this.renderNavigation();
     this.syncTabVisibility();
 this.renderHouseDetailView(this.currentHouseDetail, true);
@@ -730,10 +769,17 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
           ? [{ school: Array.isArray(schools) && schools[0]?.name ? schools[0].name : "selected school", distance: home.distanceToSchool }]
           : []);
 
-    const distanceMarkup = distances.length
-      ? `<div style="margin-top:8px; padding:8px 9px; border-radius:10px; background:#fff6c9; border:1px solid #f2d96b;">${distances.map(entry => `<div style="font-size:12px; color:#123a6e; margin-bottom:3px;">${entry.distance.toFixed(2)} miles from ${entry.school}</div>`).join("")}</div>`
-      : "";
-
+  const distanceMarkup = distances.length
+  ? `
+      <div style="margin-top:8px; padding:8px 9px; border-radius:10px; background:#fff6c9; border:1px solid #f2d96b;">
+        ${distances.map(entry => `
+          <div style="font-size:12px; color:#123a6e; margin-bottom:3px;">
+            ${entry.distance.toFixed(2)} miles from ${entry.school}
+          </div>
+        `).join("")}
+      </div>
+    `
+  : "";
     return `
       <div style="min-width:220px; max-width:270px; border-radius:12px; overflow:hidden; background:linear-gradient(135deg, #fffdf7 0%, #ffffff 100%); box-shadow:0 10px 20px rgba(31,79,153,0.14); border:1px solid #dce7ff; position:relative; margin:0; padding:0;">
         <button
@@ -765,7 +811,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     popup?.querySelector(".save-home-marker")?.addEventListener("click", event => {
       event.preventDefault();
       event.stopPropagation();
-      this.toggleSavedHouse(home, { skipDetailView: true });
+      this.toggleSavedHouse(home, { skipDetailView: true, skipHomeRefresh: true });
       const button = event.currentTarget;
       button.textContent = button.textContent === "★" ? "☆" : "★";
     });
@@ -1041,18 +1087,62 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
           <div>${school.level || ""} ${school.type ? `• ${school.type}` : ""}</div>
           <div>${school.formattedAddress || ""}</div>
           <div>${school.distance.toFixed(2)} miles away</div>
+          <div style="margin-top:6px;">
+            <button type="button" class="view-school-btn" data-school-id="${school.id}" style="border:none;border-radius:8px;padding:6px 8px;background:#1f4f99;color:#fff;cursor:pointer;font-weight:600;">View on map</button>
+          </div>
         </div>
       `)
       .join("");
+  }
+
+  viewSchoolOnDetailMap(school) {
+    if (!school || !this.currentHouseDetail) return;
+
+    // Get homes near the selected school
+    const nearbyHomes = this.homeService.getNearbyHomesForSchool(school);
+
+    // Re-initialize detail map and show the selected school and nearby homes
+    try {
+      this.mapService.destroyDetailMap();
+      this.mapService.initializeDetailMap("detailMap");
+    } catch (error) {
+      console.error("Failed to initialize detail map for school view:", error);
+      return;
+    }
+
+    this.mapService.addSchoolMarkers([school], null, {
+      mapType: "detail",
+      clearExisting: true,
+      popupText: s => this.buildSchoolPopupContent(s),
+      popupOptions: { className: "modern-popup", closeButton: false, maxWidth: 330, minWidth: 290 },
+      onPopupOpen: (marker, s) => this.attachSchoolPopupHandlers(marker, s)
+    });
+
+    this.mapService.addHomeMarkers(nearbyHomes, null, {
+      mapType: "detail",
+      clearExisting: false,
+      popupText: h => this.buildHomePopupContent(h, [school]),
+      popupOptions: { className: "modern-popup", closeButton: false, maxWidth: 330, minWidth: 290 },
+      onPopupOpen: (marker, h) => this.attachHomePopupHandlers(marker, h)
+    });
+
+    this.mapService.invalidateDetailMapSize();
   }
 
   toggleSavedHouse(home, options = {}) {
     if (!home) return;
     this.savedHousesService.toggleSavedHouse(home);
     this.renderSavedHouses();
-    this.renderHomes(this.stateManager.get("filteredHomes"));
+
     if (!options.skipDetailView && this.currentHouseDetail?.id === home.id) {
-      this.renderHouseDetailView(home, false);
+      const detailInfo = new HouseDetailInfo({
+        home: {
+          ...home,
+          zip: home.zip || ""
+        },
+        isSaved: this.savedHousesService.isHouseSaved(home)
+      });
+      this.elements.houseDetailInfo.innerHTML = detailInfo.render();
     }
   }
 
