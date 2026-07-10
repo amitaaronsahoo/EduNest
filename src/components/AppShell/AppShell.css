@@ -241,3 +241,134 @@
 .modern-popup .leaflet-popup-tip-container {
   display: none;
 }
+
+/* Desktop compact layout overrides for FR1 homes/map view */
+@media (min-width: 1000px) {
+  .app-shell {
+    width: min(100% - 32px, 1600px);
+    max-width: none;
+    padding: 0 16px 24px;
+    font-size: 14px;
+  }
+
+  .app-shell__header {
+    margin-bottom: 14px;
+    padding: 14px 20px;
+  }
+
+  .app-shell__header h1 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+
+  .app-shell__layout {
+    display: block;
+  }
+
+  .app-shell__layout:has(.sidebar:not([hidden])) {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+
+    padding: 14px;
+    gap: 12px;
+    border-radius: 14px;
+  }
+
+  .sidebar__nav-panel {
+    flex: none;
+    width: 100%;
+    padding-right: 0;
+    padding-bottom: 12px;
+    border-right: 0;
+    border-bottom: 1px solid #dbe4f0;
+  }
+
+  .sidebar__content-panel {
+    width: 100%;
+    min-width: 0;
+    gap: 12px;
+  }
+
+  .sidebar__nav-panel > div,
+  .sidebar__content-panel > div {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .sidebar h2,
+  .sidebar__nav-panel > h2,
+  .sidebar__content-panel > h2 {
+    font-size: 1rem;
+    margin: 0 0 4px;
+  }
+
+  .sidebar label {
+    margin-top: 0.35rem;
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+  }
+
+  .sidebar input,
+  .sidebar select,
+  .sidebar button {
+    padding: 0.42rem 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .app-shell__main {
+    min-width: 0;
+  }
+
+  main section {
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .app-section {
+    gap: 10px;
+  }
+
+  .app-section__header {
+    margin-bottom: 0;
+  }
+
+  .app-section__header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .app-section__header p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  #map {
+    height: 320px;
+    margin-bottom: 12px;
+  }
+
+  #mapContainer {
+    margin-bottom: 10px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .home-card {
+    padding: 0.8rem;
+  }
+}

@@ -47,3 +47,40 @@
 .home-card__button--saved {
   background: #d97706;
 }
+
+.home-card__title {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.home-card__rank {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: #1f4f99;
+  color: #ffffff;
+}
+
+.numbered-home-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #1f4f99;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(18, 58, 110, 0.35);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.numbered-home-marker span {
+  line-height: 1;
+}

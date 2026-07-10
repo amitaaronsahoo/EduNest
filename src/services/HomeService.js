@@ -9,21 +9,81 @@ export class HomeService {
     return this.stateManager?.get("houses") || [];
   }
 
-  applyFilters({ homes = this.getHomes(), minBedrooms = 0, minBathrooms = 0, maxPrice = Number.POSITIVE_INFINITY } = {}) {
-    const filtered = homes.filter(home => {
-      return (
-        Number(home.bedrooms) >= minBedrooms &&
-        Number(home.bathrooms) >= minBathrooms &&
-        Number(home.price) <= maxPrice
-      );
+  applyFilters({
+  homes = this.getHomes(),
+  minBedrooms = 0,
+  minBathrooms = 0,
+  maxPrice = Number.POSITIVE_INFINITY,
+  sortBy = "distance"
+} = {}) {
+  const filtered = homes.filter(home => {
+    return (
+      Number(home.bedrooms) >= minBedrooms &&
+      Number(home.bathrooms) >= minBathrooms &&
+      Number(home.price) <= maxPrice
+    );
+  });
+
+  const sorted = this.sortHomes(filtered, sortBy);
+
+  if (this.stateManager) {
+    this.stateManager.set("filteredHomes", sorted);
+    this.stateManager.set("activeHomeFilters", {
+      minBedrooms,
+      minBathrooms,
+      maxPrice,
+      sortBy
     });
+  }
 
-    if (this.stateManager) {
-      this.stateManager.set("filteredHomes", filtered);
-      this.stateManager.set("activeHomeFilters", { minBedrooms, minBathrooms, maxPrice });
+  return sorted;
+}
+
+  sortHomes(homes = [], sortBy = "distance") {
+    const safeHomes = Array.isArray(homes) ? [...homes] : [];
+
+    const numberOrFallback = (value, fallback = Number.POSITIVE_INFINITY) => {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : fallback;
+    };
+
+    switch (sortBy) {
+      case "price-asc":
+        return safeHomes.sort((a, b) => {
+          return numberOrFallback(a.price) - numberOrFallback(b.price);
+        });
+
+      case "price-desc":
+        return safeHomes.sort((a, b) => {
+          return numberOrFallback(b.price, Number.NEGATIVE_INFINITY) -
+            numberOrFallback(a.price, Number.NEGATIVE_INFINITY);
+        });
+
+      case "bedrooms-desc":
+        return safeHomes.sort((a, b) => {
+          return numberOrFallback(b.bedrooms, Number.NEGATIVE_INFINITY) -
+            numberOrFallback(a.bedrooms, Number.NEGATIVE_INFINITY);
+        });
+
+      case "bathrooms-desc":
+        return safeHomes.sort((a, b) => {
+          return numberOrFallback(b.bathrooms, Number.NEGATIVE_INFINITY) -
+            numberOrFallback(a.bathrooms, Number.NEGATIVE_INFINITY);
+        });
+
+      case "sqft-desc":
+        return safeHomes.sort((a, b) => {
+          return numberOrFallback(b.squareFeet, Number.NEGATIVE_INFINITY) -
+            numberOrFallback(a.squareFeet, Number.NEGATIVE_INFINITY);
+        });
+
+      case "distance":
+      default:
+        return safeHomes.sort((a, b) => {
+          return numberOrFallback(a.distanceToSchool) -
+            numberOrFallback(b.distanceToSchool);
+        });
     }
-
-    return filtered;
   }
 
   getNearbyHomesForSchool(school, homes = this.getHomes(), radiusMiles = 5) {
