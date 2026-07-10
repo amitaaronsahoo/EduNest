@@ -29,7 +29,6 @@ Type these commands into your terminal window one by one, pressing **Enter** aft
 
 > 💡 **Tip:** Type `cd ` followed by a space, then drag and drop the EduNest folder from your file explorer directly into the terminal to easily paste the path!
 
-```bash
 cd path/to/EduNest
 
 Download the required setup files (you only have to do this the very first time):
