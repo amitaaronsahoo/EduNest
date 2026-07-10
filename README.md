@@ -1,5 +1,7 @@
 # 🏡 EduNest: Home & School Locator
 
+Live Website: https://amitaaronsahoo.github.io/EduNest/
+
 Welcome to **EduNest**!
 
 This is a simple, easy-to-use web application that helps you find homes and visually explore nearby schools on an interactive map in **Jefferson County, Kentucky**.
