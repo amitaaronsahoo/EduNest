@@ -61,14 +61,17 @@ After running the last command, the terminal will provide a web address. Open yo
 ### 🛠️ Troubleshooting (Common Issues)
 
 ⚠️ Problem: You see an error saying "npm is not recognized"
+
 Why: Your computer doesn't know what Node.js is yet.
 Fix: Ensure you completed Step 1 and installed Node.js. You may need to completely close your terminal window and open a new one for the installation to take effect.
 
 ⚠️ Problem: You double-clicked index.html and the screen is blank
+
 Why: Modern web apps cannot be opened directly from your file explorer. They must be served through a local server to access data files securely.
 Fix: Close that browser tab, open your terminal, and follow the Quick Start instructions to run npm run dev.
 
 ⚠️ Problem: No homes are showing up on the map
+
 Fix 1: You might have a typo in the school search box. Try typing a simpler part of the name.
 Fix 2: Your filters might be too strict. Try changing the bedrooms and bathrooms back to "Any" and increasing the maximum price.
 
