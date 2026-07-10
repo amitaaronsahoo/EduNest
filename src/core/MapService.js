@@ -178,7 +178,7 @@ export class MapService {
 
     const bounds = [];
 
-    markerItems.forEach(item => {
+    markerItems.forEach((item, index) => {
       if (!item || !this.isValidCoordinate(item.latitude, item.longitude)) {
         return;
       }
@@ -188,16 +188,28 @@ export class MapService {
 
       const icon = markerType === 'school'
         ? this.createSchoolMarkerIcon()
-        : (options.icon || this.createHomeMarkerIcon());
+        : typeof options.icon === "function"
+          ? options.icon(item, index)
+          : (options.icon || this.createHomeMarkerIcon());
 
       const marker = L.marker(latLng, {
         title: options.title ? options.title(item) : (item.formattedAddress || item.name || 'Marker'),
         icon
       });
 
-      const popupContent = typeof options.popupText === 'function' ? options.popupText(item) : options.popupText;
+      const popupContent = typeof options.popupText === 'function' ? options.popupText(item, index) : options.popupText;
       if (popupContent) {
         marker.bindPopup(popupContent, options.popupOptions || {});
+      }
+
+      const tooltipContent = typeof options.tooltipText === "function" ? options.tooltipText(item, index) : options.tooltipText;
+      if (tooltipContent) {
+        marker.bindTooltip(tooltipContent, {
+          direction: "top",
+          offset: [0, -12],
+          opacity: 0.95,
+          ...(options.tooltipOptions || {})
+        });
       }
 
       if (onMarkerClick) {
@@ -271,6 +283,16 @@ export class MapService {
       iconSize: [20, 20],
       iconAnchor: [10, 10],
       popupAnchor: [0, -10]
+    });
+  }
+
+  createNumberedHomeMarkerIcon(index = 0) {
+    return L.divIcon({
+      className: "numbered-home-marker",
+      html: `<span>${index + 1}</span>`,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+      popupAnchor: [0, -14]
     });
   }
 
