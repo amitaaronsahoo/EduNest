@@ -6,6 +6,8 @@ export class HomeCard extends UIComponent {
   render() {
     const home = this.props.home || {};
     const isSaved = Boolean(this.props.isSaved);
+    const index = Number.isInteger(this.props.index) ? this.props.index : null;
+    const rankLabel = index !== null ? `#${index + 1}` : "";
     const schoolDistances = Array.isArray(home.nearbySchools) && home.nearbySchools.length
       ? home.nearbySchools
           .map(entry => `<li><strong>${entry.school || "School"}</strong>: ${Number(entry.distance).toFixed(2)} miles</li>`)
@@ -21,7 +23,10 @@ export class HomeCard extends UIComponent {
 
     return `
       <article class="home-card ${isSaved ? "home-card--saved" : ""}" data-home-id="${home.id ?? ""}">
-        <h3 class="home-card__title">${home.formattedAddress || "Unknown Address"}</h3>
+        <h3 class="home-card__title">
+          ${rankLabel ? `<span class="home-card__rank">${rankLabel}</span>` : ""}
+          <span>${home.formattedAddress || "Unknown Address"}</span>
+        </h3>
         <p class="home-card__meta"><strong>Type:</strong> ${home.propertyType || "N/A"}</p>
         <p class="home-card__meta"><strong>Bedrooms:</strong> ${home.bedrooms ?? "N/A"} • <strong>Bathrooms:</strong> ${home.bathrooms ?? "N/A"}</p>
         <p class="home-card__meta"><strong>Square Feet:</strong> ${home.squareFeet ?? "N/A"}</p>
