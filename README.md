@@ -39,7 +39,8 @@ And then turn on the local website:
 
 npm run dev
 
-Step 4: Open your Browser
+### Step 4: Open your Browser
+
 After running the last command, the terminal will provide a web address. Open your web browser (Chrome, Edge, Safari, etc.) and type in:
 
 👉 http://localhost:5173
@@ -55,7 +56,8 @@ After running the last command, the terminal will provide a web address. Open yo
 
 🏠 View on Zillow: See a home you love? Click the Zillow button to open the real listing in a new tab.
 
-🛠️ Troubleshooting (Common Issues)
+### 🛠️ Troubleshooting (Common Issues)
+
 ⚠️ Problem: You see an error saying "npm is not recognized"
 Why: Your computer doesn't know what Node.js is yet.
 Fix: Ensure you completed Step 1 and installed Node.js. You may need to completely close your terminal window and open a new one for the installation to take effect.
@@ -68,7 +70,8 @@ Fix: Close that browser tab, open your terminal, and follow the Quick Start inst
 Fix 1: You might have a typo in the school search box. Try typing a simpler part of the name.
 Fix 2: Your filters might be too strict. Try changing the bedrooms and bathrooms back to "Any" and increasing the maximum price.
 
-📁 For the Curious: How the files are organized
+### 📁 For the Curious: How the files are organized
+
 If you want to poke around the files, here is a simple map of where things live:
 
 src/components/ - The visual puzzle pieces of the website (Buttons, Navigation, Home Cards).
