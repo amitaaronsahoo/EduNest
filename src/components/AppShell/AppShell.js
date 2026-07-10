@@ -99,6 +99,14 @@ export class AppShell extends UIComponent {
                   <option value="sqft-desc">Square Feet: High to Low</option>
                 </select>
 
+                <label for="homeResultsLimit">Homes shown</label>
+                <select id="homeResultsLimit">
+                  <option value="10">10 homes</option>
+                  <option value="25" selected>25 homes</option>
+                  <option value="50">50 homes</option>
+                  <option value="100">100 homes</option>
+                </select>
+
                 <button id="applyFiltersHomeBtn" type="button">Apply Filters</button>
                 <div id="homeResults" class="sidebar__status"></div>
               </div>
@@ -243,6 +251,7 @@ export class AppShell extends UIComponent {
       maxPriceHome: this.querySelector("#maxPriceHome"),
       maxPriceValue: this.querySelector("#maxPriceValue"),
       homeSort: this.querySelector("#homeSort"),
+      homeResultsLimit: this.querySelector("#homeResultsLimit"),
       applyFiltersHomeBtn: this.querySelector("#applyFiltersHomeBtn"),
       homeResults: this.querySelector("#homeResults"),
       resultsTitle: this.querySelector("#resultsTitle"),
@@ -294,6 +303,10 @@ export class AppShell extends UIComponent {
     });
     this.elements.applyFiltersHomeBtn?.addEventListener("click", () => this.applyHomeFilters());
     this.elements.homeSort?.addEventListener("change", () => this.applyHomeFilters());
+    this.elements.homeResultsLimit?.addEventListener("change", () => {
+      this.setPaginationPage("homes", 1);
+      this.applyHomeFilters();
+    });
     this.elements.detailBackBtn?.addEventListener("click", () => this.returnFromDetail());
     this.elements.houseMaxTuition?.addEventListener("input", () => {
       this.elements.houseMaxTuitionValue.textContent = String(this.elements.houseMaxTuition.value);
@@ -542,12 +555,11 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
 
   renderPaginationControls(container, totalItems, pageSize, section) {
     if (!container) return;
-    const threshold = section === "schools" ? 50 : 100;
-    const totalPages = totalItems > threshold ? Math.ceil(totalItems / pageSize) : 1;
+    const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
     const currentPage = Math.min(Math.max(this.paginationState[section] || 1, 1), totalPages);
     this.paginationState[section] = currentPage;
 
-    if (totalItems <= threshold) {
+    if (totalPages <= 1) {
       container.innerHTML = "";
       container.hidden = true;
       return;
@@ -865,7 +877,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     });
   }
 
-  renderMultiSchoolHomeMap(homes, schools = []) {
+  renderMultiSchoolHomeMap(homes, schools = [], startingIndex = 0) {
     const homeList = Array.isArray(homes) ? homes : [];
     const selectedSchools = Array.isArray(schools) ? schools.filter(Boolean) : schools ? [schools] : [];
 
@@ -899,7 +911,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     this.mapService.addHomeMarkers(homeList, null, {
       mapType: "main",
       clearExisting: false,
-      icon: (home, index) => this.mapService.createNumberedHomeMarkerIcon(index),
+      icon: (home, index) => this.mapService.createNumberedHomeMarkerIcon(startingIndex + index),
       title: home => home.formattedAddress,
       tooltipText: home => `
         <strong>${home.formattedAddress || "Unknown Address"}</strong><br>
@@ -935,7 +947,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
         ? [fallbackSchool]
         : [];
 
-    const pageSize = 100;
+    const pageSize = Number(this.elements.homeResultsLimit?.value || 25);
     const currentPage = this.paginationState.homes || 1;
     const startIndex = (currentPage - 1) * pageSize;
     const visibleHomes = homeList.slice(startIndex, startIndex + pageSize);
@@ -952,11 +964,20 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
           .join("")
       : '<div class="empty-state">No homes found. Try adjusting your filters.</div>';
 
-    this.elements.homeResults.textContent = `${homeList.length} home${homeList.length !== 1 ? "s" : ""} found`;
+    if (homeList.length === 0) {
+      this.elements.homeResults.textContent = "0 homes found";
+    } else {
+      const firstVisible = startIndex + 1;
+      const lastVisible = startIndex + visibleHomes.length;
+      this.elements.homeResults.textContent =
+        visibleHomes.length === homeList.length
+          ? `${homeList.length} home${homeList.length !== 1 ? "s" : ""} found`
+          : `Showing ${firstVisible}-${lastVisible} of ${homeList.length} homes found`;
+    }
     this.renderPaginationControls(this.elements.homePagination, homeList.length, pageSize, "homes");
 
     if (selectedSchools.length > 1) {
-      this.renderMultiSchoolHomeMap(homeList, schoolsToRender);
+      this.renderMultiSchoolHomeMap(visibleHomes, schoolsToRender, startIndex);
       return;
     }
 
@@ -989,10 +1010,10 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
       onPopupOpen: (marker, school) => this.attachSchoolPopupHandlers(marker, school)
     });
 
-    this.mapService.addHomeMarkers(homeList, null, {
+    this.mapService.addHomeMarkers(visibleHomes, null, {
       mapType: "main",
       clearExisting: false,
-      icon: (home, index) => this.mapService.createNumberedHomeMarkerIcon(index),
+      icon: (home, index) => this.mapService.createNumberedHomeMarkerIcon(startIndex + index),
       title: home => home.formattedAddress,
       tooltipText: home => `
         <strong>${home.formattedAddress || "Unknown Address"}</strong><br>
@@ -1220,6 +1241,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
       this.homeService.getNearbyHomesForSchool(resolvedSchool),
       sortBy
     );
+    this.stateManager.set("filteredHomes", nearbyHomes);
     this.elements.resultsTitle.textContent = `Homes Near ${resolvedSchool.name}`;
     this.switchTab("homes");
     this.renderHomes(nearbyHomes, resolvedSchool);
@@ -1244,6 +1266,8 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
       this.homeService.getNearbyHomesForSchools(selectedSchools),
       sortBy
     );
+
+    this.stateManager.set("filteredHomes", allNearbyHomes);
 
     this.elements.resultsTitle.textContent = `Homes Near: ${selectedSchools.map(school => school.name).join(", ")}`;
     this.switchTab("homes");
