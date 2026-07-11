@@ -256,7 +256,6 @@ export class AppShell extends UIComponent {
 
   bindEvents() {
     this.elements.schoolSearch?.addEventListener("input", event => {
-      this.showSchoolSearchSuggestions(event.target.value);
       this.renderSchoolsList(null, event.target.value);
     });
     this.elements.schoolSearch?.addEventListener("keydown", event => this.handleSchoolSearchKeyboard(event));
@@ -642,7 +641,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
 
   showSchoolSearchSuggestions(query) {
     const list = this.elements.schoolSearchSuggestionsList;
-    const normalized = normalizeSearchText(query);
+    const normalized = normalizeSearchText(query, this.stateManager.get("schools"));
     if (!list || !normalized) {
       this.clearSchoolSearchSuggestions();
       return;
