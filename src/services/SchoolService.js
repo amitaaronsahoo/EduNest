@@ -51,7 +51,11 @@ export class SchoolService {
   }
 
   findBestSchoolMatch(query, schools = this.getSchools()) {
+    if(query == ""){
+      return null;
+    }else{
     return this.searchSchools(query, schools, 1)[0] || null;
+    }
   }
 
   getSchoolsByIds(ids = [], schools = this.getSchools()) {
