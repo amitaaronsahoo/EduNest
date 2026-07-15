@@ -1,3 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors */
+  --color-primary: #1f4f99;
+  --color-secondary: #0f766e;
+  --color-success: #10b981;
+  --color-danger: #b91c1c;
+  --color-warning: #dc2626;
+
+  /* Text Colors */
+  --color-text-dark: #1f2937;
+  --color-text-light: #475569;
+  --color-text-muted: #828282;
+
+  /* Background Colors */
+  --color-bg-light: #f3f4f6;
+  --color-bg-white: #ffffff;
+  --color-bg-gray: #f7f7f7;
+  --color-bg-light-blue: #f8fafc;
+
+  /* Border Colors */
+  --color-border-color: #dfdfdf;
+  --color-border-light: #d1d5db;
+  --color-border-lighter: #cbd5e1;
+
+  /* Fonts */
+  --font-inter: "Inter", Helvetica, Arial, sans-serif;
+}
 @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
 @import url("https://fonts.googleapis.com/css?family=Inter:var(--small-text-font-weight),var(--body-text-font-weight),500,400,var(--presets-body2-font-weight),600");
 @import url("https://unpkg.com/leaflet/dist/leaflet.css");
