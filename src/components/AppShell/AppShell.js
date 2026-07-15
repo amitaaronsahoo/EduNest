@@ -1,4 +1,3 @@
-import './AppShell.css';
 import { UIComponent } from "../../core/UIComponent.js";
 import { currency, generateZillowUrl } from "../../utils/formatters.js";
 import { hasCoordinates } from "../../utils/validators.js";
@@ -30,67 +29,74 @@ export class AppShell extends UIComponent {
 
   render() {
     return `
-      <div class="app-shell">
-        <header class="app-shell__header">
-          <h1>EduNest — Jefferson County Home & School Locator</h1>
+      <div class="app-shell max-w-[1000px] w-full mx-auto px-4 pb-6 box-border">
+        <header class="app-shell__header mb-5">
+          <h1 class="text-xl font-bold text-primary">EduNest — Jefferson County Home & School Locator</h1>
         </header>
-        <div class="app-shell__layout">
-          <aside class="sidebar">
-            <div class="sidebar__nav-panel">
-              <h2>Navigation</h2>
-              <div id="app-nav"></div>
+
+        <div class="app-shell__layout flex flex-col gap-5 lg:grid lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-4">
+          <aside class="sidebar sidebar flex flex-col gap-4 p-4 rounded-xl bg-bg-light-blue border border-border-light shadow-md w-full">
+            <div class="sidebar__nav-panel pb-3 border-b border-border-light">
+              <h2 class="text-base font-semibold text-primary">Navigation</h2>
+              <div id="app-nav" class="mt-2"></div>
             </div>
 
             <div class="sidebar__content-panel">
-              <div id="schools-sidebar">
-                <h2>Find Schools</h2>
+              <div id="schools-sidebar" class="schools-sidebar">
+                <h2 class="text-base font-semibold text-primary">Find Schools</h2>
                 ${new SchoolSearch().render()}
-                <button id="allSchoolBtn" type="button">Search Homes for all selected schools</button>
-                <h2>Filter Schools</h2>
-                <div class="filter-group">
-                  <label><input type="checkbox" name="schoolType" value="JCPS"> Public</label>
-                  <label><input type="checkbox" name="schoolType" value="Private"> Private</label>
-                  <label><input type="checkbox" name="schoolType" value="Parochial School"> Catholic</label>
+                <button id="allSchoolBtn" type="button" class="mt-2 w-full rounded-full px-3 py-2 bg-primary text-white font-bold">Search Homes for all selected schools</button>
+
+                <h2 class="text-base font-semibold text-primary mt-4">Filter Schools</h2>
+                <div class="filter-group p-3 rounded-lg bg-bg-light-blue border border-border-light mt-2">
+                  <label class="flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="schoolType" value="JCPS" class="w-4 h-4 accent-primary"/> Public</label>
+                  <label class="flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="schoolType" value="Private" class="w-4 h-4 accent-primary"/> Private</label>
+                  <label class="flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="schoolType" value="Parochial School" class="w-4 h-4 accent-primary"/> Catholic</label>
                 </div>
-                <div class="filter-group">
-                  <label><input type="checkbox" name="gradeLevel" value="Elementary"> Elementary</label>
-                  <label><input type="checkbox" name="gradeLevel" value="Middle"> Middle</label>
-                  <label><input type="checkbox" name="gradeLevel" value="High"> High</label>
+
+                <div class="filter-group p-3 rounded-lg bg-bg-light-blue border border-border-light mt-2">
+                  <label class="flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="gradeLevel" value="Elementary" class="w-4 h-4 accent-primary"/> Elementary</label>
+                  <label class="flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="gradeLevel" value="Middle" class="w-4 h-4 accent-primary"/> Middle</label>
+                  <label class="flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="gradeLevel" value="High" class="w-4 h-4 accent-primary"/> High</label>
                 </div>
-                <label for="maxTuition">Max Tuition: $<span id="maxTuitionValue">5000</span></label>
-                <input id="maxTuition" type="range" min="0" max="50000" step="1000" value="5000" />
-                <button id="applyFiltersBtn" type="button">Apply Filters</button>
+
+                <label for="maxTuition" class="text-sm text-text-light mt-3">Max Tuition: $<span id="maxTuitionValue">5000</span></label>
+                <input id="maxTuition" type="range" min="0" max="50000" step="1000" value="5000" class="w-full" />
+                <button id="applyFiltersBtn" type="button" class="mt-2 w-full rounded-md px-3 py-2 bg-primary text-white font-semibold">Apply Filters</button>
               </div>
 
-              <div id="homes-sidebar" hidden>
-                <h2>Find Homes Near School</h2>
-                <label for="schoolSearchHome">School name</label>
-                <input id="schoolSearchHome" type="text" placeholder="e.g., DuPont Manual High School" />
-                <div id="schoolSuggestionsContainer" class="school-suggestions">
+              <div id="homes-sidebar" hidden class="homes-sidebar mt-2">
+                <h2 class="text-base font-semibold text-primary">Find Homes Near School</h2>
+                <label for="schoolSearchHome" class="text-sm text-text-light">School name</label>
+                <input id="schoolSearchHome" type="text" placeholder="e.g., DuPont Manual High School" class="w-full border border-border-light rounded-md px-3 py-2 text-sm" />
+                <div id="schoolSuggestionsContainer" class="school-suggestions mt-2">
                   <div id="schoolSuggestionsList" class="school-suggestions-list" hidden></div>
                 </div>
-                <button id="schoolSearchHomeBtn" type="button">Search Nearby Homes</button>
-                <h2>Filter Homes</h2>
-                <label for="minBedrooms">Minimum bedrooms</label>
-                <select id="minBedrooms">
+                <button id="schoolSearchHomeBtn" type="button" class="mt-2 w-full rounded-md px-3 py-2 bg-primary text-white font-bold">Search Nearby Homes</button>
+
+                <h2 class="text-base font-semibold text-primary mt-4">Filter Homes</h2>
+                <label for="minBedrooms" class="text-sm text-text-light">Minimum bedrooms</label>
+                <select id="minBedrooms" class="w-full border border-border-light rounded-md px-3 py-2 text-sm">
                   <option value="0">Any</option>
                   <option value="1">1+</option>
                   <option value="2">2+</option>
                   <option value="3">3+</option>
                   <option value="4">4+</option>
                 </select>
-                <label for="minBathrooms">Minimum bathrooms</label>
-                <select id="minBathrooms">
+
+                <label for="minBathrooms" class="text-sm text-text-light mt-2">Minimum bathrooms</label>
+                <select id="minBathrooms" class="w-full border border-border-light rounded-md px-3 py-2 text-sm">
                   <option value="0">Any</option>
                   <option value="1">1+</option>
                   <option value="2">2+</option>
                   <option value="3">3+</option>
                 </select>
-                <label for="maxPriceHome">Max Price: <span id="maxPriceValue">1000000</span></label>
-                <input id="maxPriceHome" type="range" min="50000" max="1000000" step="10000" value="1000000" />
 
-                <label for="homeSort">Rank homes by</label>
-                <select id="homeSort">
+                <label for="maxPriceHome" class="text-sm text-text-light mt-2">Max Price: <span id="maxPriceValue">1000000</span></label>
+                <input id="maxPriceHome" type="range" min="50000" max="1000000" step="10000" value="1000000" class="w-full" />
+
+                <label for="homeSort" class="text-sm text-text-light mt-2">Rank homes by</label>
+                <select id="homeSort" class="w-full border border-border-light rounded-md px-3 py-2 text-sm">
                   <option value="distance">Distance: Closest First</option>
                   <option value="price-asc">Price: Low to High</option>
                   <option value="price-desc">Price: High to Low</option>
@@ -99,111 +105,127 @@ export class AppShell extends UIComponent {
                   <option value="sqft-desc">Square Feet: High to Low</option>
                 </select>
 
-                <label for="homeResultsLimit">Homes shown</label>
-                <select id="homeResultsLimit">
+                <label for="homeResultsLimit" class="text-sm text-text-light mt-2">Homes shown</label>
+                <select id="homeResultsLimit" class="w-full border border-border-light rounded-md px-3 py-2 text-sm">
                   <option value="10">10 homes</option>
                   <option value="25" selected>25 homes</option>
                   <option value="50">50 homes</option>
                   <option value="100">100 homes</option>
                 </select>
 
-                <button id="applyFiltersHomeBtn" type="button">Apply Filters</button>
-                <div id="homeResults" class="sidebar__status"></div>
+                <button id="applyFiltersHomeBtn" type="button" class="mt-3 w-full rounded-md px-3 py-2 bg-primary text-white font-semibold">Apply Filters</button>
+                <div id="homeResults" class="sidebar__status text-sm text-text-light mt-2"></div>
               </div>
 
-              <h2>Saved Homes</h2>
-              <div id="savedHousesCount">0 homes saved</div>
-              <div id="savedHousesList"></div>
+              <h2 class="text-base font-semibold text-primary mt-4">Saved Homes</h2>
+              <div id="savedHousesCount" class="text-sm text-text-light mt-1">0 homes saved</div>
+              <div id="savedHousesList" class="mt-2"></div>
             </div>
           </aside>
 
-          <main class="app-shell__main">
-            <section id="landing-content" class="app-section landing-section">
-              <div class="landing-card">
-                <h2>Choose a view</h2>
-                <p>Pick a tab to browse schools, homes, or your saved properties.</p>
-                <div class="landing-actions">
-                  <button type="button" class="landing-action" data-tab="schools">📚 Schools</button>
-                  <button type="button" class="landing-action" data-tab="homes">🏠 Homes</button>
-                  <button type="button" class="landing-action" data-tab="saved">💾 Saved Homes</button>
+          <main class="app-shell__main min-w-0">
+            <section id="landing-content" class="app-section landing-section flex items-center justify-center min-h-[220px]">
+              <div class="landing-card landing-card w-full max-w-[560px] p-6 rounded-[20px] border border-border-light bg-gradient-to-br from-white to-[#f8fbff] shadow-[0_12px_28px_rgba(15,76,129,0.09)] text-center">
+                <h2 class="text-xl font-semibold text-primary mb-2">Choose a view</h2>
+                <p class="text-sm text-text-light mb-4">Pick a tab to browse schools, homes, or your saved properties.</p>
+                <div class="landing-actions flex flex-wrap justify-center gap-3">
+                  <button type="button" class="landing-action rounded-full px-4 py-2 bg-bg-light-blue text-primary font-bold" data-tab="schools">📚 Schools</button>
+                  <button type="button" class="landing-action rounded-full px-4 py-2 bg-bg-light-blue text-primary font-bold" data-tab="homes">🏠 Homes</button>
+                  <button type="button" class="landing-action rounded-full px-4 py-2 bg-bg-light-blue text-primary font-bold" data-tab="saved">💾 Saved Homes</button>
                 </div>
               </div>
             </section>
 
             <section id="schools-content" class="app-section">
-              <div class="app-section__header">
-                <h2>School Directory</h2>
-                <p>Browse and search schools in Jefferson County</p>
+              <div class="app-section__header mb-4">
+                <h2 class="text-lg font-semibold text-primary">School Directory</h2>
+                <p class="text-sm text-text-light">Browse and search schools in Jefferson County</p>
               </div>
-              <div id="schoolResults"></div>
+
+              <div id="schoolResults" class="text-sm text-text-light mb-3"></div>
+
               <div class="school-list">
-                <div class="school-row__header">
+                <div class="school-row__header grid grid-cols-[2fr_2fr_1fr_1fr_1fr] gap-2.5 p-3.5 rounded-lg bg-bg-light-blue text-primary font-bold mb-2">
                   <div>School Name</div>
                   <div>Address</div>
                   <div>Type</div>
                   <div>Grades</div>
                   <div>Action</div>
                 </div>
-                <div id="schoolsTableBody"></div>
+
+                <div id="schoolsTableBody" class="flex flex-col gap-2"></div>
               </div>
-              <div id="schoolPagination" class="pagination"></div>
+
+              <div id="schoolPagination" class="pagination mt-3"></div>
             </section>
 
             <section id="homes-content" class="app-section" hidden>
-              <div class="app-section__header">
-                <h2 id="resultsTitle">Available Homes</h2>
-                <p>Browse homes in your area</p>
+              <div class="app-section__header mb-4">
+                <h2 id="resultsTitle" class="text-lg font-semibold text-primary">Available Homes</h2>
+                <p class="text-sm text-text-light">Browse homes in your area</p>
               </div>
-              <div id="mapContainer"><div id="map"></div></div>
-              <div id="results" class="cards">
-                <div id="homeEmptyState" class="empty-state">Select filters and click "Apply Filters" to see results</div>
+
+              <div id="mapContainer" class="mb-4">
+                <div id="map" class="w-full h-[420px] min-h-[320px] rounded-lg overflow-hidden border border-border-light shadow-md"></div>
               </div>
-              <div id="homePagination" class="pagination"></div>
+
+              <div id="results" class="cards grid gap-3">
+                <div id="homeEmptyState" class="empty-state text-text-muted">Select filters and click "Apply Filters" to see results</div>
+              </div>
+
+              <div id="homePagination" class="pagination mt-3"></div>
             </section>
 
             <section id="house-details-content" class="app-section" hidden>
-              <div class="detail-header">
+              <div class="detail-header flex justify-between items-start gap-4">
                 <div>
-                  <h2 id="houseDetailTitle">House Detail</h2>
-                  <p id="houseDetailSubtitle">Click a home marker to view nearby schools.</p>
+                  <h2 id="houseDetailTitle" class="text-xl font-semibold text-primary">House Detail</h2>
+                  <p id="houseDetailSubtitle" class="text-sm text-text-light mt-1">Click a home marker to view nearby schools.</p>
                 </div>
-                <button id="detailBackBtn" type="button">Back</button>
+                <button id="detailBackBtn" type="button" class="bg-primary text-white rounded-md px-3 py-2">Back</button>
               </div>
-              <div id="detailMap" class="detail-map">map here</div>
-              <div class="detail-grid">
-                <div id="houseDetailInfo"></div>
-                <div class="detail-panels">
-                  <div class="panel">
-                    <h3>Filter Nearby Schools</h3>
-                    <div class="filter-group">
-                      <label><input type="checkbox" name="houseSchoolType" value="JCPS"> Public</label>
-                      <label><input type="checkbox" name="houseSchoolType" value="Private"> Private</label>
-                      <label><input type="checkbox" name="houseSchoolType" value="Parochial School"> Catholic</label>
+
+              <div id="detailMap" class="detail-map w-full h-[400px] min-h-[400px] rounded-lg overflow-hidden border border-border-light"></div>
+
+              <div class="detail-grid grid grid-cols-1 lg:grid-cols-[minmax(280px,1fr)_minmax(320px,1.2fr)] gap-6 items-start">
+                <div id="houseDetailInfo" class="flex flex-col gap-4"></div>
+
+                <div class="detail-panels flex flex-col gap-4">
+                  <div class="panel p-4 border border-border-light rounded-lg bg-bg-white">
+                    <h3 class="text-base font-medium text-primary">Filter Nearby Schools</h3>
+
+                    <div class="filter-group mt-2 flex flex-wrap gap-2">
+                      <label class="inline-flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="houseSchoolType" value="JCPS" class="w-4 h-4 accent-primary"/> Public</label>
+                      <label class="inline-flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="houseSchoolType" value="Private" class="w-4 h-4 accent-primary"/> Private</label>
+                      <label class="inline-flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="houseSchoolType" value="Parochial School" class="w-4 h-4 accent-primary"/> Catholic</label>
                     </div>
-                    <div class="filter-group">
-                      <label><input type="checkbox" name="houseGradeLevel" value="Elementary"> Elementary</label>
-                      <label><input type="checkbox" name="houseGradeLevel" value="Middle"> Middle</label>
-                      <label><input type="checkbox" name="houseGradeLevel" value="High"> High</label>
+
+                    <div class="filter-group mt-2 flex flex-wrap gap-2">
+                      <label class="inline-flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="houseGradeLevel" value="Elementary" class="w-4 h-4 accent-primary"/> Elementary</label>
+                      <label class="inline-flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="houseGradeLevel" value="Middle" class="w-4 h-4 accent-primary"/> Middle</label>
+                      <label class="inline-flex items-center gap-2 text-sm text-text-light"><input type="checkbox" name="houseGradeLevel" value="High" class="w-4 h-4 accent-primary"/> High</label>
                     </div>
-                    <label for="houseMaxTuition">Max Tuition: $<span id="houseMaxTuitionValue">5000</span></label>
-                    <input id="houseMaxTuition" type="range" min="0" max="50000" step="1000" value="5000" />
-                    <button id="houseApplySchoolFiltersBtn" type="button">Apply School Filters</button>
+
+                    <label for="houseMaxTuition" class="text-sm text-text-light mt-2">Max Tuition: $<span id="houseMaxTuitionValue">5000</span></label>
+                    <input id="houseMaxTuition" type="range" min="0" max="50000" step="1000" value="5000" class="w-full mt-1" />
+                    <button id="houseApplySchoolFiltersBtn" type="button" class="mt-2 w-full rounded-md px-3 py-2 bg-primary text-white">Apply School Filters</button>
                   </div>
-                  <div class="panel">
-                    <h3>Nearby Schools</h3>
-                    <div id="houseSchoolResults">No school selected yet.</div>
-                    <div id="houseNearbySchools"></div>
+
+                  <div class="panel p-4 border border-border-light rounded-lg bg-bg-white">
+                    <h3 class="text-base font-medium text-primary">Nearby Schools</h3>
+                    <div id="houseSchoolResults" class="text-text-light mt-2">No school selected yet.</div>
+                    <div id="houseNearbySchools" class="flex flex-col gap-3 mt-2 max-h-[450px] overflow-y-auto"></div>
                   </div>
                 </div>
               </div>
             </section>
 
             <section id="saved-content" class="app-section" hidden>
-              <h2>My Saved Homes</h2>
-              <div id="savedHouses" class="cards">
-                <div id="emptyState" class="empty-state">No homes saved yet</div>
+              <h2 class="text-lg font-semibold text-primary">My Saved Homes</h2>
+              <div id="savedHouses" class="cards grid gap-3 mt-2">
+                <div id="emptyState" class="empty-state text-text-muted">No homes saved yet</div>
               </div>
-              <div id="savedPagination" class="pagination"></div>
+              <div id="savedPagination" class="pagination mt-3"></div>
             </section>
           </main>
         </div>
@@ -215,8 +237,8 @@ export class AppShell extends UIComponent {
     this.cacheElements();
     this.bindEvents();
     this.subscribeToState(
-      ["houses", "schools", "filteredHomes", "schoolsFiltered", "currentTab", "currentHouseDetail", "dataLoadError", "isLoadingData"],
-      () => this.handleStateChange()
+        ["houses", "schools", "filteredHomes", "schoolsFiltered", "currentTab", "currentHouseDetail", "dataLoadError", "isLoadingData"],
+        () => this.handleStateChange()
     );
     this.bootstrap();
   }
@@ -465,22 +487,21 @@ export class AppShell extends UIComponent {
 
     this.renderNavigation();
     this.syncTabVisibility();
-this.renderHouseDetailView(this.currentHouseDetail, true);
+    this.renderHouseDetailView(this.currentHouseDetail, true);
     const activeTab = this.stateManager.get("currentTab") || "schools";
 
-
     switch (activeTab) {
-        case "schools":
-            this.renderSchoolsList();
-            break;
+      case "schools":
+        this.renderSchoolsList();
+        break;
 
-        case "homes":
-            this.renderHomes(this.stateManager.get("filteredHomes"));
-            break;
+      case "homes":
+        this.renderHomes(this.stateManager.get("filteredHomes"));
+        break;
 
-        case "saved":
-            this.renderSavedHouses();
-            break;
+      case "saved":
+        this.renderSavedHouses();
+        break;
     }
     this.renderLoadingState();
   }
@@ -525,27 +546,27 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
 
     // Detail page
     this.elements.houseDetailsContent.hidden = !showingDetail;
-}
+  }
 
- switchTab(tab) {
+  switchTab(tab) {
     this.stateManager.set("currentTab", tab);
     this.syncTabVisibility();
 
     if (tab === "schools" && !this.schoolsLoaded) {
-        this.renderSchoolsList();
-        this.schoolsLoaded = true;
+      this.renderSchoolsList();
+      this.schoolsLoaded = true;
     }
 
     if (tab === "homes" && !this.homesLoaded) {
-        this.renderHomes(this.stateManager.get("filteredHomes"));
-        this.homesLoaded = true;
+      this.renderHomes(this.stateManager.get("filteredHomes"));
+      this.homesLoaded = true;
     }
 
     if (tab === "saved" && !this.savedLoaded) {
-        this.renderSavedHouses();
-        this.savedLoaded = true;
+      this.renderSavedHouses();
+      this.savedLoaded = true;
     }
-}
+  }
 
   setPaginationPage(section, page) {
     const safePage = Number.isFinite(page) && page > 0 ? page : 1;
@@ -597,16 +618,16 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     const lastSelectedSchools = this.stateManager.get("lastSelectedSchools") || [];
     const lastSelectedSchool = this.stateManager.get("lastSelectedSchool");
     const selectedSchools = lastSelectedSchools.length
-      ? lastSelectedSchools
-      : lastSelectedSchool
-        ? [lastSelectedSchool]
-        : [];
+        ? lastSelectedSchools
+        : lastSelectedSchool
+            ? [lastSelectedSchool]
+            : [];
 
     const baseHomes = selectedSchools.length > 1
-      ? this.homeService.getNearbyHomesForSchools(selectedSchools)
-      : selectedSchools.length === 1
-        ? this.homeService.getNearbyHomesForSchool(selectedSchools[0])
-        : this.stateManager.get("houses");
+        ? this.homeService.getNearbyHomesForSchools(selectedSchools)
+        : selectedSchools.length === 1
+            ? this.homeService.getNearbyHomesForSchool(selectedSchools[0])
+            : this.stateManager.get("houses");
 
     const homes = this.homeService.applyFilters({
       homes: baseHomes,
@@ -626,8 +647,8 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     const selectedGrades = Array.from(this.querySelectorAll('input[name="houseGradeLevel"]:checked')).map(input => input.value);
     const maxTuition = Number(this.elements.houseMaxTuition?.value || 5000);
     const nearbySchools = this.homeService.getNearbySchoolsForHome(
-      this.currentHouseDetail,
-      this.stateManager.get("schools")
+        this.currentHouseDetail,
+        this.stateManager.get("schools")
     );
     const visibleSchools = this.homeService.filterNearbySchools(nearbySchools, {
       types: selectedTypes,
@@ -642,7 +663,7 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
 
   getCheckedSchoolIds() {
     return new Set(
-      Array.from(this.querySelectorAll('.school-row input[type="checkbox"]:checked')).map(input => Number(input.dataset.schoolId)).filter(Number.isFinite)
+        Array.from(this.querySelectorAll('.school-row input[type="checkbox"]:checked')).map(input => Number(input.dataset.schoolId)).filter(Number.isFinite)
     );
   }
 
@@ -651,8 +672,8 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     const normalizedQuery = normalizeSearchText(searchQuery || this.elements.schoolSearch?.value || "");
     const checkedSchoolIds = this.getCheckedSchoolIds();
     let schoolsToRender = normalizedQuery
-      ? baseSchools.filter(school => school.searchName.includes(normalizedQuery))
-      : [...baseSchools];
+        ? baseSchools.filter(school => school.searchName.includes(normalizedQuery))
+        : [...baseSchools];
     const checkedSchools = this.stateManager.get("schools").filter(school => checkedSchoolIds.has(school.id));
     checkedSchools.forEach(school => {
       if (!schoolsToRender.some(item => item.id === school.id)) {
@@ -674,17 +695,17 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
 
     this.elements.schoolResults.textContent = `${schoolsToRender.length} school${schoolsToRender.length !== 1 ? "s" : ""} found`;
     this.elements.schoolsTableBody.innerHTML = visibleSchools.length
-      ? visibleSchools
-          .map(school => {
-            const row = new SchoolRow({
-              school,
-              checked: checkedSchoolIds.has(school.id),
-              onToggle: targetSchool => this.toggleSchoolSelection(targetSchool)
-            });
-            return row.render();
-          })
-          .join("")
-      : '<div class="empty-state">No schools found</div>';
+        ? visibleSchools
+            .map(school => {
+              const row = new SchoolRow({
+                school,
+                checked: checkedSchoolIds.has(school.id),
+                onToggle: targetSchool => this.toggleSchoolSelection(targetSchool)
+              });
+              return row.render();
+            })
+            .join("")
+        : '<div class="empty-state">No schools found</div>';
     this.renderPaginationControls(this.elements.schoolPagination, totalItems, pageSize, "schools");
   }
 
@@ -703,16 +724,16 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     }
 
     list.innerHTML = matches
-      .map(
-        school => `
+        .map(
+            school => `
           <div class="school-suggestion-item" data-school-id="${school.id}" tabindex="0">
             <strong>${school.name}</strong>
             ${school.level ? `<div class="school-meta">${school.level}</div>` : ""}
             ${school.formattedAddress ? `<div class="school-meta">${school.formattedAddress}</div>` : ""}
           </div>
         `
-      )
-      .join("");
+        )
+        .join("");
     list.hidden = false;
     list.dataset.activeIndex = "-1";
 
@@ -809,25 +830,26 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     const isSaved = this.savedHousesService.isHouseSaved(home);
     const saveMarker = isSaved ? "★" : "☆";
     const distances = Array.isArray(home.nearbySchools) && home.nearbySchools.length
-      ? home.nearbySchools.map(entry => ({
+        ? home.nearbySchools.map(entry => ({
           school: entry.school || entry.name || "School",
           distance: Number(entry.distance)
         }))
-      : (typeof home.distanceToSchool === "number"
-          ? [{ school: Array.isArray(schools) && schools[0]?.name ? schools[0].name : "selected school", distance: home.distanceToSchool }]
-          : []);
+        : (typeof home.distanceToSchool === "number"
+            ? [{ school: Array.isArray(schools) && schools[0]?.name ? schools[0].name : "selected school", distance: home.distanceToSchool }]
+            : []);
 
-  const distanceMarkup = distances.length
-  ? `
-      <div style="margin-top:8px; padding:8px 9px; border-radius:10px; background:#fff6c9; border:1px solid #f2d96b;">
-        ${distances.map(entry => `
-          <div style="font-size:12px; color:#123a6e; margin-bottom:3px;">
-            ${entry.distance.toFixed(2)} miles from ${entry.school}
-          </div>
-        `).join("")}
-      </div>
-    `
-  : "";
+    const distanceMarkup = distances.length
+        ? `
+        <div style="margin-top:8px; padding:8px 9px; border-radius:10px; background:#fff6c9; border:1px solid #f2d96b;">
+          ${distances.map(entry => `
+            <div style="font-size:12px; color:#123a6e; margin-bottom:3px;">
+              ${entry.distance.toFixed(2)} miles from ${entry.school}
+            </div>
+          `).join("")}
+        </div>
+      `
+        : "";
+
     return `
       <div style="min-width:220px; max-width:270px; border-radius:12px; overflow:hidden; background:linear-gradient(135deg, #fffdf7 0%, #ffffff 100%); box-shadow:0 10px 20px rgba(31,79,153,0.14); border:1px solid #dce7ff; position:relative; margin:0; padding:0;">
         <button
@@ -934,17 +956,17 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     const sortBy = this.elements.homeSort?.value || "distance";
     const homeList = this.homeService.sortHomes(Array.isArray(homes) ? homes : [], sortBy);
     const selectedSchools = Array.isArray(school)
-      ? school.filter(Boolean)
-      : school
-        ? [school]
-        : [];
+        ? school.filter(Boolean)
+        : school
+            ? [school]
+            : [];
 
     const fallbackSchool = this.stateManager.get("lastSelectedSchool");
     const schoolsToRender = selectedSchools.length > 0
-      ? selectedSchools
-      : fallbackSchool
-        ? [fallbackSchool]
-        : [];
+        ? selectedSchools
+        : fallbackSchool
+            ? [fallbackSchool]
+            : [];
 
     const pageSize = Number(this.elements.homeResultsLimit?.value || 25);
     const currentPage = this.paginationState.homes || 1;
@@ -952,16 +974,16 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     const visibleHomes = homeList.slice(startIndex, startIndex + pageSize);
 
     this.elements.results.innerHTML = visibleHomes.length
-      ? visibleHomes
-          .map((home, index) => new HomeCard({
-            home,
-            index: startIndex + index,
-            isSaved: this.savedHousesService.isHouseSaved(home),
-            onSelect: selectedHome => this.renderHouseDetailView(selectedHome),
-            onToggleSave: selectedHome => this.toggleSavedHouse(selectedHome)
-          }).render())
-          .join("")
-      : '<div class="empty-state">No homes found. Try adjusting your filters.</div>';
+        ? visibleHomes
+            .map((home, index) => new HomeCard({
+              home,
+              index: startIndex + index,
+              isSaved: this.savedHousesService.isHouseSaved(home),
+              onSelect: selectedHome => this.renderHouseDetailView(selectedHome),
+              onToggleSave: selectedHome => this.toggleSavedHouse(selectedHome)
+            }).render())
+            .join("")
+        : '<div class="empty-state">No homes found. Try adjusting your filters.</div>';
 
     if (homeList.length === 0) {
       this.elements.homeResults.textContent = "0 homes found";
@@ -969,9 +991,9 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
       const firstVisible = startIndex + 1;
       const lastVisible = startIndex + visibleHomes.length;
       this.elements.homeResults.textContent =
-        visibleHomes.length === homeList.length
-          ? `${homeList.length} home${homeList.length !== 1 ? "s" : ""} found`
-          : `Showing ${firstVisible}-${lastVisible} of ${homeList.length} homes found`;
+          visibleHomes.length === homeList.length
+              ? `${homeList.length} home${homeList.length !== 1 ? "s" : ""} found`
+              : `Showing ${firstVisible}-${lastVisible} of ${homeList.length} homes found`;
     }
     this.renderPaginationControls(this.elements.homePagination, homeList.length, pageSize, "homes");
 
@@ -1045,30 +1067,30 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     const savedHouses = this.stateManager.get("savedHouses") || [];
     this.elements.savedHousesCount.textContent = `${savedHouses.length} home${savedHouses.length !== 1 ? "s" : ""} saved`;
     this.elements.savedHousesList.innerHTML =
-      savedHouses.length === 0
-        ? '<div class="sidebar__empty">No homes saved yet</div>'
-        : savedHouses
-            .map(home => `
+        savedHouses.length === 0
+            ? '<div class="sidebar__empty">No homes saved yet</div>'
+            : savedHouses
+                .map(home => `
               <div class="saved-home" data-home-id="${home.id}">
               </div>
             `)
-            .join("");
+                .join("");
     const pageSize = 100;
     const currentPage = this.paginationState.saved || 1;
     const startIndex = (currentPage - 1) * pageSize;
     const visibleSavedHouses = savedHouses.slice(startIndex, startIndex + pageSize);
 
     this.elements.savedHouses.innerHTML =
-      visibleSavedHouses.length === 0
-        ? '<div class="empty-state">No homes saved yet</div>'
-        : visibleSavedHouses
-            .map(home => new HomeCard({
-              home,
-              isSaved: true,
-              onSelect: selectedHome => this.renderHouseDetailView(selectedHome),
-              onToggleSave: selectedHome => this.toggleSavedHouse(selectedHome)
-            }).render())
-            .join("");
+        visibleSavedHouses.length === 0
+            ? '<div class="empty-state">No homes saved yet</div>'
+            : visibleSavedHouses
+                .map(home => new HomeCard({
+                  home,
+                  isSaved: true,
+                  onSelect: selectedHome => this.renderHouseDetailView(selectedHome),
+                  onToggleSave: selectedHome => this.toggleSavedHouse(selectedHome)
+                }).render())
+                .join("");
     this.renderPaginationControls(this.elements.savedPagination, savedHouses.length, pageSize, "saved");
   }
 
@@ -1152,18 +1174,18 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
     }
     this.elements.houseSchoolResults.textContent = `${schools.length} nearby school${schools.length !== 1 ? "s" : ""} found`;
     this.elements.houseNearbySchools.innerHTML = schools
-      .map(school => `
+        .map(school => `
         <div class="nearby-school">
           <strong>${school.name}</strong>
           <div>${school.level || ""} ${school.type ? `• ${school.type}` : ""}</div>
           <div>${school.formattedAddress || ""}</div>
           <div>${school.distance.toFixed(2)} miles away</div>
-          <div style="margin-top:6px;">
-            <button type="button" class="view-school-btn" data-school-id="${school.id}" style="border:none;border-radius:8px;padding:6px 8px;background:#1f4f99;color:#fff;cursor:pointer;font-weight:600;">View on map</button>
+          <div class="mt-2">
+            <button type="button" class="view-school-btn rounded-md px-2 py-1 bg-primary text-white" data-school-id="${school.id}">View on map</button>
           </div>
         </div>
       `)
-      .join("");
+        .join("");
   }
 
   viewSchoolOnDetailMap(school) {
@@ -1237,8 +1259,8 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
 
     const sortBy = this.elements.homeSort?.value || "distance";
     const nearbyHomes = this.homeService.sortHomes(
-      this.homeService.getNearbyHomesForSchool(resolvedSchool),
-      sortBy
+        this.homeService.getNearbyHomesForSchool(resolvedSchool),
+        sortBy
     );
     this.stateManager.set("filteredHomes", nearbyHomes);
     this.elements.resultsTitle.textContent = `Homes Near ${resolvedSchool.name}`;
@@ -1262,8 +1284,8 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
 
     const sortBy = this.elements.homeSort?.value || "distance";
     const allNearbyHomes = this.homeService.sortHomes(
-      this.homeService.getNearbyHomesForSchools(selectedSchools),
-      sortBy
+        this.homeService.getNearbyHomesForSchools(selectedSchools),
+        sortBy
     );
 
     this.stateManager.set("filteredHomes", allNearbyHomes);
@@ -1277,89 +1299,90 @@ this.renderHouseDetailView(this.currentHouseDetail, true);
   showClosestSchools(home) {
     if (!home || !hasCoordinates(home)) return;
     const schoolsWithDistance = this.homeService
-      .getNearbySchoolsForHome(home, this.stateManager.get("schools"))
-      .slice(0, 10);
+        .getNearbySchoolsForHome(home, this.stateManager.get("schools"))
+        .slice(0, 10);
     if (schoolsWithDistance.length === 0) return;
     this.elements.houseSchoolResults.textContent = `${schoolsWithDistance.length} nearby school${schoolsWithDistance.length !== 1 ? "s" : ""} found`;
   }
 
   showSchoolSuggestions(query) {
-  const list = this.elements.schoolSuggestionsList;
-  const normalized = normalizeSearchText(query);
+    const list = this.elements.schoolSuggestionsList;
+    const normalized = normalizeSearchText(query);
 
-  if (!list || !normalized) {
-    this.clearSchoolSuggestions();
-    return;
-  }
+    if (!list || !normalized) {
+      this.clearSchoolSuggestions();
+      return;
+    }
 
-  const matches = this.schoolService
-    .searchSchools(normalized)
-    .slice(0, 8);
+    const matches = this.schoolService
+        .searchSchools(normalized)
+        .slice(0, 8);
 
-  if (!matches.length) {
-    this.clearSchoolSuggestions();
-    return;
-  }
+    if (!matches.length) {
+      this.clearSchoolSuggestions();
+      return;
+    }
 
-  list.innerHTML = matches
-    .map(
-      school => `
-        <div
-          class="school-suggestion-item"
-          data-school-id="${school.id}"
-          tabindex="0"
-          role="button"
-          aria-label="Select ${school.name}"
-        >
-          <div class="school-title">${school.name}</div>
+    list.innerHTML = matches
+        .map(
+            school => `
+          <div
+            class="school-suggestion-item"
+            data-school-id="${school.id}"
+            tabindex="0"
+            role="button"
+            aria-label="Select ${school.name}"
+          >
+            <div class="school-title">${school.name}</div>
 
-          ${
-            school.level
-              ? `<div class="school-sub">${school.level}</div>`
-              : ""
-          }
+            ${
+                school.level
+                    ? `<div class="school-sub">${school.level}</div>`
+                    : ""
+            }
 
-          ${
-            school.formattedAddress
-              ? `<div class="school-meta">${school.formattedAddress}</div>`
-              : ""
-          }
-        </div>
-      `
-    )
-    .join("");
+            ${
+                school.formattedAddress
+                    ? `<div class="school-meta">${school.formattedAddress}</div>`
+                    : ""
+            }
+          </div>
+        `
+        )
+        .join("");
 
-  list.hidden = false;
-  list.dataset.activeIndex = "-1";
+    list.hidden = false;
+    list.dataset.activeIndex = "-1";
 
-  const items = Array.from(list.children);
+    const items = Array.from(list.children);
 
-  items.forEach(item => {
-    const selectSchool = () => {
-      const schoolId = Number(item.dataset.schoolId);
+    items.forEach(item => {
+      const selectSchool = () => {
+        const schoolId = Number(item.dataset.schoolId);
 
-      const school = this.stateManager
-        .get("schools")
-        .find(entry => entry.id === schoolId);
+        const school = this.stateManager
+            .get("schools")
+            .find(entry => entry.id === schoolId);
 
-      if (school) {
-        this.elements.schoolSearchHome.value = school.name;
-        this.clearSchoolSuggestions();
-        this.searchHomesNearSchool();
-      }
-    };
+        if (school) {
+          this.elements.schoolSearchHome.value = school.name;
+          this.clearSchoolSuggestions();
+          this.searchHomesNearSchool();
+        }
+      };
 
-    item.addEventListener("click", selectSchool);
+      item.addEventListener("click", selectSchool);
 
-    // 🔥 keyboard support (Enter / Space)
-    item.addEventListener("keydown", e => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        selectSchool();
-      }
+      // keyboard support (Enter / Space)
+      item.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectSchool();
+        }
+      });
     });
-  });
-}
+  }
+
   handleSuggestionKeyboard(event) {
     const list = this.elements.schoolSuggestionsList;
     if (!list || list.hidden) return;
