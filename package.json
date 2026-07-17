@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "jest",
-    "test:e2e": "node test/navigationTest.mjs"
+    "test:e2e": "node test/e2e/runAll.mjs",
+    "test:e2e:navigation": "node test/navigationTest.mjs"
   },
   "repository": {
     "type": "git",
